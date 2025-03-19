@@ -5,12 +5,17 @@ import React, { useState, useEffect, useRef } from 'react';
 const Pomodoro = () => {
   const timerRef = useRef(null);
   const [timer, setTimer] = useState('5:00');
-  const [workTime, setWorkTime] = useState(1);
-  const [breakTime, setBreakTime] = useState(2);
+  const [workTime, setWorkTime] = useState(0.1);
+  const [shortBreakTime, setShortBreakTime] = useState(0.2);
+  const [longBreakTime, setLongBreakTime] = useState(0.5); // Define long break time
   const [isRunning, setIsRunning] = useState(false);
   const [isWorkSession, setIsWorkSession] = useState(true);
   const [remainingTime, setRemainingTime] = useState(workTime * 60);
   const [totalTime, setTotalTime] = useState(0);
+  const [workSessionCount, setWorkSessionCount] = useState(0);
+  const [tempWorkTime, setTempWorkTime] = useState(0);
+  const [tempShortBreakTime, setTempShortBreakTime] = useState(0);
+  const [tempLongBreakTime, setTempLongBreakTime] = useState(0);
 
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
@@ -50,45 +55,88 @@ const Pomodoro = () => {
     clearInterval(timerRef.current);
     setIsRunning(false);
     setIsWorkSession(true);
+    setWorkSessionCount(0);
     setRemainingTime(workTime * 60);
     updateTimerDisplay();
   };
 
   const handleSessionSwitch = () => {
-    setTotalTime(
-      (prevTotal) => prevTotal + (isWorkSession ? remainingTime : 0)
-    );
-    setRemainingTime(isWorkSession ? breakTime * 60 : workTime * 60);
-    setIsWorkSession(!isWorkSession);
-  };
+    console.log('handleSessionSwitch called');
 
-  const handleWorkTimeChange = (e) => {
-    setWorkTime(parseInt(e.target.value, 10) || 0);
-  };
-
-  const handleBreakTimeChange = (e) => {
-    setBreakTime(parseInt(e.target.value, 10) || 0);
-  };
-
-  const applyNewTimes = () => {
     if (isWorkSession) {
-      setRemainingTime(workTime * 60);
-    } else {
-      setRemainingTime(breakTime * 60);
+      setWorkSessionCount((prevCount) => prevCount + 1);
+      setTotalTime((prevTotal) => prevTotal + workTime * 60);
     }
-  };
 
-  const handleSessionChange = () => {
-    setIsWorkSession(true);
+    setIsWorkSession((prevSession) => {
+      const newSession = !prevSession;
+      console.log('New session:', newSession ? 'Work' : 'Break');
+
+      if (!newSession) {
+        // If switching to a break
+        if ((workSessionCount + 1) % 3 === 0) {
+          setRemainingTime(longBreakTime * 60);
+        } else {
+          setRemainingTime(shortBreakTime * 60);
+        }
+      } else {
+        setRemainingTime(workTime * 60);
+      }
+
+      return newSession;
+    });
   };
 
   useEffect(() => {
     updateTimerDisplay();
   }, [remainingTime]);
 
+  const handleSetNewTime = () => {
+    setWorkTime(tempWorkTime);
+    setShortBreakTime(tempShortBreakTime);
+    setLongBreakTime(tempLongBreakTime);
+    setRemainingTime(
+      isWorkSession
+        ? tempWorkTime * 60
+        : (workSessionCount + 1) % 3 === 0
+        ? tempLongBreakTime * 60
+        : tempShortBreakTime * 60
+    );
+  };
+
+  const handleNextClick = () => {
+    setIsWorkSession((prev) => {
+      const newSession = !prev;
+
+      setWorkSessionCount((prevCount) => {
+        const newCount = newSession ? prevCount + 1 : prevCount; // Increment only when switching to work
+        if (!newSession) {
+          // If switching to a break
+          if (newCount % 3 === 0) {
+            setRemainingTime(longBreakTime * 60);
+          } else {
+            setRemainingTime(shortBreakTime * 60);
+          }
+        } else {
+          setRemainingTime(workTime * 60);
+        }
+        return newCount;
+      });
+
+      return newSession;
+    });
+  };
+
   return (
     <div>
-      <h1>{isWorkSession ? 'Work Session' : 'Break Time'}</h1>
+      <h1>
+        {isWorkSession
+          ? 'Work Session'
+          : workSessionCount % 3 === 0
+          ? 'Long Break'
+          : 'Short Break'}
+      </h1>
+      <h2>Session: {workSessionCount}</h2>
       <h2>{timer}</h2>
       <button onClick={startTimer} disabled={isRunning}>
         Start
@@ -99,19 +147,32 @@ const Pomodoro = () => {
       <button onClick={resetTimer}>Reset</button>
       <div>
         <label>Work Time (min): </label>
-        <input type="number" value={workTime} onChange={handleWorkTimeChange} />
-      </div>
-      <div>
-        <label>Break Time (min): </label>
         <input
           type="number"
-          value={breakTime}
-          onChange={handleBreakTimeChange}
+          onChange={(e) => setTempWorkTime(parseFloat(e.target.value) || 0)}
         />
       </div>
-      <h1>Time focussed so far: {Math.floor(totalTime / 60)} min</h1>
-      <button onClick={applyNewTimes}>Change</button>
-      <button onClick={handleSessionChange}>Working</button>
+      <div>
+        <label>Short Break Time (min): </label>
+        <input
+          type="number"
+          onChange={(e) =>
+            setTempShortBreakTime(parseFloat(e.target.value) || 0)
+          }
+        />
+      </div>
+      <div>
+        <label>Long Break Time (min): </label>
+        <input
+          type="number"
+          onChange={(e) =>
+            setTempLongBreakTime(parseFloat(e.target.value) || 0)
+          }
+        />
+      </div>
+      <button onClick={handleSetNewTime}>Set new time</button>
+      <h1>Total Work Time: {Math.floor(totalTime / 60)} minutes</h1>
+      <button onClick={handleNextClick}>Next</button>
     </div>
   );
 };
