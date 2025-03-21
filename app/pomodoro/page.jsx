@@ -4,10 +4,10 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const Pomodoro = () => {
   const timerRef = useRef(null);
-  const [timer, setTimer] = useState('5:00');
-  const [workTime, setWorkTime] = useState(0.1);
-  const [shortBreakTime, setShortBreakTime] = useState(0.2);
-  const [longBreakTime, setLongBreakTime] = useState(0.5); // Define long break time
+  const [timer, setTimer] = useState(25);
+  const [workTime, setWorkTime] = useState(25);
+  const [shortBreakTime, setShortBreakTime] = useState(5);
+  const [longBreakTime, setLongBreakTime] = useState(10); // Define long break time
   const [isRunning, setIsRunning] = useState(false);
   const [isWorkSession, setIsWorkSession] = useState(true);
   const [remainingTime, setRemainingTime] = useState(workTime * 60);
@@ -16,6 +16,7 @@ const Pomodoro = () => {
   const [tempWorkTime, setTempWorkTime] = useState(0);
   const [tempShortBreakTime, setTempShortBreakTime] = useState(0);
   const [tempLongBreakTime, setTempLongBreakTime] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
@@ -28,6 +29,35 @@ const Pomodoro = () => {
   const updateTimerDisplay = () => {
     setTimer(formatTime(remainingTime));
   };
+
+  useEffect(() => {
+    const fetchPreferences = async () => {
+      try {
+        const response = await fetch('/api/pomodoro/getPreferences');
+        console.log(`fetchedd haha ${JSON.stringify(response)}`);
+        if (!response.ok) throw new Error('Failed to fetch preferences');
+        const data = await response.json();
+
+        setWorkTime(data.workTime);
+        console.log(data.workTime);
+        setShortBreakTime(data.shortBreakTime);
+        setLongBreakTime(data.longBreakTime);
+        setRemainingTime(data.workTime * 60);
+      } catch (error) {
+        console.error('Error fetching preferences:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPreferences();
+  }, []);
+
+  useEffect(() => {
+    updateTimerDisplay();
+  }, [remainingTime]);
+
+  if (isLoading) return <p>Loading...</p>;
 
   const startTimer = () => {
     if (isRunning) return;
@@ -85,7 +115,7 @@ const Pomodoro = () => {
 
   const updateTotalWorkTime = async (newTotalWorkTime) => {
     try {
-      const response = await fetch('/api/updateWorkTime', {
+      const response = await fetch('/api/pomodoro/updateWorkTime', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -104,21 +134,42 @@ const Pomodoro = () => {
     }
   };
 
-  useEffect(() => {
-    updateTimerDisplay();
-  }, [remainingTime]);
+  const handleSetNewTime = async () => {
+    const newWorkTime = tempWorkTime || workTime;
+    const newShortBreakTime = tempShortBreakTime || shortBreakTime;
+    const newLongBreakTime = tempLongBreakTime || longBreakTime;
 
-  const handleSetNewTime = () => {
-    setWorkTime(tempWorkTime);
-    setShortBreakTime(tempShortBreakTime);
-    setLongBreakTime(tempLongBreakTime);
+    setWorkTime(newWorkTime);
+    setShortBreakTime(newShortBreakTime);
+    setLongBreakTime(newLongBreakTime);
+
     setRemainingTime(
       isWorkSession
-        ? tempWorkTime * 60
+        ? newWorkTime * 60
         : (workSessionCount + 1) % 3 === 0
-        ? tempLongBreakTime * 60
-        : tempShortBreakTime * 60
+        ? newLongBreakTime * 60
+        : newShortBreakTime * 60
     );
+
+    try {
+      const response = await fetch('/api/pomodoro/updatePreferences', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          workTime: newWorkTime,
+          shortBreakTime: newShortBreakTime,
+          longBreakTime: newLongBreakTime,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update Pomodoro settings');
+      }
+
+      console.log('Pomodoro settings updated!');
+    } catch (error) {
+      console.error('Error updating Pomodoro settings:', error);
+    }
   };
 
   const handleNextClick = () => {
@@ -163,14 +214,14 @@ const Pomodoro = () => {
       </button>
       <button onClick={resetTimer}>Reset</button>
       <div>
-        <label>Work Time (min): </label>
+        <label>Work Time (min): {workTime}</label>
         <input
           type="number"
           onChange={(e) => setTempWorkTime(parseFloat(e.target.value) || 0)}
         />
       </div>
       <div>
-        <label>Short Break Time (min): </label>
+        <label>Short Break Time (min): {shortBreakTime}</label>
         <input
           type="number"
           onChange={(e) =>
@@ -179,7 +230,7 @@ const Pomodoro = () => {
         />
       </div>
       <div>
-        <label>Long Break Time (min): </label>
+        <label>Long Break Time (min): {longBreakTime}</label>
         <input
           type="number"
           onChange={(e) =>
