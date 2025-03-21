@@ -9,8 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mapbox/node-pre-gyp": "^2.0.0",
+    "bcrypt": "^5.1.1",
     "mongodb": "^6.15.0",
+    "mongoose": "^8.12.1",
     "next": "15.2.2",
+    "next-auth": "^4.24.11",
+    "nodemailer": "^6.10.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }
