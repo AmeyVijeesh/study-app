@@ -4,8 +4,9 @@ const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  resetPasswordToken: { type: String, default: null }, // Store password reset token
-  resetPasswordExpires: { type: Date, default: null }, // Store token expiration time
+  resetPasswordToken: { type: String, default: null },
+  resetPasswordExpires: { type: Date, default: null },
+  totalWorkTime: { type: Number, default: 0 },
 });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);

@@ -60,31 +60,48 @@ const Pomodoro = () => {
     updateTimerDisplay();
   };
 
-  const handleSessionSwitch = () => {
-    console.log('handleSessionSwitch called');
-
+  const handleSessionSwitch = async () => {
     if (isWorkSession) {
       setWorkSessionCount((prevCount) => prevCount + 1);
-      setTotalTime((prevTotal) => prevTotal + workTime * 60);
+      setTotalTime((prevTotal) => {
+        const newTotal = prevTotal + workTime * 60;
+        updateTotalWorkTime(newTotal);
+        return newTotal;
+      });
     }
 
     setIsWorkSession((prevSession) => {
       const newSession = !prevSession;
-      console.log('New session:', newSession ? 'Work' : 'Break');
-
-      if (!newSession) {
-        // If switching to a break
-        if ((workSessionCount + 1) % 3 === 0) {
-          setRemainingTime(longBreakTime * 60);
-        } else {
-          setRemainingTime(shortBreakTime * 60);
-        }
-      } else {
-        setRemainingTime(workTime * 60);
-      }
-
+      setRemainingTime(
+        newSession
+          ? workTime * 60
+          : (workSessionCount + 1) % 3 === 0
+          ? longBreakTime * 60
+          : shortBreakTime * 60
+      );
       return newSession;
     });
+  };
+
+  const updateTotalWorkTime = async (newTotalWorkTime) => {
+    try {
+      const response = await fetch('/api/updateWorkTime', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          totalWorkTime: Math.floor(newTotalWorkTime / 60), // Ensure it's an integer
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update work time');
+      }
+
+      const data = await response.json();
+      console.log('Total work time updated:', data.totalWorkTime);
+    } catch (error) {
+      console.error('Error updating work time:', error);
+    }
   };
 
   useEffect(() => {
