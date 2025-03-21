@@ -37,6 +37,9 @@ export default function LoginPage() {
         required
       />
       <button type="submit">Login</button>
+      <p>
+        <a href="/auth/forgot-password">Forgot Password?</a>
+      </p>
     </form>
   );
 }
