@@ -59,8 +59,14 @@ const Pomodoro = () => {
   }, [remainingTime]);
 
   useEffect(() => {
-    document.title = `(${formatTime(remainingTime)}) Pomodoro Timer`;
-  }, [remainingTime]);
+    const sessionType = isWorkSession
+      ? 'Work Time'
+      : workSessionCount % 3 === 0
+      ? 'Long Break'
+      : 'Short Break';
+
+    document.title = `(${formatTime(remainingTime)}) ${sessionType}`;
+  }, [remainingTime, isWorkSession, workSessionCount]);
 
   if (isLoading) return <p>Loading...</p>;
 
