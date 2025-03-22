@@ -58,6 +58,10 @@ const Pomodoro = () => {
     updateTimerDisplay();
   }, [remainingTime]);
 
+  useEffect(() => {
+    document.title = `(${formatTime(remainingTime)}) Pomodoro Timer`;
+  }, [remainingTime]);
+
   if (isLoading) return <p>Loading...</p>;
 
   const startTimer = () => {
@@ -92,14 +96,14 @@ const Pomodoro = () => {
   };
 
   const handleSessionSwitch = async () => {
-    let updatedTotalTime = totalTime; // Store totalTime before modifying state
+    let updatedTotalTime = totalTime;
 
     if (isWorkSession) {
       setWorkSessionCount((prevCount) => prevCount + 1);
-      updatedTotalTime += workTime * 60; // Add work time to total time
-      setTotalTime(updatedTotalTime); // Update state
+      updatedTotalTime += workTime * 60;
+      setTotalTime(updatedTotalTime);
 
-      await updateTotalWorkTime(updatedTotalTime); // ✅ Send the updated value
+      await updateTotalWorkTime(updatedTotalTime);
     }
 
     setIsWorkSession((prevSession) => {
