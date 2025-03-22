@@ -16,6 +16,7 @@ const Pomodoro = () => {
   const [tempWorkTime, setTempWorkTime] = useState(0);
   const [tempShortBreakTime, setTempShortBreakTime] = useState(0);
   const [tempLongBreakTime, setTempLongBreakTime] = useState(0);
+  const [lastTotalWorkTime, setLastTotalWorkTime] = useState(0); // Track last recorded total
   const [isLoading, setIsLoading] = useState(true);
 
   const formatTime = (timeInSeconds) => {
@@ -91,13 +92,14 @@ const Pomodoro = () => {
   };
 
   const handleSessionSwitch = async () => {
+    let updatedTotalTime = totalTime; // Store totalTime before modifying state
+
     if (isWorkSession) {
       setWorkSessionCount((prevCount) => prevCount + 1);
-      setTotalTime((prevTotal) => {
-        const newTotal = prevTotal + workTime * 60;
-        updateTotalWorkTime(newTotal);
-        return newTotal;
-      });
+      updatedTotalTime += workTime * 60; // Add work time to total time
+      setTotalTime(updatedTotalTime); // Update state
+
+      await updateTotalWorkTime(updatedTotalTime); // ✅ Send the updated value
     }
 
     setIsWorkSession((prevSession) => {
@@ -115,20 +117,42 @@ const Pomodoro = () => {
 
   const updateTotalWorkTime = async (newTotalWorkTime) => {
     try {
-      const response = await fetch('/api/pomodoro/updateWorkTime', {
+      const timeWorkedNow =
+        Math.floor(newTotalWorkTime / 60) - lastTotalWorkTime; // Get only new time worked
+
+      if (timeWorkedNow <= 0) return; // Prevent sending incorrect or duplicate data
+
+      console.log('Sending new work time:', timeWorkedNow);
+
+      const response = await fetch('/api/updateWorkTime', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          totalWorkTime: Math.floor(newTotalWorkTime / 60), // Ensure it's an integer
-        }),
+        body: JSON.stringify({ totalWorkTime: timeWorkedNow }), // Send only new time
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to update work time');
+      const textResponse = await response.text();
+      console.log('Raw server response:', textResponse);
+
+      let responseData;
+      try {
+        responseData = JSON.parse(textResponse);
+      } catch (error) {
+        console.error('Error parsing JSON response:', error);
+        throw new Error('Invalid JSON response from server');
       }
 
-      const data = await response.json();
-      console.log('Total work time updated:', data.totalWorkTime);
+      if (!response.ok) {
+        console.error('Server error response:', responseData);
+        throw new Error(
+          `Failed to update work time: ${
+            responseData.message || response.statusText
+          }`
+        );
+      }
+
+      console.log('Total work time updated:', responseData.totalTimeWorked);
+
+      setLastTotalWorkTime(Math.floor(newTotalWorkTime / 60)); // Update last known total
     } catch (error) {
       console.error('Error updating work time:', error);
     }

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import User from '@/models/User';
+import Pomodoro from '@/models/Pomodoro';
 import { connectToDatabase } from '@/lib/mongodb';
 
 export async function POST(req) {
@@ -19,19 +19,22 @@ export async function POST(req) {
 
   try {
     const { totalWorkTime } = await req.json();
-    const email = session.user.email;
-    console.log(`Updating totalWorkTime for ${email}:`, totalWorkTime);
+    const userId = session.user.id; // Assuming NextAuth gives you the user ID
 
-    const user = await User.findOneAndUpdate(
-      { email },
-      { $inc: { totalWorkTime } },
+    console.log(
+      `Updating totalTimeWorked for userId: ${userId} by ${totalWorkTime} minutes`
+    );
+
+    const updatedSettings = await Pomodoro.findOneAndUpdate(
+      { userId },
+      { $inc: { totalTimeWorked: totalWorkTime } }, // Increment totalTimeWorked
       { new: true, upsert: true }
     );
 
-    console.log('Updated user:', user);
+    console.log('Updated PomodoroSettings:', updatedSettings);
     return NextResponse.json({
       message: 'Updated successfully',
-      totalWorkTime: user.totalWorkTime,
+      totalTimeWorked: updatedSettings.totalTimeWorked,
     });
   } catch (error) {
     console.error('Database update error:', error);
