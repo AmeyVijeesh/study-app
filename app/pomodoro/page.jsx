@@ -160,7 +160,7 @@ const Pomodoro = () => {
         );
       }
 
-      console.log('Total work time updated:', responseData.totalTimeWorked);
+      console.log('Todays work time updated:', responseData.totalTimeWorked);
 
       setLastTotalWorkTime(Math.floor(newTotalWorkTime / 60)); // Update last known total
     } catch (error) {
@@ -273,7 +273,7 @@ const Pomodoro = () => {
         />
       </div>
       <button onClick={handleSetNewTime}>Set new time</button>
-      <h1>Total Work Time: {Math.floor(totalTime / 60)} minutes</h1>
+      <h1>Todays Work Time: {Math.floor(totalTime / 60)} minutes</h1>
       <button onClick={handleNextClick}>Next</button>
     </div>
   );

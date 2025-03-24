@@ -1,46 +1,39 @@
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import Pomodoro from '@/models/Pomodoro';
+import DailyLog from '@/models/DailyLog';
+import { getSession } from 'next-auth/react';
 import { connectToDatabase } from '@/lib/mongodb';
 
-export async function POST(req) {
-  console.log('API /updateWorkTime hit');
-
-  const session = await getServerSession(authOptions);
-  console.log('Session:', session);
-
-  if (!session) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-  }
+export default async function handler(req, res) {
+  if (req.method !== 'POST') return res.status(405).end(); // Allow only POST
 
   await connectToDatabase();
-  console.log('Connected to DB');
+  const session = await getSession({ req });
+
+  if (!session) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  const { totalWorkTime } = req.body;
+  const userId = session.user.id;
+  const todayDate = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
 
   try {
-    const { totalWorkTime } = await req.json();
-    const userId = session.user.id; // Assuming NextAuth gives you the user ID
+    let dailyLog = await DailyLog.findOne({ userId, date: todayDate });
 
-    console.log(
-      `Updating totalTimeWorked for userId: ${userId} by ${totalWorkTime} minutes`
-    );
+    if (dailyLog) {
+      dailyLog.totalTimeFocussed += totalWorkTime;
+    } else {
+      dailyLog = new DailyLog({
+        userId,
+        date: todayDate,
+        totalTimeFocussed: totalWorkTime,
+      });
+    }
 
-    const updatedSettings = await Pomodoro.findOneAndUpdate(
-      { userId },
-      { $inc: { totalTimeWorked: totalWorkTime } }, // Increment totalTimeWorked
-      { new: true, upsert: true }
-    );
+    await dailyLog.save();
 
-    console.log('Updated PomodoroSettings:', updatedSettings);
-    return NextResponse.json({
-      message: 'Updated successfully',
-      totalTimeWorked: updatedSettings.totalTimeWorked,
-    });
+    res.status(200).json({ totalTimeWorked: dailyLog.totalTimeFocussed });
   } catch (error) {
-    console.error('Database update error:', error);
-    return NextResponse.json(
-      { message: 'Internal Server Error', error },
-      { status: 500 }
-    );
+    console.error('Error updating daily log:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 }

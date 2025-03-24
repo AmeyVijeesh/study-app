@@ -4,6 +4,7 @@ const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  totalWorkTime: { type: Number, default: 0 },
   resetPasswordToken: { type: String, default: null },
   resetPasswordExpires: { type: Date, default: null },
 });
