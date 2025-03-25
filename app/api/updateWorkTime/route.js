@@ -13,7 +13,7 @@ export async function POST(req) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const { totalWorkTime } = await req.json();
+    const { totalWorkTime, sessionCount } = await req.json();
     const userId = session.user.id;
     const todayDate = new Date().toISOString().split('T')[0];
 
@@ -21,11 +21,13 @@ export async function POST(req) {
     let dailyLog = await DailyLog.findOne({ userId, date: todayDate });
     if (dailyLog) {
       dailyLog.totalTimeFocussed += totalWorkTime;
+      dailyLog.sessionsToday += 1; // Increment session count
     } else {
       dailyLog = new DailyLog({
         userId,
         date: todayDate,
         totalTimeFocussed: totalWorkTime,
+        sessionsToday: 1,
       });
     }
     await dailyLog.save();
@@ -34,7 +36,10 @@ export async function POST(req) {
     await User.findByIdAndUpdate(userId, { $inc: { totalWorkTime } });
 
     return NextResponse.json(
-      { totalTimeWorked: dailyLog.totalTimeFocussed },
+      {
+        totalTimeWorked: dailyLog.totalTimeFocussed,
+        totalSessions: dailyLog.sessionsToday,
+      },
       { status: 200 }
     );
   } catch (error) {
