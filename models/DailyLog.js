@@ -10,6 +10,7 @@ const DailyLogSchema = mongoose.Schema(
     date: { type: String, required: true },
     journal: { type: String, default: '' },
     totalTimeFocussed: { type: Number, default: 0 },
+    sessionsToday: { type: Number, default: 0 },
     timeTable: { type: Object, default: {} },
   },
   { timestamps: true }
