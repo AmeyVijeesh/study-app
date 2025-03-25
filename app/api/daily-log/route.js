@@ -32,20 +32,28 @@ export async function GET(req) {
   const date = searchParams.get('date');
 
   if (!userId) {
-    return Response.json({ message: 'Missing userId' }, { status: 400 });
+    return new Response(JSON.stringify({ message: 'Missing userId' }), {
+      status: 400,
+    });
   }
 
   if (date) {
     const log = await DailyLog.findOne({ userId, date });
     if (!log) {
-      return Response.json({ message: 'No log found' }, { status: 404 });
+      return new Response(
+        JSON.stringify({
+          message: 'No log found. Create one?',
+          createNew: true,
+        }),
+        { status: 200 }
+      );
     }
-    return Response.json(log);
+    return new Response(JSON.stringify(log), { status: 200 });
   }
 
-  const logs = await DailyLog.find({ userId }).sort({ date: -1 });
-
-  return Response.json({ logs });
+  return new Response(JSON.stringify({ message: 'Date is required' }), {
+    status: 400,
+  });
 }
 
 export async function PATCH(req) {
@@ -64,12 +72,8 @@ export async function PATCH(req) {
   const updatedLog = await DailyLog.findOneAndUpdate(
     { userId, date },
     { $set: { journal, totalTimeFocussed, timeTable } },
-    { new: true }
+    { new: true, upsert: true } // <- This ensures a new log is created if it doesn't exist
   );
-
-  if (!updatedLog) {
-    return Response.json({ message: 'Log not found' }, { status: 404 });
-  }
 
   return Response.json(updatedLog);
 }

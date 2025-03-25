@@ -126,33 +126,24 @@ const Pomodoro = () => {
   };
 
   const updateTotalWorkTime = async (newTotalWorkTime) => {
+    console.log('called');
     try {
       const timeWorkedNow =
-        Math.floor(newTotalWorkTime / 60) - lastTotalWorkTime; // Get only new time worked
+        Math.floor(newTotalWorkTime / 60) - lastTotalWorkTime;
 
-      if (timeWorkedNow <= 0) return; // Prevent sending incorrect or duplicate data
+      if (timeWorkedNow <= 0) return; // Prevent unnecessary updates
 
       console.log('Sending new work time:', timeWorkedNow);
 
       const response = await fetch('/api/updateWorkTime', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ totalWorkTime: timeWorkedNow }), // Send only new time
+        body: JSON.stringify({ totalWorkTime: timeWorkedNow }),
       });
 
-      const textResponse = await response.text();
-      console.log('Raw server response:', textResponse);
-
-      let responseData;
-      try {
-        responseData = JSON.parse(textResponse);
-      } catch (error) {
-        console.error('Error parsing JSON response:', error);
-        throw new Error('Invalid JSON response from server');
-      }
+      const responseData = await response.json();
 
       if (!response.ok) {
-        console.error('Server error response:', responseData);
         throw new Error(
           `Failed to update work time: ${
             responseData.message || response.statusText
@@ -161,7 +152,6 @@ const Pomodoro = () => {
       }
 
       console.log('Todays work time updated:', responseData.totalTimeWorked);
-
       setLastTotalWorkTime(Math.floor(newTotalWorkTime / 60)); // Update last known total
     } catch (error) {
       console.error('Error updating work time:', error);
@@ -273,7 +263,6 @@ const Pomodoro = () => {
         />
       </div>
       <button onClick={handleSetNewTime}>Set new time</button>
-      <h1>Todays Work Time: {Math.floor(totalTime / 60)} minutes</h1>
       <button onClick={handleNextClick}>Next</button>
     </div>
   );

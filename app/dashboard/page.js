@@ -37,31 +37,35 @@ const Dashboard = () => {
   if (!session) return <p>Please log in to view your dashboard.</p>;
   if (loading) return <h1>Loading...</h1>;
 
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toLocaleDateString('en-CA');
+
+  // Find today's log
+  const todayLog = logs.find((log) => log.date === today);
+  const todayTimeWorked = todayLog ? todayLog.totalTimeFocussed : 0;
+
   const logDates = new Set(logs.map((log) => log.date));
 
   const handleDateClick = (date) => {
-    const formattedDate = date.toISOString().split('T')[0];
-    if (logDates.has(formattedDate)) {
-      router.push(
-        `/daily-log-update?userId=${session.user.id}&date=${formattedDate}`
-      );
-    } else {
-      alert('No log for this date');
-    }
+    const formattedDate = date.toLocaleDateString('en-CA');
+    router.push(
+      `/daily-log-update?userId=${session.user.id}&date=${formattedDate}`
+    );
   };
 
   return (
     <div>
       <h1>Welcome, {userData.name}!</h1>
       <p>Email: {userData.email}</p>
-      <p>time: {userData.totalWorkTime}</p>
+      <p>Total Work Time: {userData.totalWorkTime} mins</p>
+      <p>Time Worked Today: {todayTimeWorked} mins</p>
 
       <h2>Your Logs</h2>
       <Calendar
         onChange={setSelectedDate}
         value={selectedDate}
         tileClassName={({ date }) => {
-          const formattedDate = date.toISOString().split('T')[0];
+          const formattedDate = date.toLocaleDateString('en-CA');
           return logDates.has(formattedDate) ? 'log-available' : null;
         }}
         onClickDay={handleDateClick}

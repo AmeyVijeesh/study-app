@@ -1,24 +1,24 @@
-import DailyLog from '@/models/DailyLog';
-import { getSession } from 'next-auth/react';
+import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'; // Ensure correct path
 import { connectToDatabase } from '@/lib/mongodb';
+import User from '@/models/User';
+import DailyLog from '@/models/DailyLog';
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).end(); // Allow only POST
-
-  await connectToDatabase();
-  const session = await getSession({ req });
-
-  if (!session) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
-
-  const { totalWorkTime } = req.body;
-  const userId = session.user.id;
-  const todayDate = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
-
+export async function POST(req) {
   try {
-    let dailyLog = await DailyLog.findOne({ userId, date: todayDate });
+    await connectToDatabase();
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
 
+    const { totalWorkTime } = await req.json();
+    const userId = session.user.id;
+    const todayDate = new Date().toISOString().split('T')[0];
+
+    // Update daily log
+    let dailyLog = await DailyLog.findOne({ userId, date: todayDate });
     if (dailyLog) {
       dailyLog.totalTimeFocussed += totalWorkTime;
     } else {
@@ -28,12 +28,20 @@ export default async function handler(req, res) {
         totalTimeFocussed: totalWorkTime,
       });
     }
-
     await dailyLog.save();
 
-    res.status(200).json({ totalTimeWorked: dailyLog.totalTimeFocussed });
+    // ✅ Update totalWorkTime in User model
+    await User.findByIdAndUpdate(userId, { $inc: { totalWorkTime } });
+
+    return NextResponse.json(
+      { totalTimeWorked: dailyLog.totalTimeFocussed },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error('Error updating daily log:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    console.error('Error updating work time:', error);
+    return NextResponse.json(
+      { message: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 }
