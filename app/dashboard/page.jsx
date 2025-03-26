@@ -6,6 +6,17 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useRouter } from 'next/navigation';
 import Subjects from '../components/Subjects';
+import WeeklyStudyGraph from '@/app/components/WeeklyGraph';
+
+import dynamic from 'next/dynamic';
+
+const LazyWeeklyStudyGraph = dynamic(
+  () => import('@/app/components/WeeklyGraph'),
+  {
+    ssr: false, // Ensure it's only loaded on the client
+    loading: () => <p>Loading graph...</p>, // Optional loading indicator
+  }
+);
 
 const Dashboard = () => {
   const { data: session } = useSession();
@@ -18,6 +29,13 @@ const Dashboard = () => {
   const [avgTimeWorked, setAvgTimeWorked] = useState(0);
   const [highestTimeWorked, setHighestTimeWorked] = useState(0);
   const [lowestTimeWorked, setLowestTimeWorked] = useState(0);
+
+  const today = new Date().toLocaleDateString('en-CA');
+
+  const todayLog = logs.find((log) => log.date === today);
+  const todayTimeWorked = todayLog ? todayLog.totalTimeFocussed : 0;
+  const sessionsToday = todayLog ? todayLog.sessionsToday : 0;
+  const logDates = new Set(logs.map((log) => log.date));
 
   useEffect(() => {
     if (!session) return;
@@ -46,13 +64,6 @@ const Dashboard = () => {
 
   if (!session) return <p>Please log in to view your dashboard.</p>;
   if (loading) return <h1>Loading...</h1>;
-
-  const today = new Date().toLocaleDateString('en-CA');
-
-  const todayLog = logs.find((log) => log.date === today);
-  const todayTimeWorked = todayLog ? todayLog.totalTimeFocussed : 0;
-  const sessionsToday = todayLog ? todayLog.sessionsToday : 0;
-  const logDates = new Set(logs.map((log) => log.date));
 
   const handleDateClick = (date) => {
     const formattedDate = date.toLocaleDateString('en-CA');
@@ -90,6 +101,7 @@ const Dashboard = () => {
           </li>
         ))}
       </ul>
+      <LazyWeeklyStudyGraph />
 
       <h2>Your Logs</h2>
       <Calendar
