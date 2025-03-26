@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useRouter } from 'next/navigation';
+import Subjects from '../components/Subjects';
 
 const Dashboard = () => {
   const { data: session } = useSession();
@@ -37,10 +38,8 @@ const Dashboard = () => {
   if (!session) return <p>Please log in to view your dashboard.</p>;
   if (loading) return <h1>Loading...</h1>;
 
-  // Get today's date in YYYY-MM-DD format
   const today = new Date().toLocaleDateString('en-CA');
 
-  // Find today's log
   const todayLog = logs.find((log) => log.date === today);
   const todayTimeWorked = todayLog ? todayLog.totalTimeFocussed : 0;
 
@@ -59,6 +58,8 @@ const Dashboard = () => {
       <p>Email: {userData.email}</p>
       <p>Total Work Time: {userData.totalWorkTime} mins</p>
       <p>Time Worked Today: {todayTimeWorked} mins</p>
+
+      <Subjects />
 
       <h2>Your Logs</h2>
       <Calendar

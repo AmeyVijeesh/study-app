@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const DailyLogSchema = mongoose.Schema(
+const DailyLogSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -12,6 +12,13 @@ const DailyLogSchema = mongoose.Schema(
     totalTimeFocussed: { type: Number, default: 0 },
     sessionsToday: { type: Number, default: 0 },
     timeTable: { type: Object, default: {} },
+
+    studySessions: [
+      {
+        subjectId: { type: mongoose.Schema.Types.ObjectId, ref: 'Subject' },
+        timeSpent: { type: Number, default: 0 },
+      },
+    ],
   },
   { timestamps: true }
 );
