@@ -14,17 +14,20 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const router = useRouter();
+  const [totalStudyTime, setTotalStudyTime] = useState({});
 
   useEffect(() => {
     if (!session) return;
 
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/dashboard');
+        const res = await fetch('/api/dashboard'); // ✅ Get everything from one API
         if (!res.ok) throw new Error('Failed to fetch data');
         const data = await res.json();
+
         setUserData(data);
         setLogs(data.logs || []);
+        setTotalStudyTime(data.totalStudyTime || {}); // ✅ Get total time per subject
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -60,6 +63,15 @@ const Dashboard = () => {
       <p>Time Worked Today: {todayTimeWorked} mins</p>
 
       <Subjects />
+
+      <h3>Total Time Spent Per Subject</h3>
+      <ul>
+        {Object.entries(totalStudyTime).map(([subjectName, time]) => (
+          <li key={subjectName}>
+            {subjectName} - {time} minutes
+          </li>
+        ))}
+      </ul>
 
       <h2>Your Logs</h2>
       <Calendar

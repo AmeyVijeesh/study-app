@@ -26,7 +26,22 @@ export async function GET(req) {
   }
 
   // Fetch user's logs sorted by date (latest first)
-  const logs = await DailyLog.find({ userId: user._id }).sort({ date: -1 });
+  const logs = await DailyLog.find({ userId: user._id })
+    .sort({ date: -1 })
+    .populate('studySessions.subjectId', 'name');
+  // Aggregate total study time per subject
+  const totalStudyTime = {};
+  logs.forEach((log) => {
+    log.studySessions.forEach((session) => {
+      if (!session.subjectId) return; // Handle missing subjects
+      const subjectName = session.subjectId.name; // Extract the subject name
+
+      if (!totalStudyTime[subjectName]) {
+        totalStudyTime[subjectName] = 0;
+      }
+      totalStudyTime[subjectName] += session.timeSpent;
+    });
+  });
 
   return new Response(
     JSON.stringify({
@@ -34,6 +49,7 @@ export async function GET(req) {
       email: user.email,
       totalWorkTime: user.totalWorkTime,
       logs, // Include logs in the response
+      totalStudyTime, // Now includes total time studied per subject
     }),
     { status: 200 }
   );

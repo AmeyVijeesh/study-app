@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import DailyLog from '@/models/DailyLog';
+import User from '@/models/User';
 import { ObjectId } from 'mongodb';
 import { connectToDatabase } from '@/lib/mongodb';
 
@@ -28,11 +29,8 @@ export async function POST(req) {
     );
 
     if (subjectIndex > -1) {
-      // Update existing subject study time
       dailyLog.studySessions[subjectIndex].timeSpent += timeSpent;
     } else {
-      console.log('Subject ID being sent:', subjectId);
-
       dailyLog.studySessions.push({
         subjectId: new ObjectId(subjectId),
         timeSpent,
@@ -40,6 +38,19 @@ export async function POST(req) {
     }
 
     await dailyLog.save();
+
+    // Update total study time for the user
+    const user = await User.findById(userId);
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    // Update total study time for the specific subject
+    const prevTime = user.totalStudyTime.get(subjectId) || 0;
+    user.totalStudyTime.set(subjectId, prevTime + timeSpent);
+
+    await user.save();
+
     return NextResponse.json({ message: 'Study time updated successfully' });
   } catch (error) {
     console.error('Error updating study time:', error);
