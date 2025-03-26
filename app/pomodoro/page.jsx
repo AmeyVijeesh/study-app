@@ -20,6 +20,9 @@ const Pomodoro = () => {
   const [lastTotalWorkTime, setLastTotalWorkTime] = useState(0); // Track last recorded total
   const [isLoading, setIsLoading] = useState(true);
 
+  const [subjects, setSubjects] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState('');
+
   const { data: session } = useSession();
   const userId = session?.user?.id; // Get user ID from session
 
@@ -81,7 +84,20 @@ const Pomodoro = () => {
     };
 
     fetchSessions();
-  }, [session]); // Run when session changes
+  }, [session]);
+
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const res = await fetch('/api/subjects');
+        const data = await res.json();
+        setSubjects(data);
+      } catch (error) {
+        console.error('Error fetching subjects:', error);
+      }
+    };
+    fetchSubjects();
+  }, []);
 
   useEffect(() => {
     updateTimerDisplay();
@@ -266,6 +282,21 @@ const Pomodoro = () => {
         Pause
       </button>
       <button onClick={resetTimer}>Reset</button>
+      <div>
+        <label>Select Subject: </label>
+        <select
+          value={selectedSubject}
+          onChange={(e) => setSelectedSubject(e.target.value)}
+        >
+          <option value="">-- Choose a subject --</option>
+          {subjects.map((subject) => (
+            <option key={subject._id} value={subject.name}>
+              {subject.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div>
         <label>Work Time (min): {workTime}</label>
         <input
