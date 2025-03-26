@@ -57,6 +57,21 @@ const UpdateLogPage = () => {
         onChange={(e) => setTimeTable(e.target.value)}
       />
 
+      {/* Study Sessions Section */}
+      <h3>Study Sessions</h3>
+      {log.studySessions && log.studySessions.length > 0 ? (
+        <ul>
+          {log.studySessions.map((session, index) => (
+            <li key={index}>
+              <strong>{session.subjectId?.name || 'Unknown Subject'}</strong> -{' '}
+              {session.timeSpent} minutes
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No study sessions recorded.</p>
+      )}
+
       <button onClick={handleUpdate}>Save Changes</button>
       <button onClick={() => router.push('/')}>Cancel</button>
     </div>

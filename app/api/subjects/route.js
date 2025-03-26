@@ -6,7 +6,8 @@ import { authOptions } from '../auth/[...nextauth]/route';
 
 export async function GET() {
   await connectToDatabase();
-  const subjects = await Subjects.find({});
+  const session = await getServerSession(authOptions);
+  const subjects = await Subjects.find({ userId: session.user.id });
   return NextResponse.json(subjects, { status: 200 });
 }
 
@@ -19,13 +20,16 @@ export async function POST(req) {
 
   try {
     const { name } = await req.json();
-    if (!name)
+    if (!name.trim())
       return NextResponse.json(
         { message: 'Subject name is required' },
         { status: 400 }
       );
 
-    const newSubject = await Subjects.create({ userId: session.user.id, name });
+    const newSubject = await Subjects.create({
+      userId: session.user.id, // Ensure subject is linked to the logged-in user
+      name,
+    });
 
     return NextResponse.json(newSubject, { status: 201 });
   } catch (error) {

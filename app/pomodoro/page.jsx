@@ -155,6 +155,10 @@ const Pomodoro = () => {
       setTotalTime(updatedTotalTime);
 
       await updateTotalWorkTime(updatedTotalTime);
+
+      if (selectedSubject) {
+        await recordStudyTime(selectedSubject, workTime);
+      }
     }
 
     setIsWorkSession((prevSession) => {
@@ -168,6 +172,33 @@ const Pomodoro = () => {
       );
       return newSession;
     });
+  };
+
+  const recordStudyTime = async (subjectId, timeSpent) => {
+    if (!session?.user?.id) return;
+
+    try {
+      const date = new Date().toISOString().split('T')[0]; // Get today's date
+
+      const response = await fetch('/api/daily-log/updateStudyTime', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: session.user.id,
+          date,
+          subjectId,
+          timeSpent,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update study time');
+      }
+
+      console.log(`Study time updated for subject: ${subjectId}`);
+    } catch (error) {
+      console.error('Error updating study time:', error);
+    }
   };
 
   const updateTotalWorkTime = async (newTotalWorkTime) => {
@@ -282,20 +313,17 @@ const Pomodoro = () => {
         Pause
       </button>
       <button onClick={resetTimer}>Reset</button>
-      <div>
-        <label>Select Subject: </label>
-        <select
-          value={selectedSubject}
-          onChange={(e) => setSelectedSubject(e.target.value)}
-        >
-          <option value="">-- Choose a subject --</option>
-          {subjects.map((subject) => (
-            <option key={subject._id} value={subject.name}>
-              {subject.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      <select
+        value={selectedSubject}
+        onChange={(e) => setSelectedSubject(e.target.value)}
+      >
+        <option value="">-- Choose a subject --</option>
+        {subjects.map((subject) => (
+          <option key={subject._id} value={subject._id}>
+            {subject.name}
+          </option>
+        ))}
+      </select>
 
       <div>
         <label>Work Time (min): {workTime}</label>
