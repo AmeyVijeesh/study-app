@@ -14,7 +14,12 @@ const WeeklyStudyGraph = () => {
   const [studyData, setStudyData] = useState([]);
   const today = new Date().toLocaleDateString('en-CA');
 
-  const [startDate, setStartDate] = useState('21-04-2025');
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+  const defaultStartDate = oneWeekAgo.toLocaleDateString('en-CA'); // Formats as YYYY-MM-DD
+
+  const [startDate, setStartDate] = useState(defaultStartDate);
+
   const [endDate, setEndDate] = useState(today);
 
   const fetchStudyData = async () => {
