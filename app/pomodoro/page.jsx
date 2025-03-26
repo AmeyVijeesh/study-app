@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useSession } from 'next-auth/react';
 
 const Pomodoro = () => {
   const timerRef = useRef(null);
@@ -18,6 +19,9 @@ const Pomodoro = () => {
   const [tempLongBreakTime, setTempLongBreakTime] = useState(0);
   const [lastTotalWorkTime, setLastTotalWorkTime] = useState(0); // Track last recorded total
   const [isLoading, setIsLoading] = useState(true);
+
+  const { data: session } = useSession();
+  const userId = session?.user?.id; // Get user ID from session
 
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
@@ -53,6 +57,31 @@ const Pomodoro = () => {
 
     fetchPreferences();
   }, []);
+
+  useEffect(() => {
+    const fetchSessions = async () => {
+      if (!session) return;
+      const userId = session?.user?.id;
+      if (!userId) return;
+
+      try {
+        const date = new Date().toISOString().split('T')[0]; // Get today's date
+
+        const response = await fetch(
+          `/api/daily-log?userId=${userId}&date=${date}`
+        );
+
+        if (!response.ok) throw new Error('Error fetching sessions');
+        const data = await response.json();
+
+        setWorkSessionCount(data.sessionsToday || 0);
+      } catch (error) {
+        console.error('Error fetching sessions:', error);
+      }
+    };
+
+    fetchSessions();
+  }, [session]); // Run when session changes
 
   useEffect(() => {
     updateTimerDisplay();
