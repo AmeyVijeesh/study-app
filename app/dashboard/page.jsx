@@ -15,6 +15,9 @@ const Dashboard = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const router = useRouter();
   const [totalStudyTime, setTotalStudyTime] = useState({});
+  const [avgTimeWorked, setAvgTimeWorked] = useState(0);
+  const [highestTimeWorked, setHighestTimeWorked] = useState(0);
+  const [lowestTimeWorked, setLowestTimeWorked] = useState(0);
 
   useEffect(() => {
     if (!session) return;
@@ -27,7 +30,10 @@ const Dashboard = () => {
 
         setUserData(data);
         setLogs(data.logs || []);
-        setTotalStudyTime(data.totalStudyTime || {}); // ✅ Get total time per subject
+        setTotalStudyTime(data.totalStudyTime || {});
+        setAvgTimeWorked(data.averageTimeWorked);
+        setHighestTimeWorked(data.highestTimeWorkedLog);
+        setLowestTimeWorked(data.lowestTimeWorkedLog);
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -45,7 +51,7 @@ const Dashboard = () => {
 
   const todayLog = logs.find((log) => log.date === today);
   const todayTimeWorked = todayLog ? todayLog.totalTimeFocussed : 0;
-
+  const sessionsToday = todayLog ? todayLog.sessionsToday : 0;
   const logDates = new Set(logs.map((log) => log.date));
 
   const handleDateClick = (date) => {
@@ -61,6 +67,18 @@ const Dashboard = () => {
       <p>Email: {userData.email}</p>
       <p>Total Work Time: {userData.totalWorkTime} mins</p>
       <p>Time Worked Today: {todayTimeWorked} mins</p>
+      <p>Sessions Today: {sessionsToday}</p>
+
+      <br />
+      <p>Avg time so far: {avgTimeWorked}mins</p>
+      <p>
+        Highest: {highestTimeWorked.totalTimeFocussed}mins, at{' '}
+        {highestTimeWorked.date}
+      </p>
+      <p>
+        Lowest: {lowestTimeWorked.totalTimeFocussed}min, at{' '}
+        {lowestTimeWorked.date}
+      </p>
 
       <Subjects />
 

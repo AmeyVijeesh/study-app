@@ -40,11 +40,7 @@ export async function GET(req) {
   }
 
   if (date) {
-    const log = await DailyLog.findOne({ userId, date }).populate(
-      'studySessions.subjectId',
-      'name' // Populate subjectId and return only the name
-    );
-
+    const log = await DailyLog.findOne({ userId, date });
     if (!log) {
       return new Response(
         JSON.stringify({
@@ -54,7 +50,6 @@ export async function GET(req) {
         { status: 200 }
       );
     }
-
     return new Response(JSON.stringify(log), { status: 200 });
   }
 
