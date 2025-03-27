@@ -1,14 +1,23 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
 import bcrypt from 'bcrypt';
 import { connectToDatabase } from '@/lib/mongodb';
 import User from '@/models/User';
+import { ObjectId } from 'mongodb';
 
 export const authOptions = {
   session: {
     strategy: 'jwt',
   },
   providers: [
+    // ✅ Google Authentication (Signup & Login)
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+
+    // ✅ Email/Password Authentication
     CredentialsProvider({
       name: 'credentials',
       credentials: {
@@ -20,6 +29,8 @@ export const authOptions = {
         const user = await User.findOne({ email: credentials.email });
 
         if (!user) throw new Error('User not found');
+        if (!user.password)
+          throw new Error('Use Google sign-in for this account');
 
         const isValid = await bcrypt.compare(
           credentials.password,
@@ -27,23 +38,46 @@ export const authOptions = {
         );
         if (!isValid) throw new Error('Incorrect password');
 
-        return { id: user._id, name: user.name, email: user.email };
+        return { id: user._id.toString(), name: user.name, email: user.email };
       },
     }),
   ],
   callbacks: {
+    async signIn({ user, account }) {
+      await connectToDatabase();
+
+      if (account.provider === 'google') {
+        let existingUser = await User.findOne({ email: user.email });
+
+        if (!existingUser) {
+          // ✅ Create new user with MongoDB ObjectId
+          existingUser = new User({
+            name: user.name,
+            email: user.email,
+            password: null, // No password for Google users
+          });
+          await existingUser.save();
+        }
+        user.id = existingUser._id.toString(); // Ensure ObjectId is converted to string
+      }
+
+      return true;
+    },
     async jwt({ token, user }) {
-      if (user) token.id = user.id;
+      if (user) {
+        token.id = user.id.toString(); // Ensure ObjectId is converted to string
+      }
       return token;
     },
     async session({ session, token }) {
-      session.user.id = token.id;
+      session.user.id = token.id; // Ensure ObjectId is available in session
       return session;
     },
   },
   pages: {
     signIn: '/auth/login',
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);

@@ -2,6 +2,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { connectToDatabase } from '@/lib/mongodb';
 import DailyLog from '@/models/DailyLog';
+import { ObjectId } from 'mongodb'; // ✅ Import ObjectId
+import mongoose from 'mongoose';
 
 export async function GET(req) {
   const session = await getServerSession(authOptions);
@@ -17,19 +19,18 @@ export async function GET(req) {
   const startDate = url.searchParams.get('startDate');
   const endDate = url.searchParams.get('endDate');
 
-  // Fetch logs within the date range
+  let userId = session.user.id; // Keep it as a string
+
+  // ✅ Use `userId` in both queries
   const logs = await DailyLog.find({
-    userId: session.user.id,
+    userId: userId,
     date: startDate && endDate ? { $gte: startDate, $lte: endDate } : undefined,
   })
     .sort({ date: 1 })
     .populate('studySessions.subjectId', 'name');
 
-  // Fetch all logs (for full-time calculation)
-  const allLogs = await DailyLog.find({ userId: session.user.id }).populate(
-    'studySessions.subjectId',
-    'name'
-  );
+  const allLogs = await DailyLog.find({ userId: userId }) // ✅ FIXED HERE
+    .populate('studySessions.subjectId', 'name');
 
   // Daily study time
   const studyData = [];

@@ -83,12 +83,14 @@ const Dashboard = () => {
       <br />
       <p>Avg time so far: {avgTimeWorked}mins</p>
       <p>
-        Highest: {highestTimeWorked.totalTimeFocussed}mins, at{' '}
-        {highestTimeWorked.date}
+        <p>
+          Highest: {highestTimeWorked ? highestTimeWorked.totalTimeFocussed : 0}{' '}
+          mins, at {highestTimeWorked ? highestTimeWorked.date : 'N/A'}
+        </p>
       </p>
       <p>
-        Lowest: {lowestTimeWorked.totalTimeFocussed}min, at{' '}
-        {lowestTimeWorked.date}
+        Lowest: {lowestTimeWorked ? lowestTimeWorked.totalTimeFocussed : 0}min,
+        at {lowestTimeWorked ? lowestTimeWorked.date : 'N/A'}
       </p>
 
       <Subjects />

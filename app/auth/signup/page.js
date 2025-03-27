@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 const SignUp = () => {
   const router = useRouter();
@@ -31,10 +32,9 @@ const SignUp = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Redirect to login page after successful sign up
-        router.push('/auth/login');
+        router.push('/auth/login'); // Redirect to login
       } else {
-        setError(data.error || 'Error creating account. Please try again.');
+        setError(data.message || 'Error creating account. Please try again.');
       }
     } catch (err) {
       setError('Error creating account. Please try again.');
@@ -42,10 +42,31 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: '400px', margin: 'auto', textAlign: 'center' }}>
       <h1>Create an Account</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
+
+      {/* Google Sign-in */}
+      <button
+        onClick={() => signIn('google', { callbackUrl: '/' })}
+        style={{
+          backgroundColor: '#4285F4',
+          color: 'white',
+          border: 'none',
+          padding: '10px',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          width: '100%',
+          marginBottom: '10px',
+        }}
+      >
+        Continue with Google
+      </button>
+
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: 'flex', flexDirection: 'column' }}
+      >
         <div>
           <label>Name</label>
           <input
@@ -53,6 +74,7 @@ const SignUp = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
           />
         </div>
         <div>
@@ -62,6 +84,7 @@ const SignUp = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
           />
         </div>
         <div>
@@ -71,9 +94,23 @@ const SignUp = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
           />
         </div>
-        <button type="submit">Sign Up</button>
+        <button
+          type="submit"
+          style={{
+            backgroundColor: '#333',
+            color: 'white',
+            border: 'none',
+            padding: '10px',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            width: '100%',
+          }}
+        >
+          Sign Up
+        </button>
       </form>
     </div>
   );

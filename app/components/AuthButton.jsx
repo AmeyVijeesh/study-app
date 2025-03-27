@@ -1,6 +1,6 @@
 // components/LogoutButton.js
 'use client';
-import { signOut, signIn, useSession } from 'next-auth/react';
+import { signOut, signIn, useSession, signUp } from 'next-auth/react';
 import Link from 'next/link';
 
 const AuthButton = () => {
@@ -16,7 +16,16 @@ const AuthButton = () => {
     );
   } else {
     // User is not logged in
-    return <button onClick={() => signIn()}>Login</button>;
+    return (
+      <div>
+        <button onClick={() => signIn('google')}>Login google</button>
+        <button onClick={() => signIn()}>Login normal</button>
+
+        <div>
+          <Link href="/auth/signup">Signup</Link>
+        </div>
+      </div>
+    );
   }
 };
 
