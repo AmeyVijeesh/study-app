@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import '@/styles/auth.css';
 
 const SignUp = () => {
   const router = useRouter();
@@ -13,14 +14,12 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Input validation
     if (!email || !password || !name) {
       setError('Please fill in all fields');
       return;
     }
 
     try {
-      // Make a POST request to the sign-up API route
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: {
@@ -42,76 +41,55 @@ const SignUp = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: 'auto', textAlign: 'center' }}>
-      <h1>Create an Account</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <div className="auth-container">
+      <div className="auth-box">
+        <h1 className="auth-title">Create an Account.</h1>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      {/* Google Sign-in */}
-      <button
-        onClick={() => signIn('google', { callbackUrl: '/' })}
-        style={{
-          backgroundColor: '#4285F4',
-          color: 'white',
-          border: 'none',
-          padding: '10px',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          width: '100%',
-          marginBottom: '10px',
-        }}
-      >
-        Continue with Google
-      </button>
-
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: 'flex', flexDirection: 'column' }}
-      >
-        <div>
-          <label>Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
-          />
-        </div>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
-          />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
-          />
-        </div>
-        <button
-          type="submit"
-          style={{
-            backgroundColor: '#333',
-            color: 'white',
-            border: 'none',
-            padding: '10px',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            width: '100%',
-          }}
-        >
-          Sign Up
-        </button>
-      </form>
+        <form onSubmit={handleSubmit}>
+          <div className="auth-input">
+            <label className="auth-label">Name:</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="auth-text"
+            />
+          </div>
+          <div className="auth-input">
+            <label className="auth-label">Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="auth-text"
+            />
+          </div>
+          <div className="auth-input">
+            <label className="auth-label">Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="auth-text"
+            />
+          </div>
+          <div className="auth-btns">
+            <button
+              onClick={() => signIn('google', { callbackUrl: '/' })}
+              className="auth-submit"
+            >
+              <i className="fab fa-google"></i> Continue with Google
+            </button>
+            <button type="submit" className="auth-submit">
+              Sign Up
+            </button>{' '}
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

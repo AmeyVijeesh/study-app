@@ -14,7 +14,11 @@ const NavbarSignedOut = () => {
     <div className="mdb-navbar-wrapper">
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container">
-          <a className="navbar-brand me-2" href="https://mdbgo.com/">
+          <a
+            className="navbar-brand me-2"
+            href="https://mdbgo.com/"
+            style={{ color: '#fff' }}
+          >
             <strong>Study.</strong>
           </a>
 
@@ -27,7 +31,7 @@ const NavbarSignedOut = () => {
             aria-label="Toggle navigation"
             onClick={handleToggle}
           >
-            <i className="fas fa-bars"></i>
+            <i className="fas fa-bars text-white"></i>
           </button>
           <div className="d-flex align-items-center">
             {/* Dynamically add 'show' class */}
