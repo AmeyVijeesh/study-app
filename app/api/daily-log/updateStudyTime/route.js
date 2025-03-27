@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import DailyLog from '@/models/DailyLog';
 import User from '@/models/User';
+import Subjects from '@/models/Subjects';
 import { ObjectId } from 'mongodb';
 import { connectToDatabase } from '@/lib/mongodb';
 
@@ -9,11 +10,24 @@ export async function POST(req) {
     await connectToDatabase();
     const { userId, date, subjectId, timeSpent } = await req.json();
 
-    if (!userId || !date || !subjectId || !timeSpent) {
+    if (!userId || !date || !timeSpent) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       );
+    }
+
+    // Ensure "Other" subject exists for the user
+    let actualSubjectId = subjectId;
+
+    if (!subjectId) {
+      let otherSubject = await Subject.findOne({ userId, name: 'Other' });
+
+      if (!otherSubject) {
+        otherSubject = await Subject.create({ userId, name: 'Other' });
+      }
+
+      actualSubjectId = otherSubject._id;
     }
 
     // Find or create the daily log entry
@@ -25,14 +39,14 @@ export async function POST(req) {
 
     // Check if the subject already exists in studySessions
     const subjectIndex = dailyLog.studySessions.findIndex(
-      (session) => session.subjectId.toString() === subjectId
+      (session) => session.subjectId.toString() === actualSubjectId.toString()
     );
 
     if (subjectIndex > -1) {
       dailyLog.studySessions[subjectIndex].timeSpent += timeSpent;
     } else {
       dailyLog.studySessions.push({
-        subjectId: new ObjectId(subjectId),
+        subjectId: new ObjectId(actualSubjectId),
         timeSpent,
       });
     }
@@ -46,8 +60,8 @@ export async function POST(req) {
     }
 
     // Update total study time for the specific subject
-    const prevTime = user.totalStudyTime.get(subjectId) || 0;
-    user.totalStudyTime.set(subjectId, prevTime + timeSpent);
+    const prevTime = user.totalStudyTime.get(actualSubjectId.toString()) || 0;
+    user.totalStudyTime.set(actualSubjectId.toString(), prevTime + timeSpent);
 
     await user.save();
 

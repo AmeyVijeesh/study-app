@@ -316,13 +316,18 @@ const Pomodoro = () => {
       <select
         value={selectedSubject}
         onChange={(e) => setSelectedSubject(e.target.value)}
+        className="border p-2 rounded"
       >
-        <option value="">-- Choose a subject --</option>
-        {subjects.map((subject) => (
-          <option key={subject._id} value={subject._id}>
-            {subject.name}
-          </option>
-        ))}
+        {subjects
+          .slice() // Create a copy to avoid mutating the original array
+          .sort((a, b) =>
+            a.name === 'Other' ? -1 : b.name === 'Other' ? 1 : 0
+          ) // Move "Other" to the top
+          .map((subject) => (
+            <option key={subject._id} value={subject._id}>
+              {subject.name}
+            </option>
+          ))}
       </select>
 
       <div>

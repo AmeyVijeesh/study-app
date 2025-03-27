@@ -27,8 +27,9 @@ export async function GET(req) {
   }
 
   // Fetch user's logs
-  const logs = await DailyLog.find({ userId: user._id });
-
+  const logs = await DailyLog.find({ userId: user._id })
+    .sort({ date: -1 })
+    .populate('studySessions.subjectId', 'name');
   // Calculate total time worked and average
   const totalTimeWorked = logs.reduce(
     (sum, log) => sum + log.totalTimeFocussed,
@@ -58,12 +59,26 @@ export async function GET(req) {
     });
   }
 
+  const totalStudyTime = {};
+  logs.forEach((log) => {
+    log.studySessions.forEach((session) => {
+      if (!session.subjectId) return; // Handle cases where subject might be missing
+      const subjectName = session.subjectId.name;
+
+      if (!totalStudyTime[subjectName]) {
+        totalStudyTime[subjectName] = 0;
+      }
+      totalStudyTime[subjectName] += session.timeSpent;
+    });
+  });
+
   return new Response(
     JSON.stringify({
       name: user.name,
       email: user.email,
       totalWorkTime: user.totalWorkTime,
       totalTimeWorked,
+      totalStudyTime,
       averageTimeWorked,
       highestTimeWorkedLog,
       lowestTimeWorkedLog,
