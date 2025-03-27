@@ -2,9 +2,7 @@ import Link from 'next/link';
 import './globals.css';
 import AuthButton from './components/AuthButton';
 import SessionProvider from './components/SessionProvider';
-import NavbarWrapper from './components/NavbarWrapper'; // New component
-import 'mdb-ui-kit/css/mdb.min.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import NavbarWrapper from './components/NavbarWrapper.jsx'; // New component
 
 export default function RootLayout({ children }) {
   return (
@@ -18,10 +16,6 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           rel="stylesheet"
         />
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.2.0/mdb.min.css"
-          rel="stylesheet"
-        />
       </head>
       <body>
         <SessionProvider>
@@ -33,10 +27,6 @@ export default function RootLayout({ children }) {
           </div>
           {children}
         </SessionProvider>
-        <script
-          type="text/javascript"
-          src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.2.0/mdb.umd.min.js"
-        ></script>
       </body>
     </html>
   );

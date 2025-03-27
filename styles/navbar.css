@@ -1,0 +1,32 @@
+.navbar.navbar-expand-lg {
+  background-color: rgb(9, 10, 12) !important;
+}
+
+.nav-link {
+  color: #e0e0e0 !important;
+}
+
+.nav-link:hover {
+  color: #0e4ead !important;
+}
+
+.sign-in {
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 5px;
+  padding: 4px 7px 4px 7px;
+  border: 1px solid #000000;
+  margin-left: 20px;
+}
+
+.sign-in:hover {
+  background-color: #0d6efd;
+}
+
+.sign-up {
+  background-color: #0d6efd;
+}
+
+.sign-up:hover {
+  background-color: #0b5ed7;
+}
