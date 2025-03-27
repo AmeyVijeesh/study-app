@@ -39,6 +39,51 @@ const Pomodoro = () => {
   };
 
   useEffect(() => {
+    if (!isRunning) return;
+
+    const timeout = setTimeout(() => {
+      localStorage.setItem(
+        'pomodoroState',
+        JSON.stringify({
+          remainingTime,
+          isWorkSession,
+          workSessionCount,
+          timestamp: Date.now(),
+        })
+      );
+    }, 1000); // Debounce delay
+
+    return () => clearTimeout(timeout); // Cleanup on unmount or update
+  }, [remainingTime, isRunning, isWorkSession, workSessionCount]);
+
+  useEffect(() => {
+    if (isLoading) return; // Ensure we wait until preferences are loaded
+
+    const savedState = localStorage.getItem('pomodoroState');
+
+    if (savedState) {
+      const {
+        remainingTime: savedTime,
+        timestamp,
+        isWorkSession: savedSession,
+        workSessionCount: savedCount,
+      } = JSON.parse(savedState);
+      const elapsed = Math.floor((Date.now() - timestamp) / 1000);
+      const newTime = savedTime - elapsed;
+
+      if (newTime > 0) {
+        setRemainingTime(newTime);
+        setIsWorkSession(savedSession);
+        setWorkSessionCount(savedCount);
+      } else {
+        setRemainingTime(workTime * 60); // Reset if too much time has passed
+      }
+    } else {
+      setRemainingTime(workTime * 60); // If no saved state, use default
+    }
+  });
+
+  useEffect(() => {
     const fetchPreferences = async () => {
       try {
         const response = await fetch('/api/pomodoro/getPreferences');
@@ -127,7 +172,21 @@ const Pomodoro = () => {
           handleSessionSwitch();
           return 0;
         }
-        return prevTime - 1;
+
+        const newTime = prevTime - 1;
+
+        // Update localStorage directly
+        localStorage.setItem(
+          'pomodoroState',
+          JSON.stringify({
+            remainingTime: newTime,
+            isWorkSession,
+            workSessionCount,
+            timestamp: Date.now(),
+          })
+        );
+
+        return newTime;
       });
     }, 1000);
   };
@@ -144,6 +203,7 @@ const Pomodoro = () => {
     setWorkSessionCount(0);
     setRemainingTime(workTime * 60);
     updateTimerDisplay();
+    localStorage.removeItem('pomodoroState'); // Clear stored state
   };
 
   const handleSessionSwitch = async () => {

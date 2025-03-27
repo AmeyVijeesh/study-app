@@ -14,6 +14,7 @@ const UpdateLogPage = () => {
 
   const [journal, setJournal] = useState('');
   const [victory, setVictory] = useState(null);
+  const [dayRating, setDayRating] = useState(50);
   const [totalTimeFocussed, setTotalTimeFocussed] = useState('');
   const [timeTable, setTimeTable] = useState('');
 
@@ -21,6 +22,7 @@ const UpdateLogPage = () => {
     if (log) {
       setVictory(log.victory || null);
       setJournal(log.journal || '');
+      setDayRating(log.dayRating || 50);
       setTotalTimeFocussed(log.totalTimeFocussed || '');
       setTimeTable(JSON.stringify(log.timeTable || {}, null, 2));
     }
@@ -29,6 +31,7 @@ const UpdateLogPage = () => {
   const handleUpdate = async () => {
     await updateLog({
       victory,
+      dayRating,
       journal,
       totalTimeFocussed,
       timeTable: JSON.parse(timeTable),
@@ -49,6 +52,12 @@ const UpdateLogPage = () => {
         type="checkbox"
         checked={victory || false}
         onChange={(e) => setVictory(e.target.checked)}
+      />
+
+      <input
+        type="number"
+        value={dayRating}
+        onChange={(e) => setDayRating(e.target.value)}
       />
 
       <label>Journal:</label>
