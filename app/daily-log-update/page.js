@@ -13,11 +13,13 @@ const UpdateLogPage = () => {
   const { log, loading, error, updateLog } = useDailyLog(userId, date);
 
   const [journal, setJournal] = useState('');
+  const [victory, setVictory] = useState(null);
   const [totalTimeFocussed, setTotalTimeFocussed] = useState('');
   const [timeTable, setTimeTable] = useState('');
 
   useEffect(() => {
     if (log) {
+      setVictory(log.victory || null);
       setJournal(log.journal || '');
       setTotalTimeFocussed(log.totalTimeFocussed || '');
       setTimeTable(JSON.stringify(log.timeTable || {}, null, 2));
@@ -26,6 +28,7 @@ const UpdateLogPage = () => {
 
   const handleUpdate = async () => {
     await updateLog({
+      victory,
       journal,
       totalTimeFocussed,
       timeTable: JSON.parse(timeTable),
@@ -40,6 +43,13 @@ const UpdateLogPage = () => {
   return (
     <div>
       <h2>Update Log for {date}</h2>
+      <label>Victory?</label>
+
+      <input
+        type="checkbox"
+        checked={victory || false}
+        onChange={(e) => setVictory(e.target.checked)}
+      />
 
       <label>Journal:</label>
       <textarea value={journal} onChange={(e) => setJournal(e.target.value)} />
@@ -63,7 +73,7 @@ const UpdateLogPage = () => {
         <ul>
           {log.studySessions.map((session, index) => (
             <li key={index}>
-              <strong>{session.subjectId?.name || 'Unknown Subject'}</strong> -{' '}
+              <strong>{session.subjectId?.name || 'Other'}</strong> -{' '}
               {session.timeSpent} minutes
             </li>
           ))}

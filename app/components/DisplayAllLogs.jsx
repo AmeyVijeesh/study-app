@@ -61,6 +61,7 @@ const DisplayAllLogs = ({ userId }) => {
             }}
           >
             <h3>{log.date}</h3>
+            <h4>{log.victory}</h4>
             <p>
               <strong>Journal:</strong> {log.journal || 'No entry'}
             </p>

@@ -4,8 +4,15 @@ import DailyLog from '@/models/DailyLog';
 export async function POST(req) {
   await connectToDatabase();
 
-  const { userId, date, journal, totalTimeFocussed, sessionsToday } =
-    await req.json();
+  const {
+    userId,
+    date,
+    dayRating,
+    journal,
+    victory,
+    totalTimeFocussed,
+    sessionsToday,
+  } = await req.json();
 
   const existingLog = await DailyLog.findOne({ userId, date });
 
@@ -19,6 +26,8 @@ export async function POST(req) {
   const newLog = await DailyLog.create({
     userId,
     date,
+    victory,
+    dayRating,
     journal,
     totalTimeFocussed,
     sessionsToday,
@@ -61,8 +70,16 @@ export async function GET(req) {
 export async function PATCH(req) {
   await connectToDatabase();
 
-  const { userId, date, journal, totalTimeFocussed, sessionsToday, timeTable } =
-    await req.json();
+  const {
+    userId,
+    date,
+    victory,
+    dayRating,
+    journal,
+    totalTimeFocussed,
+    sessionsToday,
+    timeTable,
+  } = await req.json();
 
   if (!userId || !date) {
     return Response.json(
@@ -73,8 +90,17 @@ export async function PATCH(req) {
 
   const updatedLog = await DailyLog.findOneAndUpdate(
     { userId, date },
-    { $set: { journal, totalTimeFocussed, sessionsToday, timeTable } },
-    { new: true, upsert: true } // <- This ensures a new log is created if it doesn't exist
+    {
+      $set: {
+        victory,
+        journal,
+        dayRating,
+        totalTimeFocussed,
+        sessionsToday,
+        timeTable,
+      },
+    },
+    { new: true, upsert: true }
   );
 
   return Response.json(updatedLog);
