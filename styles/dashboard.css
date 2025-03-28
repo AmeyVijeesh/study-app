@@ -78,3 +78,24 @@
   display: flex;
   flex-direction: row;
 }
+
+@media (max-width: 768px) {
+  .dash-intro {
+    width: 90%; /* Reduce width to fit smaller screens */
+    padding: 5%; /* Increase padding for better spacing */
+    margin-bottom: 3%; /* Increase bottom margin for spacing */
+    flex-direction: column; /* Stack elements vertically */
+    text-align: center; /* Center text */
+  }
+
+  .statDivs {
+    flex-direction: column; /* Stack stats vertically */
+    gap: 2vh; /* Reduce gap for mobile */
+  }
+
+  .dailyDataCont {
+    width: 45%; /* Increase width to use more space on mobile */
+    flex-direction: column; /* Stack elements */
+    padding: 5%;
+  }
+}
