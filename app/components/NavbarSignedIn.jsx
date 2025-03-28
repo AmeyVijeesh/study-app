@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import AuthButton from './AuthButton';
-
+import '@/styles/navbar.css';
+import 'mdb-ui-kit/css/mdb.min.css';
 const NavbarSignedIn = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -10,52 +11,57 @@ const NavbarSignedIn = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
-      <div className="container">
-        <a className="navbar-brand me-2" href="https://mdbgo.com/">
-          <strong>Study.</strong>
-        </a>
-
-        {/* Remove data-mdb-toggle, use React state */}
-        <button
-          className="navbar-toggler"
-          type="button"
-          aria-controls="navbarSupportedContent"
-          aria-expanded={isExpanded}
-          aria-label="Toggle navigation"
-          onClick={handleToggle}
-        >
-          <i className="fas fa-bars"></i>
-        </button>
-        <div className="d-flex align-items-center">
-          {/* Dynamically add 'show' class */}
-          <div
-            className={`collapse navbar-collapse ${isExpanded ? 'show' : ''}`}
-            id="navbarSupportedContent"
+    <div className="mdb-navbar-wrapper">
+      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <div className="container">
+          <a
+            className="navbar-brand me-2"
+            href="https://mdbgo.com/"
+            style={{ color: '#fff' }}
           >
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <strong>Study.</strong>
+          </a>
+
+          {/* Remove data-mdb-toggle, use React state */}
+          <button
+            className="navbar-toggler ms-auto"
+            type="button"
+            aria-controls="navbarSupportedContent"
+            aria-expanded={isExpanded}
+            aria-label="Toggle navigation"
+            onClick={handleToggle}
+          >
+            <i className="fas fa-bars text-white"></i>
+          </button>
+          <div
+            className={`collapse navbar-collapse w-100 ${
+              isExpanded ? 'show' : ''
+            }`}
+            id="navbarSupportedContent"
+            style={{ zIndex: 999, backgroundColor: 'black', width: '100%' }}
+          >
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0 text-start text-lg-end">
               <li className="nav-item">
                 <a className="nav-link" href="#">
                   Dashboard
                 </a>
-              </li>{' '}
+              </li>
               <li className="nav-item">
                 <a className="nav-link nav-linka" href="#">
-                  Focus
+                  Pomodoro
                 </a>
-              </li>{' '}
+              </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  About
+                  Settings
                 </a>
               </li>
             </ul>
-
             <AuthButton />
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 };
 

@@ -1,0 +1,196 @@
+.menu {
+  width: 45vh;
+  height: 85vh;
+  background: rgba(0, 0, 0, 0.3); /* Transparent Black */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8%;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.timerBtn {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, #009dff, #007acc);
+  color: #fff;
+  border-radius: 50%;
+  padding: 15px;
+  margin: 7%;
+  border: none;
+  width: 10vh;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 157, 255, 0.4);
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 157, 255, 0.6), 0 0 30px rgba(0, 157, 255, 0.4);
+}
+
+.timerBtn:hover {
+  background: linear-gradient(135deg, #00b0ff, #0088cc);
+  box-shadow: 0 6px 15px rgba(0, 157, 255, 0.6);
+  transform: scale(1.1);
+}
+
+.timerBtn:active {
+  transform: scale(0.95);
+}
+
+.menu ul {
+  list-style: none;
+  width: 100%;
+  padding: 0;
+  margin: 0 auto;
+  margin-top: 10%;
+}
+
+.menu ul li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin: 0 auto;
+  padding: 1rem;
+  border-bottom: 1px solid #fff;
+  width: calc(100% - 16px); /* Adjust to remove extra spacing */
+}
+
+.menu ul li .menu-icon {
+  font-size: 1.2rem;
+  color: white;
+}
+
+.menu ul li span {
+  color: white;
+}
+
+.menu ul li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.menu ul li:focus {
+  outline: none;
+}
+
+@media screen and (max-width: 900px) and (min-width: 400px) {
+  .menu {
+    width: 7vh;
+    margin-top: 5vh;
+  }
+  .menu .avatar {
+    padding: 0.5em;
+    position: relative;
+  }
+  .menu .avatar img {
+    width: 5vh;
+  }
+  .menu .avatar h2 {
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    margin: 0;
+    min-width: 200px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.4);
+    transform: translate3d(-20px, -50%, 0);
+    transition: all 0.15s ease-in-out;
+  }
+  .menu .avatar:hover h2 {
+    opacity: 1;
+    transform: translate3d(0px, -50%, 0);
+  }
+  .menu ul li {
+    height: 60px;
+    background-position: center center;
+    background-size: 30px auto;
+    position: relative;
+  }
+  .menu ul li span {
+    opacity: 0;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0.2em 0.5em;
+    border-radius: 4px;
+    top: 50%;
+    left: 80px;
+    transform: translate3d(-15px, -50%, 0);
+    transition: all 0.15s ease-in-out;
+  }
+  .menu ul li span:before {
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 50%;
+    left: -5px;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-right: 5px solid rgba(0, 0, 0, 0.5);
+    transform: translateY(-50%);
+  }
+  .menu ul li:hover span {
+    opacity: 1;
+    transform: translate3d(0px, -50%, 0);
+  }
+}
+@media screen and (max-width: 400px) {
+  body {
+    padding-left: 0;
+  }
+  .menu {
+    width: 70vw; /* Adjust sidebar width */
+    padding: 1rem;
+  }
+
+  .menu ul li {
+    justify-content: flex-start; /* Align items to the left */
+    padding: 0.8rem;
+  }
+
+  .menu ul li .menu-icon {
+    font-size: 1.5rem; /* Ensure icons remain visible */
+  }
+
+  .menu ul li span {
+    font-size: 1rem;
+    display: inline-block;
+  }
+  .menu .smartphone-menu-trigger {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 100%;
+    background: #5bc995;
+  }
+  .menu .smartphone-menu-trigger:before,
+  .menu .smartphone-menu-trigger:after {
+    content: '';
+    width: 50%;
+    height: 2px;
+    background: #fff;
+    border-radius: 10px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+  }
+  .menu .smartphone-menu-trigger:after {
+    top: 55%;
+    transform: translate3d(-50%, -50%, 0);
+  }
+
+  .menu:focus {
+    transform: translate3d(0, 0, 0);
+    box-shadow: 0 0 0 100em rgba(0, 0, 0, 0.6);
+  }
+  .menu:focus .smartphone-menu-trigger {
+    pointer-events: none;
+  }
+}

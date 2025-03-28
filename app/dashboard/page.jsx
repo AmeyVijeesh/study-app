@@ -7,8 +7,9 @@ import 'react-calendar/dist/Calendar.css';
 import { useRouter } from 'next/navigation';
 import Subjects from '../components/Subjects';
 import WeeklyStudyGraph from '@/app/components/WeeklyGraph';
-
+import Sidebar from '../components/Sidebar';
 import dynamic from 'next/dynamic';
+import '@/styles/dashboard.css';
 
 const LazyWeeklyStudyGraph = dynamic(
   () => import('@/app/components/WeeklyGraph'),
@@ -73,55 +74,76 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
-      <h1>Welcome, {userData.name}!</h1>
-      <p>Email: {userData.email}</p>
-      <p>Total Work Time: {userData.totalWorkTime} mins</p>
-      <p>Time Worked Today: {todayTimeWorked} mins</p>
-      <p>Sessions Today: {sessionsToday}</p>
+    <>
+      <div>
+        <div
+          style={{
+            display: 'flex',
+            height: '100%',
+          }}
+        >
+          <div
+            style={{
+              height: '90vh',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Sidebar />
+          </div>
+          <div className="dash-container" style={{ flex: 1, padding: '2rem' }}>
+            <h1>Welcome, {userData.name}!</h1>
+            <p>Email: {userData.email}</p>
+            <p>Total Work Time: {userData.totalWorkTime} mins</p>
+            <p>Time Worked Today: {todayTimeWorked} mins</p>
+            <p>Sessions Today: {sessionsToday}</p>
+            <br />
+            <p>Avg time so far: {avgTimeWorked} mins</p>
+            <p>
+              Highest:{' '}
+              {highestTimeWorked ? highestTimeWorked.totalTimeFocussed : 0}{' '}
+              mins, at {highestTimeWorked ? highestTimeWorked.date : 'N/A'}
+            </p>
+            <p>
+              Lowest:{' '}
+              {lowestTimeWorked ? lowestTimeWorked.totalTimeFocussed : 0} min,
+              at {lowestTimeWorked ? lowestTimeWorked.date : 'N/A'}
+            </p>
 
-      <br />
-      <p>Avg time so far: {avgTimeWorked}mins</p>
-      <p>
-        Highest: {highestTimeWorked ? highestTimeWorked.totalTimeFocussed : 0}{' '}
-        mins, at {highestTimeWorked ? highestTimeWorked.date : 'N/A'}
-      </p>
-      <p>
-        Lowest: {lowestTimeWorked ? lowestTimeWorked.totalTimeFocussed : 0}min,
-        at {lowestTimeWorked ? lowestTimeWorked.date : 'N/A'}
-      </p>
+            <Subjects />
 
-      <Subjects />
+            <h3>Total Time Spent Per Subject</h3>
+            <ul>
+              {Object.entries(totalStudyTime).map(([subjectName, time]) => (
+                <li key={subjectName}>
+                  {subjectName} - {time} minutes
+                </li>
+              ))}
+            </ul>
+            <LazyWeeklyStudyGraph />
 
-      <h3>Total Time Spent Per Subject</h3>
-      <ul>
-        {Object.entries(totalStudyTime).map(([subjectName, time]) => (
-          <li key={subjectName}>
-            {subjectName} - {time} minutes
-          </li>
-        ))}
-      </ul>
-      <LazyWeeklyStudyGraph />
+            <h2>Your Logs</h2>
+            <Calendar
+              onChange={setSelectedDate}
+              value={selectedDate}
+              tileClassName={({ date }) => {
+                const formattedDate = date.toLocaleDateString('en-CA');
+                return logDates.has(formattedDate) ? 'log-available' : null;
+              }}
+              onClickDay={handleDateClick}
+            />
 
-      <h2>Your Logs</h2>
-      <Calendar
-        onChange={setSelectedDate}
-        value={selectedDate}
-        tileClassName={({ date }) => {
-          const formattedDate = date.toLocaleDateString('en-CA');
-          return logDates.has(formattedDate) ? 'log-available' : null;
-        }}
-        onClickDay={handleDateClick}
-      />
-
-      <style jsx global>{`
-        .log-available {
-          background-color: #4caf50 !important;
-          color: white !important;
-          border-radius: 50%;
-        }
-      `}</style>
-    </div>
+            <style jsx global>{`
+              .log-available {
+                background-color: #4caf50 !important;
+                color: white !important;
+                border-radius: 50%;
+              }
+            `}</style>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
