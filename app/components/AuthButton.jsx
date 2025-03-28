@@ -1,30 +1,28 @@
-// components/LogoutButton.js
 'use client';
-import { signOut, signIn, useSession, signUp } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import '@/styles/navbar.css';
 
 const AuthButton = () => {
   const { data: session } = useSession();
 
   if (session) {
-    // User is logged in
     return (
-      <div>
-        <button onClick={() => signOut({ callbackUrl: '/' })}>Logout</button>
-        <Link href="/dashboard">Go to dash</Link>
-      </div>
+      <button
+        onClick={() => signOut({ callbackUrl: '/' })}
+        className="logoutBtn"
+      >
+        Logout
+      </button>
     );
   } else {
-    // User is not logged in
     return (
-      <div>
-        <button onClick={() => signIn('google')}>Login google</button>
-        <button onClick={() => signIn()}>Login normal</button>
-
-        <div>
-          <Link href="/auth/signup">Signup</Link>
-        </div>
-      </div>
+      <Link
+        href="/auth/signup"
+        className="sign-in ms-lg-3 mt-2 mt-lg-0 get-started"
+      >
+        Get Started
+      </Link>
     );
   }
 };

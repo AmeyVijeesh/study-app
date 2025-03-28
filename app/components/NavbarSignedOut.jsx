@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '@/styles/navbar.css';
 import 'mdb-ui-kit/css/mdb.min.css';
 import Link from 'next/link';
+import AuthButton from './AuthButton';
 
 const NavbarSignedOut = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -24,7 +25,7 @@ const NavbarSignedOut = () => {
 
           {/* Remove data-mdb-toggle, use React state */}
           <button
-            className="navbar-toggler"
+            className="navbar-toggler ms-auto"
             type="button"
             aria-controls="navbarSupportedContent"
             aria-expanded={isExpanded}
@@ -33,35 +34,30 @@ const NavbarSignedOut = () => {
           >
             <i className="fas fa-bars text-white"></i>
           </button>
-          <div className="d-flex align-items-center">
-            {/* Dynamically add 'show' class */}
-            <div
-              className={`collapse navbar-collapse ${isExpanded ? 'show' : ''}`}
-              id="navbarSupportedContent"
-            >
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    Landing
-                  </a>
-                </li>{' '}
-                <li className="nav-item">
-                  <a className="nav-link nav-linka" href="#">
-                    About
-                  </a>
-                </li>{' '}
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    Features
-                  </a>
-                </li>
-              </ul>
-              <Link href="/auth/signup">
-                <button type="button" className="sign-in">
-                  Get Started
-                </button>
-              </Link>
-            </div>
+          <div
+            className={`collapse navbar-collapse w-100 ${
+              isExpanded ? 'show' : ''
+            }`}
+            id="navbarSupportedContent"
+          >
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0 text-start text-lg-end">
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Landing
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link nav-linka" href="#">
+                  About
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Features
+                </a>
+              </li>
+            </ul>
+            <AuthButton />
           </div>
         </div>
       </nav>

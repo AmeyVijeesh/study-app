@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import AuthButton from './AuthButton';
 
 const NavbarSignedIn = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -35,24 +36,22 @@ const NavbarSignedIn = () => {
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  Landasfdasding
+                  Dashboard
                 </a>
               </li>{' '}
               <li className="nav-item">
                 <a className="nav-link nav-linka" href="#">
-                  About
+                  Focus
                 </a>
               </li>{' '}
               <li className="nav-item">
                 <a className="nav-link" href="#">
-                  Features
+                  About
                 </a>
               </li>
             </ul>
 
-            <button type="button" className="sign-in">
-              Login
-            </button>
+            <AuthButton />
           </div>
         </div>
       </div>

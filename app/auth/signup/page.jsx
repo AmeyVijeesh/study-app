@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import '@/styles/auth.css';
+import Link from 'next/link';
 
 const SignUp = () => {
   const router = useRouter();
@@ -81,12 +82,16 @@ const SignUp = () => {
             <button
               onClick={() => signIn('google', { callbackUrl: '/' })}
               className="auth-submit"
+              type="button"
             >
               <i className="fab fa-google"></i> Continue with Google
             </button>
             <button type="submit" className="auth-submit">
               Sign Up
             </button>{' '}
+            <p>
+              <Link href="/auth/login">Already have an account? Login.</Link>
+            </p>
           </div>
         </form>
       </div>

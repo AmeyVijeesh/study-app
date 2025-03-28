@@ -9,6 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: 'Urbanist', sans-serif !important;
   flex-direction: column;
   height: 90vh;
 }
@@ -23,6 +24,7 @@
   border-radius: 5px;
   width: 30vh;
   padding: 5px;
+  box-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2);
   outline: 0;
 }
 
@@ -42,10 +44,11 @@
 .auth-submit {
   margin: 10px;
   border: 1px solid #fff;
-  background-color: #fff;
+  background-color: #000000;
   border-radius: 5px;
   width: 75%;
   padding: 5px;
+  color: #fff;
 }
 
 .auth-btns {
@@ -57,4 +60,13 @@
 
 .auth-submit:hover {
   opacity: 0.4;
+}
+
+@media (max-width: 768px) {
+  .auth-box {
+    width: 90%;
+  }
+  .auth-title {
+    font-size: 2.5rem;
+  }
 }
