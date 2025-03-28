@@ -73,3 +73,8 @@
 .dailyDataP {
   font-family: 'Urbanist', sans-serif;
 }
+
+.dataCont {
+  display: flex;
+  flex-direction: row;
+}

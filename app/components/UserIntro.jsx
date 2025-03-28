@@ -1,6 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const UserIntro = ({ username }) => {
+  const [currentTime, setCurrentTime] = useState();
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const dayOptions = {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      };
+      const timeOptions = {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+      };
+
+      const formattedDate = now.toLocaleDateString('en-US', dayOptions);
+      const formattedTime = now.toLocaleTimeString('en-US', timeOptions);
+
+      setCurrentTime(`${formattedDate} | ${formattedTime}`);
+    };
+
+    updateTime(); // Run immediately
+    const interval = setInterval(updateTime, 1000); // Update every second
+
+    return () => clearInterval(interval); // Cleanup
+  }, []);
   const getTimeOfDay = () => {
     const hr = new Date().getHours();
 
@@ -14,6 +43,7 @@ const UserIntro = ({ username }) => {
         Good {getTimeOfDay()},{' '}
         {username.charAt(0).toUpperCase() + username.slice(1)}!
       </h1>
+      <p>{currentTime}</p>
     </div>
   );
 };

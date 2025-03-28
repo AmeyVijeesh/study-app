@@ -13,7 +13,7 @@ const Sidebar = () => {
     <div className="menu">
       <header className="avatar">
         <button className="timerBtn">Focus</button>
-        <label>Start Focusing</label>
+        <label className="focusLabel">Start Focusing</label>
       </header>
       <ul>
         <li>

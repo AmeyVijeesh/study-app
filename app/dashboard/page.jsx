@@ -12,6 +12,7 @@ import UserIntro from '../components/UserIntro';
 import dynamic from 'next/dynamic';
 import '@/styles/dashboard.css';
 import DailyData from '../components/DailyData';
+import DailyGraph from '../components/DailyGraph';
 
 const LazyWeeklyStudyGraph = dynamic(
   () => import('@/app/components/WeeklyGraph'),
