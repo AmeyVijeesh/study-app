@@ -1,6 +1,7 @@
 .menu {
   width: 45vh;
   height: 85vh;
+  margin-left: 5%;
   background: rgba(0, 0, 0, 0.3); /* Transparent Black */
   display: flex;
   flex-direction: column;

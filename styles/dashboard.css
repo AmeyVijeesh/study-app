@@ -1,2 +1,75 @@
-.dash-container {
+.dash-intro {
+  border: 1px solid #fff;
+  width: 100%;
+  padding: 2%;
+  margin-bottom: 1%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  flex-direction: column;
+}
+
+.dash-title {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 2rem;
+}
+
+.statDivs {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5vh;
+}
+
+.statDiv {
+  border: 1px solid #fff;
+  width: 12vh;
+  text-align: center;
+  height: 10vh;
+  background-color: #fff;
+  color: #000;
+  border-radius: 10px;
+}
+
+.statText {
+  font-family: 'Urbanist', sans-serif;
+}
+
+.statNum {
+  font-weight: 800;
+}
+
+.dailyDataCont {
+  width: 50%;
+  padding: 2%;
+  margin-top: 2%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  flex-direction: row;
+}
+
+.dailyDataDiv {
+  width: 15vh;
+  height: 12vh;
+  text-align: center;
+  background-color: #111827; /* Dark gray-blue */
+  border: 1px solid rgba(0, 157, 255, 0.5); /* Subtle neon blue border */
+  color: #fff;
+
+  border-radius: 10px;
+  margin: 15px;
+  padding: 10px;
+}
+
+.dailyDataP {
+  font-family: 'Urbanist', sans-serif;
 }

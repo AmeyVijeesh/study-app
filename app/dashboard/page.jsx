@@ -8,8 +8,10 @@ import { useRouter } from 'next/navigation';
 import Subjects from '../components/Subjects';
 import WeeklyStudyGraph from '@/app/components/WeeklyGraph';
 import Sidebar from '../components/Sidebar';
+import UserIntro from '../components/UserIntro';
 import dynamic from 'next/dynamic';
 import '@/styles/dashboard.css';
+import DailyData from '../components/DailyData';
 
 const LazyWeeklyStudyGraph = dynamic(
   () => import('@/app/components/WeeklyGraph'),
@@ -92,7 +94,8 @@ const Dashboard = () => {
             <Sidebar />
           </div>
           <div className="dash-container" style={{ flex: 1, padding: '2rem' }}>
-            <h1>Welcome, {userData.name}!</h1>
+            <UserIntro username={userData.name} />
+            <DailyData />
             <p>Email: {userData.email}</p>
             <p>Total Work Time: {userData.totalWorkTime} mins</p>
             <p>Time Worked Today: {todayTimeWorked} mins</p>

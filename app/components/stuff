@@ -1,0 +1,13 @@
+      <div className="statDivs">
+        <div className="statDiv">
+          <p className="statText">Total Time Studied</p>{' '}
+          <p className="statNum">23.1</p>
+        </div>
+        <div className="statDiv">
+          <p className="statText">Time Studied Today</p>{' '}
+          <p className="statNum">23.1</p>
+        </div>
+        <div className="statDiv">
+          <p className="statText">Sessions Today</p>
+          <p className="statNum">23.1</p>
+        </div>
