@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import AuthButton from './AuthButton';
 import '@/styles/navbar.css';
 import 'mdb-ui-kit/css/mdb.min.css';
+import Link from 'next/link';
 const NavbarSignedIn = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -42,9 +43,9 @@ const NavbarSignedIn = () => {
           >
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0 text-start text-lg-end">
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <Link href="/dashboard" className="nav-link">
                   Dashboard
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
                 <a className="nav-link nav-linka" href="#">

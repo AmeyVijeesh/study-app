@@ -15,6 +15,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mapbox/node-pre-gyp": "^2.0.0",
     "bcrypt": "^5.1.1",
+    "dayjs": "^1.11.13",
     "mdb-ui-kit": "^8.2.0",
     "mdbootstrap": "^4.20.0",
     "mongodb": "^6.15.0",

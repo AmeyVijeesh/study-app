@@ -49,8 +49,8 @@
   padding: 2%;
   margin-top: 2%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: space-between;
   background-color: rgba(0, 0, 0, 0.3);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
   border-radius: 10px;
@@ -58,20 +58,35 @@
 }
 
 .dailyDataDiv {
-  width: 15vh;
-  height: 12vh;
+  flex: 1;
+  min-height: 150px;
   text-align: center;
-  background-color: #111827; /* Dark gray-blue */
-  border: 1px solid rgba(0, 157, 255, 0.5); /* Subtle neon blue border */
+  background-color: #111827;
+  border: 1px solid rgba(0, 157, 255, 0.5);
   color: #fff;
-
   border-radius: 10px;
   margin: 15px;
   padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .dailyDataP {
   font-family: 'Urbanist', sans-serif;
+}
+
+@media screen and (max-width: 768px) {
+  .dailyDataCont {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .dailyDataDiv {
+    width: 100%;
+    margin: 10px 0;
+  }
 }
 
 .dataCont {
@@ -81,21 +96,74 @@
 
 @media (max-width: 768px) {
   .dash-intro {
-    width: 90%; /* Reduce width to fit smaller screens */
-    padding: 5%; /* Increase padding for better spacing */
-    margin-bottom: 3%; /* Increase bottom margin for spacing */
-    flex-direction: column; /* Stack elements vertically */
-    text-align: center; /* Center text */
+    width: 90%;
+    padding: 5%;
+    margin-bottom: 3%;
+    flex-direction: column;
+    text-align: center;
   }
 
   .statDivs {
-    flex-direction: column; /* Stack stats vertically */
-    gap: 2vh; /* Reduce gap for mobile */
+    flex-direction: column;
+    gap: 2vh;
   }
 
   .dailyDataCont {
-    width: 45%; /* Increase width to use more space on mobile */
-    flex-direction: column; /* Stack elements */
+    width: 45%;
+    flex-direction: column;
     padding: 5%;
+  }
+}
+.streakCont {
+  min-height: 75px;
+  width: 50vh;
+  text-align: center;
+  background-color: #2d2200;
+  border: 1px solid rgba(255, 204, 0, 0.5);
+  color: #fff;
+  border-radius: 10px;
+  margin: 15px;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.highestStreakCont {
+  background-color: #472a00;
+  border-color: rgba(255, 190, 50, 0.6);
+}
+
+.streakTitle {
+  font-family: 'Urbanic', sans-serif;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ffdd00;
+}
+
+.streakText {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.streakIcon {
+  font-size: 32px;
+  color: #ffdd00;
+  animation: glow 1.5s infinite alternate ease-in-out;
+}
+
+.highestStreakIcon {
+  color: #ffa500;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 8px rgba(255, 238, 0, 0.8);
+  }
+  to {
+    text-shadow: 0 0 16px rgb(255, 200, 0);
   }
 }

@@ -32,7 +32,7 @@ const SignUp = () => {
       const data = await response.json();
 
       if (response.ok) {
-        router.push('/auth/login'); // Redirect to login
+        router.push('/auth/login');
       } else {
         setError(data.message || 'Error creating account. Please try again.');
       }

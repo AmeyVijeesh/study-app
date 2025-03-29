@@ -47,35 +47,36 @@ export default function Subjects() {
   };
 
   return (
-    <div className="mt-6">
-      <h2 className="text-lg font-semibold mb-2">Subjects</h2>
+    <>
+      <div className="mt-6">
+        <h2 className="text-lg font-semibold mb-2">Subjects</h2>
 
-      {/* Input and Add Button */}
-      <div className="p-4 border rounded-lg shadow-md">
-        <input
-          type="text"
-          className="border p-2 w-full rounded"
-          placeholder="Enter subject name"
-          value={subjectName}
-          onChange={(e) => setSubjectName(e.target.value)}
-        />
-        <button
-          className="mt-2 w-full bg-blue-500 text-white py-2 rounded"
-          onClick={addSubject}
-          disabled={loading}
-        >
-          {loading ? 'Adding...' : 'Add Subject'}
-        </button>
+        <div className="p-4 border rounded-lg shadow-md">
+          <input
+            type="text"
+            className="border p-2 w-full rounded"
+            placeholder="Enter subject name"
+            value={subjectName}
+            onChange={(e) => setSubjectName(e.target.value)}
+          />
+          <button
+            className="mt-2 w-full bg-blue-500 text-white py-2 rounded"
+            onClick={addSubject}
+            disabled={loading}
+          >
+            {loading ? 'Adding...' : 'Add Subject'}
+          </button>
+        </div>
+
+        {/* Display Subjects */}
+        <ul className="mt-4">
+          {subjects.map((subject) => (
+            <li key={subject._id} className="p-2 border-b">
+              {subject.name}
+            </li>
+          ))}
+        </ul>
       </div>
-
-      {/* Display Subjects */}
-      <ul className="mt-4">
-        {subjects.map((subject) => (
-          <li key={subject._id} className="p-2 border-b">
-            {subject.name}
-          </li>
-        ))}
-      </ul>
-    </div>
+    </>
   );
 }

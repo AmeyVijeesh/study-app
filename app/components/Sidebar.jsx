@@ -11,10 +11,18 @@ import {
 const Sidebar = () => {
   return (
     <div className="menu">
-      <header className="avatar">
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+        }}
+      >
         <button className="timerBtn">Focus</button>
         <label className="focusLabel">Start Focusing</label>
-      </header>
+      </div>
       <ul>
         <li>
           <FontAwesomeIcon icon={faClock} className="menu-icon" />

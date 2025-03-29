@@ -30,11 +30,12 @@
 
 .auth-box {
   border: 1px solid #e0e0e0;
+  height: auto;
   padding: 5%;
-  width: 75vh; /* Set a fixed width */
+  width: auto;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Ensure contents inside are centered */
+  align-items: center;
 }
 
 .auth-label {

@@ -10,6 +10,8 @@ const UserSchema = new mongoose.Schema({
     of: Number,
     default: {},
   },
+  streak: { type: Number, default: 0 },
+  lastActivityDate: { type: String, default: null }, // Store date as 'YYYY-MM-DD'
   resetPasswordToken: { type: String, default: null },
   resetPasswordExpires: { type: Date, default: null },
 });

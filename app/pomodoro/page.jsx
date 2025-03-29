@@ -219,6 +219,21 @@ const Pomodoro = () => {
       if (selectedSubject) {
         await recordStudyTime(selectedSubject, workTime);
       }
+
+      if (userId) {
+        try {
+          const response = await fetch('/api/streak', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId }),
+          });
+
+          const data = await response.json();
+          console.log('Updated streak:', data.streak);
+        } catch (error) {
+          console.error('Error updating streak:', error);
+        }
+      }
     }
 
     setIsWorkSession((prevSession) => {

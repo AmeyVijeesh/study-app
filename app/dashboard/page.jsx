@@ -13,12 +13,13 @@ import dynamic from 'next/dynamic';
 import '@/styles/dashboard.css';
 import DailyData from '../components/DailyData';
 import DailyGraph from '../components/DailyGraph';
+import Streak from '../components/Streak';
 
 const LazyWeeklyStudyGraph = dynamic(
   () => import('@/app/components/WeeklyGraph'),
   {
-    ssr: false, // Ensure it's only loaded on the client
-    loading: () => <p>Loading graph...</p>, // Optional loading indicator
+    ssr: false,
+    loading: () => <p>Loading graph...</p>,
   }
 );
 
@@ -46,7 +47,7 @@ const Dashboard = () => {
 
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/dashboard'); // ✅ Get everything from one API
+        const res = await fetch('/api/dashboard');
         if (!res.ok) throw new Error('Failed to fetch data');
         const data = await res.json();
 
@@ -97,7 +98,8 @@ const Dashboard = () => {
           <div className="dash-container" style={{ flex: 1, padding: '2rem' }}>
             <UserIntro username={userData.name} />
             <DailyData />
-            <p>Email: {userData.email}</p>
+            <Streak userId={userData.id} />
+            <p>Emails: {userData.email}</p>
             <p>Total Work Time: {userData.totalWorkTime} mins</p>
             <p>Time Worked Today: {todayTimeWorked} mins</p>
             <p>Sessions Today: {sessionsToday}</p>
@@ -113,7 +115,6 @@ const Dashboard = () => {
               {lowestTimeWorked ? lowestTimeWorked.totalTimeFocussed : 0} min,
               at {lowestTimeWorked ? lowestTimeWorked.date : 'N/A'}
             </p>
-
             <Subjects />
 
             <h3>Total Time Spent Per Subject</h3>

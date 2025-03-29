@@ -75,6 +75,7 @@ export async function GET(req) {
   return new Response(
     JSON.stringify({
       name: user.name,
+      id: user._id,
       email: user.email,
       totalWorkTime: user.totalWorkTime,
       totalTimeWorked,
