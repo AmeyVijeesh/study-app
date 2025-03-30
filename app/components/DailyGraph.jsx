@@ -105,6 +105,7 @@ const DailyGraph = () => {
           marginTop: 5,
           color: '#ddd',
           fontSize: 14,
+          zIndex: 9999,
         }}
       >
         Study Time (Minutes) Over the Week

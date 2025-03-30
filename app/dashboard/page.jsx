@@ -14,6 +14,7 @@ import '@/styles/dashboard.css';
 import DailyData from '../components/DailyData';
 import DailyGraph from '../components/DailyGraph';
 import Streak from '../components/Streak';
+import Quotes from '../components/Quotes';
 
 const LazyWeeklyStudyGraph = dynamic(
   () => import('@/app/components/WeeklyGraph'),
@@ -88,17 +89,41 @@ const Dashboard = () => {
         >
           <div
             style={{
-              height: '90vh',
               display: 'flex',
-              alignItems: 'center',
+              flexDirection: 'column',
             }}
           >
-            <Sidebar />
+            <Sidebar
+              avgTime={avgTimeWorked}
+              highestTime={
+                highestTimeWorked ? highestTimeWorked.totalTimeFocussed : 0
+              }
+              highestTimeDate={
+                highestTimeWorked ? highestTimeWorked.date : 'N/A'
+              }
+              lowestTime={
+                lowestTimeWorked ? lowestTimeWorked.totalTimeFocussed : 0
+              }
+              lowestTimeDate={lowestTimeWorked ? lowestTimeWorked.date : 'N/A'}
+            />
           </div>
-          <div className="dash-container" style={{ flex: 1, padding: '2rem' }}>
+
+          <div className="dash-container" style={{ padding: '2rem' }}>
             <UserIntro username={userData.name} />
             <DailyData />
-            <Streak userId={userData.id} />
+            <div className="streakQuotes">
+              <Streak userId={userData.id} />
+              <Quotes />
+            </div>
+            <LazyWeeklyStudyGraph />
+
+            <div
+              style={{
+                height: '90vh',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            ></div>
             <p>Emails: {userData.email}</p>
             <p>Total Work Time: {userData.totalWorkTime} mins</p>
             <p>Time Worked Today: {todayTimeWorked} mins</p>
@@ -125,7 +150,6 @@ const Dashboard = () => {
                 </li>
               ))}
             </ul>
-            <LazyWeeklyStudyGraph />
 
             <h2>Your Logs</h2>
             <Calendar

@@ -17,26 +17,34 @@ export async function POST(req) {
     const today = new Date().toISOString().split('T')[0];
 
     if (user.lastActivityDate === today) {
-      return NextResponse.json({ message: 'Streak already counted today' });
+      return NextResponse.json({
+        message: 'Streak already counted today',
+        streak: user.streak,
+      });
     }
 
-    // Check if yesterday was the last activity date to maintain streak
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     const yesterdayStr = yesterday.toISOString().split('T')[0];
 
     let newStreak = user.streak;
+    let highestStreak = user.highestStreak || 0; // Assuming highest streak tracking exists
+
     if (user.lastActivityDate === yesterdayStr) {
       newStreak += 1; // Continue streak
     } else {
       newStreak = 1; // Reset streak
     }
 
-    user.streak = newStreak;
-    user.lastActivityDate = today;
-    await user.save();
+    if (newStreak > highestStreak) highestStreak = newStreak;
 
-    return NextResponse.json({ streak: newStreak });
+    await User.findByIdAndUpdate(userId, {
+      streak: newStreak,
+      highestStreak,
+      lastActivityDate: today,
+    });
+
+    return NextResponse.json({ streak: newStreak, highestStreak });
   } catch (error) {
     console.error('Error updating streak:', error);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
@@ -56,7 +64,10 @@ export async function GET(req) {
     if (!user)
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
-    return NextResponse.json({ streak: user.streak });
+    return NextResponse.json({
+      streak: user.streak,
+      highestStreak: user.highestStreak || 0,
+    });
   } catch (error) {
     console.error('Error fetching streak:', error);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });

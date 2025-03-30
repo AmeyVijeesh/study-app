@@ -220,7 +220,11 @@ const Pomodoro = () => {
         await recordStudyTime(selectedSubject, workTime);
       }
 
-      if (userId) {
+      if (!userId) {
+        console.error('User ID is undefined, skipping streak update!');
+      } else {
+        console.log('Triggering streak update for user:', userId);
+
         try {
           const response = await fetch('/api/streak', {
             method: 'POST',
@@ -229,7 +233,11 @@ const Pomodoro = () => {
           });
 
           const data = await response.json();
-          console.log('Updated streak:', data.streak);
+          console.log('API Response:', data);
+
+          if (data.error) {
+            console.error('Streak update failed:', data.error);
+          }
         } catch (error) {
           console.error('Error updating streak:', error);
         }

@@ -25,22 +25,24 @@ const Streak = ({ userId }) => {
 
   return (
     <>
-      <div className="streakCont">
-        <FontAwesomeIcon icon={faFire} className="streakIcon" />
-        <p className="streakTitle">Streak</p>
-        <h2 className="streakText">
-          {streak} {streak === 1 ? 'DAY' : 'DAYS'}
-        </h2>
-      </div>
-      <div className="streakCont highestStreakCont">
-        <FontAwesomeIcon
-          icon={faFire}
-          className="streakIcon highestStreakIcon"
-        />
-        <p className="streakTitle">Highest Streak so Far</p>
-        <h2 className="streakText">
-          {streak} {streak === 1 ? 'DAY' : 'DAYS'}
-        </h2>
+      <div>
+        <div className="streakCont">
+          <FontAwesomeIcon icon={faFire} className="streakIcon" />
+          <p className="streakTitle">Streak</p>
+          <h2 className="streakText">
+            {streak} {streak === 1 ? 'DAY' : 'DAYS'}
+          </h2>
+        </div>
+        <div className="streakCont highestStreakCont">
+          <FontAwesomeIcon
+            icon={faFire}
+            className="streakIcon highestStreakIcon"
+          />
+          <p className="streakTitle">Highest Streak so Far</p>
+          <h2 className="streakText">
+            {streak} {streak === 1 ? 'DAY' : 'DAYS'}
+          </h2>
+        </div>
       </div>
     </>
   );
