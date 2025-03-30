@@ -94,6 +94,7 @@ const Dashboard = () => {
             }}
           >
             <Sidebar
+              totalStudyTimeObj={totalStudyTime}
               avgTime={avgTimeWorked}
               highestTime={
                 highestTimeWorked ? highestTimeWorked.totalTimeFocussed : 0

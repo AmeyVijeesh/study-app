@@ -13,6 +13,7 @@ import {
 import Subjects from './Subjects';
 
 const Sidebar = ({
+  totalStudyTimeObj,
   avgTime,
   highestTime,
   highestTimeDate,
@@ -75,29 +76,16 @@ const Sidebar = ({
         </div>
       </div>
       <div className="pie">
-        <h2 className="stats-title">Pomodoro Stats</h2>
+        <h2 className="stats-title">Your Subjects</h2>
         <div className="stats-container">
-          <div className="stat-item">
-            <FontAwesomeIcon icon={faStopwatch} className="stat-icon avg" />
-            <p className="stat-label">Avg time so far</p>
-            <p className="stat-value">{avgTime} mins</p>
-          </div>
-          <div className="stat-item">
-            <FontAwesomeIcon icon={faArrowUp} className="stat-icon high" />
-            <p className="stat-label">Highest</p>
-            <p className="stat-value">
-              {highestTime} mins{' '}
-              <span className="stat-date">@ {highestTimeDate}</span>
-            </p>
-          </div>
-          <div className="stat-item">
-            <FontAwesomeIcon icon={faArrowDown} className="stat-icon low" />
-            <p className="stat-label">Lowest</p>
-            <p className="stat-value">
-              {lowestTime} min{' '}
-              <span className="stat-date">@ {lowestTimeDate}</span>
-            </p>
-          </div>
+          {totalStudyTimeObj
+            ? Object.entries(totalStudyTimeObj).map(([subjectName, time]) => (
+                <div key={subjectName} className="stat-item">
+                  <p className="stat-label">{subjectName}</p>
+                  <p className="stat-value">{time} mins</p>
+                </div>
+              ))
+            : 'None...yet'}
         </div>
       </div>
     </>

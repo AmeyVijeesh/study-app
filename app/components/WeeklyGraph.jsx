@@ -152,20 +152,20 @@ const WeeklyStudyGraph = () => {
         </div>
       </div>
 
-      <ResponsiveContainer
-        width="100%"
-        height={350}
-        style={{ marginTop: '10%' }}
-      >
-        <BarChart data={studyData}>
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip />
-          <Bar dataKey="timeStudied" fill="#4CAF50" />
-        </BarChart>
-      </ResponsiveContainer>
-
-      {/* Pie Chart for Subject Distribution */}
+      <div style={{ border: '1px solid khaki', margin: '6%' }}>
+        <ResponsiveContainer
+          width="100%"
+          height={350}
+          style={{ marginTop: '10%' }}
+        >
+          <BarChart data={studyData}>
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="timeStudied" fill="#4CAF50" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };
