@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import '@/styles/pomodoro.css';
 
 export default function Subjects() {
   const [subjects, setSubjects] = useState([]);
@@ -46,37 +47,60 @@ export default function Subjects() {
     setLoading(false);
   };
 
+  const deleteSubject = async (id) => {
+    if (!confirm('Are you sure you want to delete this subject?')) return;
+
+    try {
+      const res = await fetch(`/api/subjects/${id}`, { method: 'DELETE' });
+
+      if (res.ok) {
+        setSubjects(subjects.filter((subject) => subject._id !== id)); // Update UI
+      } else {
+        const data = await res.json();
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Error deleting subject:', error);
+      alert('Something went wrong');
+    }
+  };
+
   return (
-    <>
-      <div className="mt-6">
-        <h2 className="text-lg font-semibold mb-2">Subjects</h2>
+    <div className="subjects-container">
+      <h2 className="subjects-title">Subjects</h2>
 
-        <div className="p-4 border rounded-lg shadow-md">
-          <input
-            type="text"
-            className="border p-2 w-full rounded"
-            placeholder="Enter subject name"
-            value={subjectName}
-            onChange={(e) => setSubjectName(e.target.value)}
-          />
-          <button
-            className="mt-2 w-full bg-blue-500 text-white py-2 rounded"
-            onClick={addSubject}
-            disabled={loading}
-          >
-            {loading ? 'Adding...' : 'Add Subject'}
-          </button>
-        </div>
+      <div className="subject-form">
+        <input
+          type="text"
+          className="subject-input"
+          placeholder="Enter subject name"
+          value={subjectName}
+          onChange={(e) => setSubjectName(e.target.value)}
+        />
+        <button className="add-button" onClick={addSubject} disabled={loading}>
+          {loading ? 'Adding...' : 'Add Subject'}
+        </button>
+      </div>
 
-        {/* Display Subjects */}
-        <ul className="mt-4">
+      {/* Display Subjects */}
+      {subjects.length > 0 ? (
+        <ul className="subjects-list">
           {subjects.map((subject) => (
-            <li key={subject._id} className="p-2 border-b">
-              {subject.name}
+            <li key={subject._id} className="subject-item">
+              <span className="subject-name">{subject.name}</span>
+              <button
+                className="delete-button"
+                onClick={() => deleteSubject(subject._id)}
+                title="Delete subject"
+              >
+                ×
+              </button>
             </li>
           ))}
         </ul>
-      </div>
-    </>
+      ) : (
+        <p className="no-subjects">No subjects added yet.</p>
+      )}
+    </div>
   );
 }

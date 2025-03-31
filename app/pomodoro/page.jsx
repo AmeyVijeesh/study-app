@@ -363,7 +363,7 @@ const Pomodoro = () => {
       <div className="pomodoro-wrapper">
         <h1 className="session-title">
           {isWorkSession
-            ? 'Time to Work'
+            ? 'Time to Work :)'
             : workSessionCount % 3 === 0
             ? 'Long Break'
             : 'Short Break'}

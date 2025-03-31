@@ -12,13 +12,11 @@ export async function GET() {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  // Check if "Other" subject exists for this user
   let otherSubject = await Subjects.findOne({
     userId: session.user.id,
     name: 'Other',
   });
 
-  // Create "Other" if not found
   if (!otherSubject) {
     otherSubject = await Subjects.create({
       userId: session.user.id,
@@ -26,7 +24,6 @@ export async function GET() {
     });
   }
 
-  // Fetch all subjects including "Other"
   const subjects = await Subjects.find({ userId: session.user.id });
 
   return NextResponse.json(subjects, { status: 200 });

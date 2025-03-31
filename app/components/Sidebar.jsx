@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'; // Correct import for App Router
 import '@/styles/sidebar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faChartSimple,
+  faPlusCircle,
   faClock,
   faFaceFrown,
   faGear,
@@ -32,9 +32,9 @@ const Sidebar = () => {
             <FontAwesomeIcon icon={faClock} className="menu-icon" />
             <span>Pomodoro</span>
           </li>
-          <li>
-            <FontAwesomeIcon icon={faChartSimple} className="menu-icon" />
-            <span>Statistics</span>
+          <li onClick={() => router.push('subject-add')}>
+            <FontAwesomeIcon icon={faPlusCircle} className="menu-icon" />
+            <span>Add Subjects</span>
           </li>
           <li>
             <FontAwesomeIcon icon={faFaceFrown} className="menu-icon" />

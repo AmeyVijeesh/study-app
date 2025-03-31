@@ -107,13 +107,21 @@ const Dashboard = () => {
           }}
         >
           <UserIntro username={userData.name} />
-          <DailyData />
+          <DailyData
+            totalTime={userData.totalWorkTime}
+            timeToday={todayTimeWorked}
+            sessionsToday={sessionsToday}
+          />
           <div className="streakQuotes">
             <Streak userId={userData.id} />
             <Quotes />
           </div>
           <LazyWeeklyStudyGraph />
-          <FulltimeData />
+          <FulltimeData
+            avgTime={avgTimeWorked}
+            highestTime={highestTimeWorked}
+            lowestTime={lowestTimeWorked}
+          />
           <h2 className="calendar-title">Your Logs</h2>
           <div className="calendar-cont">
             <Calendar

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FulltimeData = () => {
+const FulltimeData = ({ avgTime, highestTime, lowestTime }) => {
   return (
     <>
       <div
@@ -14,7 +14,8 @@ const FulltimeData = () => {
         <div className="dailyDataCont">
           <div className="dailyDataDiv">
             <p className="dailyDataP">
-              Average Study Time: <br /> <strong>26.2hrs</strong>
+              Average Study Time: <br /> {avgTime}
+              <strong>{(avgTime / 60).toFixed(2)}hrs</strong>
             </p>
           </div>
           <div className="dailyDataDiv">

@@ -82,6 +82,7 @@
 
 .menu ul li {
   display: flex;
+  cursor: pointer;
   justify-content: center;
   align-items: center;
   gap: 8px;
@@ -89,7 +90,10 @@
   margin: 0 auto;
   padding: 1rem;
   border-bottom: 1px solid #fff;
-  width: calc(100% - 16px); /* Adjust to remove extra spacing */
+  width: calc(100% - 16px);
+}
+.menu ul li:hover {
+  opacity: 0.4;
 }
 
 .menu ul li .menu-icon {

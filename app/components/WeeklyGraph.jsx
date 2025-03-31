@@ -118,7 +118,7 @@ const WeeklyStudyGraph = () => {
               <Legend />
             </PieChart>
           </ResponsiveContainer>
-          <div className="chartText">Time Distribution (All time)</div>
+          <div className="chartText">Time Distribution for Today</div>
         </div>
 
         {/* Pie Chart 2 */}
@@ -148,7 +148,7 @@ const WeeklyStudyGraph = () => {
               <Legend />
             </PieChart>
           </ResponsiveContainer>
-          <div className="chartText">Time Distribution for Today</div>
+          <div className="chartText">Time Distribution (All time)</div>
         </div>
       </div>
       <h1 className="chartText">Stats this Week</h1>

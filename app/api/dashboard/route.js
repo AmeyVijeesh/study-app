@@ -41,7 +41,7 @@ export async function GET(req) {
   let lowestTimeWorkedLog = null;
 
   if (logs.length > 0) {
-    highestTimeWorkedLog = logs[0]; // Start with the first log
+    highestTimeWorkedLog = logs[0];
     lowestTimeWorkedLog = logs[0];
 
     logs.forEach((log) => {
