@@ -48,6 +48,23 @@ export async function GET(req) {
 
     currentDate.setDate(currentDate.getDate() + 1);
   }
+  const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+
+  const todayLog = await DailyLog.findOne({ userId, date: today }).populate(
+    'studySessions.subjectId',
+    'name'
+  );
+
+  let subjectData = [];
+
+  if (todayLog) {
+    subjectData = todayLog.studySessions.reduce((acc, session) => {
+      if (!session.subjectId) return acc;
+      const subjectName = session.subjectId.name;
+      acc[subjectName] = (acc[subjectName] || 0) + session.timeSpent;
+      return acc;
+    }, {});
+  }
 
   // Function to compute total study time per subject
   const calculateTotalStudyTime = (logs) => {
@@ -69,12 +86,17 @@ export async function GET(req) {
     }));
   };
 
-  // Pie chart data
-  const subjectData = calculateTotalStudyTime(logs); // Filtered by date range
-  const fullSubjectData = calculateTotalStudyTime(allLogs); // Full total time
+  const oneSubjectData = calculateTotalStudyTime(logs);
+  const fullSubjectData = calculateTotalStudyTime(allLogs);
+  const todaySubjectData = todayLog ? calculateTotalStudyTime([todayLog]) : [];
 
   return new Response(
-    JSON.stringify({ studyData, subjectData, fullSubjectData }),
+    JSON.stringify({
+      studyData,
+      todaySubjectData,
+      oneSubjectData,
+      fullSubjectData,
+    }),
     {
       status: 200,
     }

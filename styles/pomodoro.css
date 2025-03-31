@@ -1,0 +1,288 @@
+:root {
+  --background-dark: #121722;
+  --card-background: #1a202c;
+  --card-darker: #141824;
+  --text-primary: #ffffff;
+  --text-secondary: #a0aec0;
+  --accent-blue: #3182ce;
+  --accent-green: #38a169;
+  --accent-red: #e53e3e;
+  --accent-yellow: #ecc94b;
+  --accent-purple: #805ad5;
+  --accent-teal: #38b2ac;
+  --border-radius: 12px;
+  --transition-speed: 0.3s;
+}
+
+.pomodoro-container {
+  min-height: 100vh;
+  background-color: var(--background-dark);
+  color: var(--text-primary);
+  padding: 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.pomodoro-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.session-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.timer-card,
+.settings-card,
+.progress-card {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.session-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.session-count {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.subject-select {
+  background-color: var(--card-darker);
+  color: var(--text-primary);
+  border: 1px solid #2d3748;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  width: 200px;
+  outline: none;
+}
+
+.subject-select:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.3);
+}
+
+.timer-display {
+  font-size: 5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.control-btn {
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.start-btn {
+  background-color: var(--accent-blue);
+}
+
+.start-btn:hover {
+  background-color: #2b6cb0;
+}
+
+.pause-btn {
+  background-color: var(--accent-yellow);
+}
+
+.pause-btn:hover {
+  background-color: #d69e2e;
+}
+
+.reset-btn {
+  background-color: var(--accent-red);
+}
+
+.reset-btn:hover {
+  background-color: #c53030;
+}
+
+.next-btn {
+  background-color: var(--accent-green);
+}
+
+.next-btn:hover {
+  background-color: #2f855a;
+}
+
+.settings-toggle-container {
+  display: flex;
+  justify-content: center;
+}
+
+.settings-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color var(--transition-speed);
+}
+
+.settings-toggle-btn:hover {
+  color: var(--text-primary);
+}
+
+.settings-icon {
+  margin-right: 0.25rem;
+}
+
+.settings-title,
+.progress-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.setting-item {
+  margin-bottom: 1rem;
+}
+
+.setting-label {
+  display: block;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.setting-input {
+  width: 100%;
+  background-color: var(--card-darker);
+  border: 1px solid #2d3748;
+  border-radius: 6px;
+  padding: 0.5rem;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.setting-input:focus {
+  border-color: var(--accent-blue);
+  outline: none;
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.save-settings-btn {
+  background-color: var(--accent-blue);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+}
+
+.save-settings-btn:hover {
+  background-color: #2b6cb0;
+}
+
+.progress-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .progress-stats {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.stat-item {
+  flex: 1;
+  background-color: var(--card-darker);
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.stat-item:nth-child(1) .stat-value {
+  color: var(--accent-blue);
+}
+
+.stat-item:nth-child(2) .stat-value {
+  color: var(--accent-teal);
+}
+
+.stat-item:nth-child(3) .stat-value {
+  color: var(--accent-purple);
+}
+
+.loading-text {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 3rem;
+}
+
+/* Animation for settings card */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.settings-card {
+  animation: fadeIn 0.3s ease-out;
+}

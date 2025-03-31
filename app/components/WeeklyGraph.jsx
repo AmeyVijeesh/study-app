@@ -46,7 +46,7 @@ const WeeklyStudyGraph = () => {
       if (!res.ok) throw new Error('Failed to fetch study data');
       const data = await res.json();
       setStudyData(data.studyData);
-      setSubjectData(data.subjectData);
+      setSubjectData(data.todaySubjectData);
       setTotalTimeData(data.fullSubjectData);
     } catch (err) {
       console.error(err);
@@ -123,7 +123,7 @@ const WeeklyStudyGraph = () => {
 
         {/* Pie Chart 2 */}
         <div style={{ textAlign: 'center' }}>
-          <ResponsiveContainer width={350} height={300}>
+          <ResponsiveContainer width={400} height={300}>
             <PieChart>
               <Pie
                 data={totalTimeData}
