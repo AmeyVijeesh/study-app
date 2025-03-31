@@ -208,6 +208,7 @@
 .chartText {
   font-family: 'Urbanist', sans-serif;
   padding: 10px;
+  text-align: center;
 }
 
 .chartInput {
@@ -218,5 +219,5 @@
   background-color: #111827;
   border: 1px solid rgba(0, 157, 255, 0.5);
   color: #fff;
-  color-scheme: dark; /* Makes native icons white */
+  color-scheme: dark;
 }

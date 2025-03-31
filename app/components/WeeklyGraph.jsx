@@ -151,8 +151,8 @@ const WeeklyStudyGraph = () => {
           <div className="chartText">Time Distribution for Today</div>
         </div>
       </div>
-
-      <div style={{ border: '1px solid khaki', margin: '6%' }}>
+      <h1 className="chartText">Stats this Week</h1>
+      <div>
         <ResponsiveContainer
           width="100%"
           height={350}
@@ -162,9 +162,10 @@ const WeeklyStudyGraph = () => {
             <XAxis dataKey="date" />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="timeStudied" fill="#4CAF50" />
+            <Bar dataKey="timeStudied" fill="#0053b6" />
           </BarChart>
         </ResponsiveContainer>
+        <div className="chartText">Time Distribution for this Week</div>
       </div>
     </div>
   );

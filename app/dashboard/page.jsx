@@ -80,97 +80,91 @@ const Dashboard = () => {
 
   return (
     <>
-      <div>
+      <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+        {/* Sidebar - fixed width, scrollable */}
+        <div style={{ width: '250px', flexShrink: 0, overflow: 'auto' }}>
+          <Sidebar
+            totalStudyTimeObj={totalStudyTime}
+            avgTime={avgTimeWorked}
+            highestTime={
+              highestTimeWorked ? highestTimeWorked.totalTimeFocussed : 0
+            }
+            highestTimeDate={highestTimeWorked ? highestTimeWorked.date : 'N/A'}
+            lowestTime={
+              lowestTimeWorked ? lowestTimeWorked.totalTimeFocussed : 0
+            }
+            lowestTimeDate={lowestTimeWorked ? lowestTimeWorked.date : 'N/A'}
+          />
+        </div>
+
+        {/* Main content - scrollable, takes remaining width */}
         <div
+          className="dash-container"
           style={{
-            display: 'flex',
-            height: '100%',
+            flexGrow: 1,
+            padding: '2rem',
+            overflowY: 'auto',
+            height: '100vh',
           }}
         >
+          <UserIntro username={userData.name} />
+          <DailyData />
+          <div className="streakQuotes">
+            <Streak userId={userData.id} />
+            <Quotes />
+          </div>
+          <LazyWeeklyStudyGraph />
           <div
             style={{
+              height: '90vh',
               display: 'flex',
-              flexDirection: 'column',
+              alignItems: 'center',
             }}
-          >
-            <Sidebar
-              totalStudyTimeObj={totalStudyTime}
-              avgTime={avgTimeWorked}
-              highestTime={
-                highestTimeWorked ? highestTimeWorked.totalTimeFocussed : 0
-              }
-              highestTimeDate={
-                highestTimeWorked ? highestTimeWorked.date : 'N/A'
-              }
-              lowestTime={
-                lowestTimeWorked ? lowestTimeWorked.totalTimeFocussed : 0
-              }
-              lowestTimeDate={lowestTimeWorked ? lowestTimeWorked.date : 'N/A'}
-            />
-          </div>
+          ></div>
+          <p>Emails: {userData.email}</p>
+          <p>Total Work Time: {userData.totalWorkTime} mins</p>
+          <p>Time Worked Today: {todayTimeWorked} mins</p>
+          <p>Sessions Today: {sessionsToday}</p>
+          <br />
+          <p>Avg time so far: {avgTimeWorked} mins</p>
+          <p>
+            Highest:{' '}
+            {highestTimeWorked ? highestTimeWorked.totalTimeFocussed : 0} mins,
+            at {highestTimeWorked ? highestTimeWorked.date : 'N/A'}
+          </p>
+          <p>
+            Lowest: {lowestTimeWorked ? lowestTimeWorked.totalTimeFocussed : 0}{' '}
+            min, at {lowestTimeWorked ? lowestTimeWorked.date : 'N/A'}
+          </p>
+          <Subjects />
 
-          <div className="dash-container" style={{ padding: '2rem' }}>
-            <UserIntro username={userData.name} />
-            <DailyData />
-            <div className="streakQuotes">
-              <Streak userId={userData.id} />
-              <Quotes />
-            </div>
-            <LazyWeeklyStudyGraph />
+          <h3>Total Time Spent Per Subject</h3>
+          <ul>
+            {Object.entries(totalStudyTime).map(([subjectName, time]) => (
+              <li key={subjectName}>
+                {subjectName} - {time} minutes
+              </li>
+            ))}
+          </ul>
 
-            <div
-              style={{
-                height: '90vh',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            ></div>
-            <p>Emails: {userData.email}</p>
-            <p>Total Work Time: {userData.totalWorkTime} mins</p>
-            <p>Time Worked Today: {todayTimeWorked} mins</p>
-            <p>Sessions Today: {sessionsToday}</p>
-            <br />
-            <p>Avg time so far: {avgTimeWorked} mins</p>
-            <p>
-              Highest:{' '}
-              {highestTimeWorked ? highestTimeWorked.totalTimeFocussed : 0}{' '}
-              mins, at {highestTimeWorked ? highestTimeWorked.date : 'N/A'}
-            </p>
-            <p>
-              Lowest:{' '}
-              {lowestTimeWorked ? lowestTimeWorked.totalTimeFocussed : 0} min,
-              at {lowestTimeWorked ? lowestTimeWorked.date : 'N/A'}
-            </p>
-            <Subjects />
+          <h2>Your Logs</h2>
+          <Calendar
+            onChange={setSelectedDate}
+            value={selectedDate}
+            tileClassName={({ date }) => {
+              const formattedDate = date.toLocaleDateString('en-CA');
+              return logDates.has(formattedDate) ? 'log-available' : null;
+            }}
+            onClickDay={handleDateClick}
+          />
 
-            <h3>Total Time Spent Per Subject</h3>
-            <ul>
-              {Object.entries(totalStudyTime).map(([subjectName, time]) => (
-                <li key={subjectName}>
-                  {subjectName} - {time} minutes
-                </li>
-              ))}
-            </ul>
-
-            <h2>Your Logs</h2>
-            <Calendar
-              onChange={setSelectedDate}
-              value={selectedDate}
-              tileClassName={({ date }) => {
-                const formattedDate = date.toLocaleDateString('en-CA');
-                return logDates.has(formattedDate) ? 'log-available' : null;
-              }}
-              onClickDay={handleDateClick}
-            />
-
-            <style jsx global>{`
-              .log-available {
-                background-color: #4caf50 !important;
-                color: white !important;
-                border-radius: 50%;
-              }
-            `}</style>
-          </div>
+          <style jsx global>{`
+            .log-available {
+              background-color: #4caf50 !important;
+              color: white !important;
+              border-radius: 50%;
+            }
+          `}</style>
         </div>
       </div>
     </>
