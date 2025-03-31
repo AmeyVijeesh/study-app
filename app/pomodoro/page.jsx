@@ -203,7 +203,6 @@ const Pomodoro = () => {
     clearInterval(timerRef.current);
     setIsRunning(false);
     setIsWorkSession(true);
-    setWorkSessionCount(0);
     setRemainingTime(workTime * 60);
     updateTimerDisplay();
     localStorage.removeItem('pomodoroState'); // Clear stored state
@@ -224,13 +223,11 @@ const Pomodoro = () => {
         await recordStudyTime(selectedSubject, workTime);
       }
 
-      // Determine which break time to use
       const breakTime =
         newWorkSessionCount % 3 === 0 ? longBreakTime : shortBreakTime;
       setRemainingTime(breakTime * 60);
       setIsWorkSession(false);
     } else {
-      // Switch back to work time
       setRemainingTime(workTime * 60);
       setIsWorkSession(true);
     }
@@ -366,7 +363,7 @@ const Pomodoro = () => {
       <div className="pomodoro-wrapper">
         <h1 className="session-title">
           {isWorkSession
-            ? 'Work Session'
+            ? 'Time to Work'
             : workSessionCount % 3 === 0
             ? 'Long Break'
             : 'Short Break'}

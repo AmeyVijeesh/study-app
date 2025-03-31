@@ -1,16 +1,17 @@
 :root {
   --background-dark: #121722;
-  --card-background: #1a202c;
+  --card-background: rgba(0, 0, 0, 0.3);
   --card-darker: #141824;
   --text-primary: #ffffff;
   --text-secondary: #a0aec0;
-  --accent-blue: #3182ce;
-  --accent-green: #38a169;
-  --accent-red: #e53e3e;
+  --accent-blue: #2e4d6a;
+  --accent-light_blue: #357cbf;
+  --accent-green: #2b6b49;
+  --accent-red: #861b1b;
   --accent-yellow: #ecc94b;
   --accent-purple: #805ad5;
   --accent-teal: #38b2ac;
-  --border-radius: 12px;
+  --border-radius: 10px;
   --transition-speed: 0.3s;
 }
 
@@ -33,6 +34,7 @@
   font-weight: 700;
   text-align: center;
   margin-bottom: 2rem;
+  font-family: 'Urbanist', sans-serif;
 }
 
 .timer-card,
@@ -42,7 +44,9 @@
   border-radius: var(--border-radius);
   padding: 2rem;
   margin-bottom: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .session-info {
@@ -50,6 +54,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  font-family: 'Urbanist', sans-serif;
 }
 
 .session-count {
@@ -78,7 +83,11 @@
   font-weight: 700;
   text-align: center;
   margin-bottom: 2rem;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-teal));
+  background: linear-gradient(
+    45deg,
+    var(--accent-light_blue),
+    var(--accent-teal)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
