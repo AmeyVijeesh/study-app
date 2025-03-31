@@ -221,3 +221,35 @@
   color: #fff;
   color-scheme: dark;
 }
+
+.calendar-title {
+  font-family: 'Urbanic', sans-serif;
+  font-size: 2.5rem;
+  text-align: center;
+}
+.calendar-cont {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2%;
+}
+
+.calendar {
+  background-color: #111827;
+  border: 1px solid rgba(0, 157, 255, 0.5);
+  width: 75vh;
+  color: #fff;
+  border-radius: 10px;
+}
+
+.calendar abbr {
+  color: #fff !important;
+}
+
+.react-calendar__navigation {
+  color: white !important;
+}
+
+.react-calendar__navigation button {
+  color: white !important; /* Ensures buttons (like arrows) also change */
+}

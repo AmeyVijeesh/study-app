@@ -15,6 +15,7 @@ import DailyData from '../components/DailyData';
 import DailyGraph from '../components/DailyGraph';
 import Streak from '../components/Streak';
 import Quotes from '../components/Quotes';
+import FulltimeData from '../components/FulltimeData';
 
 const LazyWeeklyStudyGraph = dynamic(
   () => import('@/app/components/WeeklyGraph'),
@@ -81,7 +82,6 @@ const Dashboard = () => {
   return (
     <>
       <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-        {/* Sidebar - fixed width, scrollable */}
         <div style={{ width: '250px', flexShrink: 0, overflow: 'auto' }}>
           <Sidebar
             totalStudyTimeObj={totalStudyTime}
@@ -97,7 +97,6 @@ const Dashboard = () => {
           />
         </div>
 
-        {/* Main content - scrollable, takes remaining width */}
         <div
           className="dash-container"
           style={{
@@ -114,13 +113,29 @@ const Dashboard = () => {
             <Quotes />
           </div>
           <LazyWeeklyStudyGraph />
-          <div
-            style={{
-              height: '90vh',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          ></div>
+          <FulltimeData />
+          <h2 className="calendar-title">Your Logs</h2>
+          <div className="calendar-cont">
+            <Calendar
+              onChange={setSelectedDate}
+              value={selectedDate}
+              tileClassName={({ date }) => {
+                const formattedDate = date.toLocaleDateString('en-CA');
+                return logDates.has(formattedDate) ? 'log-available' : null;
+              }}
+              onClickDay={handleDateClick}
+              className="calendar"
+            />
+          </div>
+          <div></div>
+
+          <style jsx global>{`
+            .log-available {
+              background-color: #4caf50 !important;
+              color: white !important;
+              border-right: 1px solid #fff !important;
+            }
+          `}</style>
           <p>Emails: {userData.email}</p>
           <p>Total Work Time: {userData.totalWorkTime} mins</p>
           <p>Time Worked Today: {todayTimeWorked} mins</p>
@@ -146,25 +161,6 @@ const Dashboard = () => {
               </li>
             ))}
           </ul>
-
-          <h2>Your Logs</h2>
-          <Calendar
-            onChange={setSelectedDate}
-            value={selectedDate}
-            tileClassName={({ date }) => {
-              const formattedDate = date.toLocaleDateString('en-CA');
-              return logDates.has(formattedDate) ? 'log-available' : null;
-            }}
-            onClickDay={handleDateClick}
-          />
-
-          <style jsx global>{`
-            .log-available {
-              background-color: #4caf50 !important;
-              color: white !important;
-              border-radius: 50%;
-            }
-          `}</style>
         </div>
       </div>
     </>
