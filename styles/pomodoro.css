@@ -302,13 +302,16 @@
   padding: 20px;
   font-family: Arial, sans-serif;
   color: #333;
+  border: 1px solid var(--accent-blue);
+  border-radius: 10px;
 }
 
 .subjects-title {
   text-align: center;
   margin-bottom: 25px;
-  color: #2c3e50;
+  color: #fff;
   font-size: 28px;
+  font-family: 'Urbanist', sans-serif;
 }
 
 .subject-form {
@@ -324,9 +327,12 @@
   padding: 12px 15px;
   border: 1px solid #ddd;
   border-right: none;
+  background-color: var(--background-dark);
   font-size: 16px;
   outline: none;
   transition: border-color 0.3s;
+  font-family: 'Urbanist', sans-serif;
+  color: #fff;
 }
 
 .subject-input:focus {
@@ -334,9 +340,9 @@
 }
 
 .add-button {
-  background-color: #3498db;
+  background-color: var(--accent-blue);
   color: white;
-  border: none;
+  border: 1px solid #fff;
   padding: 12px 20px;
   cursor: pointer;
   font-size: 16px;
@@ -363,7 +369,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: var(--background-dark);
+  color: #fff;
   margin-bottom: 10px;
   border-radius: 4px;
   border-left: 5px solid #3498db;

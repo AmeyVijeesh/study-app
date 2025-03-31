@@ -30,13 +30,19 @@ export async function GET(req) {
   const logs = await DailyLog.find({ userId: user._id })
     .sort({ date: -1 })
     .populate('studySessions.subjectId', 'name');
-  // Calculate total time worked and average
-  const totalTimeWorked = logs.reduce(
+  // Filter out logs with null/undefined totalTimeFocussed and count valid entries
+  const validLogs = logs.filter(
+    (log) =>
+      log.totalTimeFocussed !== undefined && log.totalTimeFocussed !== null
+  );
+
+  const totalTimeWorked = validLogs.reduce(
     (sum, log) => sum + log.totalTimeFocussed,
     0
   );
-  const averageTimeWorked = logs.length > 0 ? totalTimeWorked / logs.length : 0;
 
+  const averageTimeWorked =
+    validLogs.length > 0 ? totalTimeWorked / validLogs.length : 0;
   let highestTimeWorkedLog = null;
   let lowestTimeWorkedLog = null;
 

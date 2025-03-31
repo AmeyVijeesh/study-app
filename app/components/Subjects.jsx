@@ -66,41 +66,56 @@ export default function Subjects() {
   };
 
   return (
-    <div className="subjects-container">
-      <h2 className="subjects-title">Subjects</h2>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        flex: 1,
+        height: '100vh',
+      }}
+    >
+      <div className="subjects-container">
+        <h2 className="subjects-title">Modify your Subjects</h2>
 
-      <div className="subject-form">
-        <input
-          type="text"
-          className="subject-input"
-          placeholder="Enter subject name"
-          value={subjectName}
-          onChange={(e) => setSubjectName(e.target.value)}
-        />
-        <button className="add-button" onClick={addSubject} disabled={loading}>
-          {loading ? 'Adding...' : 'Add Subject'}
-        </button>
+        <div className="subject-form">
+          <input
+            type="text"
+            className="subject-input"
+            placeholder="Enter subject name"
+            value={subjectName}
+            onChange={(e) => setSubjectName(e.target.value)}
+          />
+          <button
+            className="add-button"
+            onClick={addSubject}
+            disabled={loading}
+          >
+            {loading ? 'Adding...' : 'Add Subject'}
+          </button>
+        </div>
+
+        {/* Display Subjects */}
+        {subjects.length > 0 ? (
+          <ul className="subjects-list">
+            {subjects.map((subject) => (
+              <li key={subject._id} className="subject-item">
+                <span className="subject-name">{subject.name}</span>
+                <button
+                  className="delete-button"
+                  onClick={() => deleteSubject(subject._id)}
+                  title="Delete subject"
+                >
+                  ×
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="no-subjects">No subjects added yet.</p>
+        )}
       </div>
-
-      {/* Display Subjects */}
-      {subjects.length > 0 ? (
-        <ul className="subjects-list">
-          {subjects.map((subject) => (
-            <li key={subject._id} className="subject-item">
-              <span className="subject-name">{subject.name}</span>
-              <button
-                className="delete-button"
-                onClick={() => deleteSubject(subject._id)}
-                title="Delete subject"
-              >
-                ×
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="no-subjects">No subjects added yet.</p>
-      )}
     </div>
   );
 }

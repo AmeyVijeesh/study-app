@@ -14,7 +14,7 @@ const FulltimeData = ({ avgTime, highestTime, lowestTime }) => {
         <div className="dailyDataCont">
           <div className="dailyDataDiv">
             <p className="dailyDataP">
-              Average Study Time: <br /> {avgTime}
+              Average Study Time: <br />
               <strong>{(avgTime / 60).toFixed(2)}hrs</strong>
             </p>
           </div>
