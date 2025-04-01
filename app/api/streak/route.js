@@ -4,6 +4,7 @@ import { connectToDatabase } from '@/lib/mongodb';
 
 export async function POST(req) {
   try {
+    console.log('called steak');
     await connectToDatabase();
     const { userId } = await req.json();
 

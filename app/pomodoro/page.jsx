@@ -21,6 +21,8 @@ const Pomodoro = () => {
   const [lastTotalWorkTime, setLastTotalWorkTime] = useState(0); // Track last recorded total
   const [isLoading, setIsLoading] = useState(true);
 
+  const [userStreak, setUserStreak] = useState(0);
+  const [highestStreak, setHighestStreak] = useState(0);
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
 
@@ -208,6 +210,7 @@ const Pomodoro = () => {
     localStorage.removeItem('pomodoroState'); // Clear stored state
   };
 
+  // Enhanced handleSessionSwitch function with streak updates
   const handleSessionSwitch = async () => {
     let updatedTotalTime = totalTime;
 
@@ -223,6 +226,9 @@ const Pomodoro = () => {
         await recordStudyTime(selectedSubject, workTime);
       }
 
+      // Update streak when a work session is completed
+      await updateUserStreak();
+
       const breakTime =
         newWorkSessionCount % 3 === 0 ? longBreakTime : shortBreakTime;
       setRemainingTime(breakTime * 60);
@@ -231,6 +237,60 @@ const Pomodoro = () => {
       setRemainingTime(workTime * 60);
       setIsWorkSession(true);
     }
+  };
+
+  // New function to update user streak
+  const updateUserStreak = async () => {
+    console.log('called steak beef');
+    try {
+      const response = await fetch('/api/streak', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update streak');
+      }
+
+      const data = await response.json();
+
+      // Update UI with new streak information
+      setUserStreak(data.streak);
+      setHighestStreak(data.highestStreak);
+
+      // If you want to show a notification when streak increases
+      if (data.streak > 1) {
+        showStreakNotification(data.streak);
+      }
+    } catch (error) {
+      console.error('Error updating streak:', error);
+      // Optionally handle error in UI
+    }
+  };
+
+  // Optional: Show a notification when streak increases
+  const showStreakNotification = (streakCount) => {
+    // Create and show a toast or notification
+    const notification = document.createElement('div');
+    notification.className = 'streak-notification';
+    notification.innerHTML = `
+    <div class="streak-icon">🔥</div>
+    <div class="streak-text">
+      <strong>Streak: ${streakCount} days</strong>
+      <span>Keep up the great work!</span>
+    </div>
+  `;
+
+    document.body.appendChild(notification);
+
+    // Remove after a few seconds
+    setTimeout(() => {
+      notification.classList.add('fade-out');
+      setTimeout(() => notification.remove(), 500);
+    }, 3000);
   };
 
   const recordStudyTime = async (subjectId, timeSpent) => {
