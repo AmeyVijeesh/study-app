@@ -253,3 +253,49 @@
 .react-calendar__navigation button {
   color: white !important; /* Ensures buttons (like arrows) also change */
 }
+
+.log-available {
+  background-color: #4caf50 !important;
+  color: white !important;
+  border-radius: 4px;
+}
+
+.calendar-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 2px 0;
+}
+
+.day-rating {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #ff9800;
+  line-height: 1.2;
+}
+
+.date-label {
+  font-size: 0.7rem;
+  color: #666;
+  margin-top: 2px;
+}
+
+/* Make tiles bigger and more spaced */
+.react-calendar__tile {
+  height: 48px;
+  padding: 0;
+  position: relative;
+}
+
+/* Add spacing between tiles */
+.react-calendar__month-view__days {
+  gap: 2px;
+}
+
+/* Hover effect */
+.react-calendar__tile:hover {
+  background-color: #f0f0f0;
+}

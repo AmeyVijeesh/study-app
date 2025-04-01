@@ -131,19 +131,23 @@ const Dashboard = () => {
                 const formattedDate = date.toLocaleDateString('en-CA');
                 return logDates.has(formattedDate) ? 'log-available' : null;
               }}
+              tileContent={({ date }) => {
+                const formattedDate = date.toLocaleDateString('en-CA');
+                const log = logs.find((log) => log.date === formattedDate);
+
+                return log ? (
+                  <div className="calendar-tile">
+                    <span className="day-rating">{log.dayRating}</span>
+                    <span className="date-label">{date.getDate()}</span>
+                  </div>
+                ) : null;
+              }}
               onClickDay={handleDateClick}
               className="calendar"
             />
           </div>
-          <div></div>
 
-          <style jsx global>{`
-            .log-available {
-              background-color: #4caf50 !important;
-              color: white !important;
-              border-right: 1px solid #fff !important;
-            }
-          `}</style>
+          <style jsx global>{``}</style>
           <p>Emails: {userData.email}</p>
           <p>Total Work Time: {userData.totalWorkTime} mins</p>
           <p>Time Worked Today: {todayTimeWorked} mins</p>
