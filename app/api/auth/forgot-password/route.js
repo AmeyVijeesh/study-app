@@ -18,7 +18,7 @@ export async function POST(req) {
     globalThis.crypto.getRandomValues(new Uint8Array(32))
   ).toString('hex');
   user.resetPasswordToken = resetToken;
-  user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+  user.resetPasswordExpires = Date.now() + 3600000;
   await user.save();
 
   const transporter = nodemailer.createTransport({
