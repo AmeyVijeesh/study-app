@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import useDailyLog from '../hooks/useDailyLog';
 import '@/styles/log.css';
+import { Suspense } from 'react';
 const UpdateLogPage = () => {
   const searchParams = useSearchParams();
   const userId = searchParams.get('userId');
@@ -83,10 +84,11 @@ const UpdateLogPage = () => {
       <div
         style={{
           display: 'flex',
-          height: '100vh',
+          height: 'auto',
           width: '100%',
           alignItems: 'center',
           justifyContent: 'center',
+          marginTop: '5%',
         }}
       >
         <div className="update-log-container">
@@ -316,4 +318,14 @@ const UpdateLogPage = () => {
   );
 };
 
-export default UpdateLogPage;
+const Page = () => {
+  return (
+    <>
+      <Suspense>
+        <UpdateLogPage />
+      </Suspense>
+    </>
+  );
+};
+
+export default Page;
