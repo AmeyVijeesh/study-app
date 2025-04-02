@@ -222,6 +222,7 @@
 .existing-data-notice {
   background-color: #fff8e1;
   border-left: 4px solid #ffc107;
+  color: #000;
   padding: 12px;
   margin-bottom: 20px;
   border-radius: 4px;
@@ -250,10 +251,12 @@
 
 .quick-view-content p {
   margin: 0;
+  color: #000;
 }
 
 .quick-view-journal {
   margin-top: 8px;
+  color: #000;
 }
 
 .journal-preview {

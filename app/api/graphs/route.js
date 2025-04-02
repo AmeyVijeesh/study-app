@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { connectToDatabase } from '@/lib/mongodb';
 import DailyLog from '@/models/DailyLog';
-import { ObjectId } from 'mongodb'; // ✅ Import ObjectId
+import { ObjectId } from 'mongodb';
 import mongoose from 'mongoose';
 
 export async function GET(req) {
@@ -19,7 +19,7 @@ export async function GET(req) {
   const startDate = url.searchParams.get('startDate');
   const endDate = url.searchParams.get('endDate');
 
-  let userId = session.user.id; // Keep it as a string
+  let userId = session.user.id;
 
   // ✅ Use `userId` in both queries
   const logs = await DailyLog.find({

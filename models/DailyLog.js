@@ -10,6 +10,7 @@ const DailyLogSchema = new mongoose.Schema(
     date: { type: String, required: true },
     victory: { type: Boolean, default: null },
     dayRating: { type: Number, default: 50 },
+    academicRating: { type: Number, default: 50 },
     journal: { type: String, default: '' },
     totalTimeFocussed: { type: Number, default: 0 },
     sessionsToday: { type: Number, default: 0 },

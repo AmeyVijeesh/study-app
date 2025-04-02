@@ -3,11 +3,13 @@ import DailyLog from '@/models/DailyLog';
 
 export async function POST(req) {
   await connectToDatabase();
+  console.log('Request Body:', req.body);
 
   const {
     userId,
     date,
     dayRating,
+    academicRating,
     journal,
     victory,
     totalTimeFocussed,
@@ -28,6 +30,7 @@ export async function POST(req) {
     date,
     victory,
     dayRating,
+    academicRating,
     journal,
     totalTimeFocussed,
     sessionsToday,
@@ -69,17 +72,18 @@ export async function GET(req) {
 
 export async function PATCH(req) {
   await connectToDatabase();
-
   const {
     userId,
     date,
     victory,
     dayRating,
+    academicRating,
     journal,
     totalTimeFocussed,
     sessionsToday,
     timeTable,
   } = await req.json();
+  console.log('recijofdsa this: ' + academicRating);
 
   if (!userId || !date) {
     return Response.json(
@@ -95,6 +99,7 @@ export async function PATCH(req) {
         victory,
         journal,
         dayRating,
+        academicRating,
         totalTimeFocussed,
         sessionsToday,
         timeTable,

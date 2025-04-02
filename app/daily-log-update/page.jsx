@@ -16,19 +16,23 @@ const UpdateLogPage = () => {
   const [journal, setJournal] = useState('');
   const [victory, setVictory] = useState(null);
   const [dayRating, setDayRating] = useState(50);
+  const [academicRating, setAcademicRating] = useState(50);
   const [totalTimeFocussed, setTotalTimeFocussed] = useState('');
   const [timeTable, setTimeTable] = useState('');
   const [hasExistingData, setHasExistingData] = useState(false);
 
   // Step tracking
   const [currentStep, setCurrentStep] = useState(0);
-  const totalSteps = 3;
+  const totalSteps = 4; // Updated to include journal step
 
   useEffect(() => {
     if (log) {
+      console.log('Fetched Log Data:', log);
+
       setVictory(log.victory);
       setJournal(log.journal || '');
       setDayRating(log.dayRating || 50);
+      setAcademicRating(log.academicRating || 50);
       setTotalTimeFocussed(log.totalTimeFocussed || '');
       setTimeTable(JSON.stringify(log.timeTable || {}, null, 2));
 
@@ -37,6 +41,7 @@ const UpdateLogPage = () => {
         log.victory !== undefined ||
         log.journal ||
         log.dayRating ||
+        log.academicRating ||
         log.totalTimeFocussed;
 
       setHasExistingData(hasData);
@@ -47,12 +52,13 @@ const UpdateLogPage = () => {
     await updateLog({
       victory,
       dayRating,
+      academicRating,
       journal,
       totalTimeFocussed, // keeping this value unchanged
       timeTable: JSON.parse(timeTable),
     });
 
-    router.push('/'); // Redirect back after update
+    router.push('/dashboard'); // Redirect back after update
   };
 
   const nextStep = () => {
@@ -160,6 +166,34 @@ const UpdateLogPage = () => {
 
           {currentStep === 2 && (
             <div className="step-container">
+              <h3 className="step-title">
+                How would you rate your day, academically?
+              </h3>
+              <div className="rating-container">
+                <div className="rating-labels">
+                  <span>0</span>
+                  <span>50</span>
+                  <span>100</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={academicRating}
+                  onChange={(e) => setAcademicRating(parseInt(e.target.value))}
+                  className="rating-slider"
+                />
+                <p className="rating-value">{academicRating}/100</p>
+                <div className="rating-descriptions">
+                  <span>Challenging</span>
+                  <span>Great</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {currentStep === 3 && (
+            <div className="step-container">
               <h3 className="step-title">Journal Entry</h3>
               <p className="journal-instructions">
                 Reflect on your day. What went well? What could be improved?
@@ -169,6 +203,7 @@ const UpdateLogPage = () => {
                 onChange={(e) => setJournal(e.target.value)}
                 className="journal-textarea"
                 placeholder="Write your journal entry here..."
+                rows={10}
               />
 
               {log.totalTimeFocussed > 0 && (
@@ -225,13 +260,16 @@ const UpdateLogPage = () => {
                 <p>
                   <strong>Victory/Setback:</strong>{' '}
                   {victory === true
-                    ? 'Victory 🎉'
+                    ? 'Victory '
                     : victory === false
-                    ? 'Setback 🧠'
+                    ? 'Setback '
                     : 'Not set'}
                 </p>
                 <p>
                   <strong>Day Rating:</strong> {dayRating}/100
+                </p>
+                <p>
+                  <strong>Academic Rating:</strong> {academicRating}/100
                 </p>
                 <p>
                   <strong>Focus Time:</strong> {log.totalTimeFocussed || 0}{' '}
@@ -247,6 +285,27 @@ const UpdateLogPage = () => {
                       : 'No journal entry'}
                   </p>
                 </div>
+                {log.totalTimeFocussed > 0 && (
+                  <div className="focus-time-display">
+                    <h4 className="focus-time-title">Today's Focus Time</h4>
+                    <p className="focus-time-value">
+                      {log.totalTimeFocussed} minutes
+                    </p>
+                  </div>
+                )}
+                {log.sessionsToday && log.studySessions.length > 0 && (
+                  <div className="study-sessions-container">
+                    <h4 className="study-sessions-title">Study Sessions</h4>
+                    <ul className="study-sessions-list">
+                      {log.studySessions.map((session, index) => (
+                        <li key={index} className="study-session-item">
+                          <strong>{session.subjectId?.name || 'Other'}</strong>:{' '}
+                          {session.timeSpent} minutes
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           )}
