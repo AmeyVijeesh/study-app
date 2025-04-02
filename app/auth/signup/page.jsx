@@ -80,7 +80,7 @@ const SignUp = () => {
           </div>
           <div className="auth-btns">
             <button
-              onClick={() => signIn('google', { callbackUrl: '/' })}
+              onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
               className="auth-submit"
               type="button"
             >

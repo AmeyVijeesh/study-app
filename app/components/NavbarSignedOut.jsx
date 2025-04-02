@@ -15,13 +15,13 @@ const NavbarSignedOut = () => {
     <div className="mdb-navbar-wrapper">
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container">
-          <a
+          <Link
             className="navbar-brand me-2"
-            href="https://mdbgo.com/"
+            href="/"
             style={{ color: '#fff' }}
           >
-            <strong>Study.</strong>
-          </a>
+            <strong>PLStudy.</strong>
+          </Link>
 
           {/* Remove data-mdb-toggle, use React state */}
           <button
@@ -42,19 +42,19 @@ const NavbarSignedOut = () => {
           >
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0 text-start text-lg-end">
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <Link className="nav-link" href="/">
                   Landing
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link nav-linka" href="#">
+                <Link className="nav-link nav-linka" href="/#features">
                   About
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <Link className="nav-link" href="/#features">
                   Features
-                </a>
+                </Link>
               </li>
             </ul>
             <AuthButton />
