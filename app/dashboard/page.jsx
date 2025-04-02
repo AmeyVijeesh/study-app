@@ -6,7 +6,6 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useRouter } from 'next/navigation';
 import Subjects from '../components/Subjects';
-import WeeklyStudyGraph from '@/app/components/WeeklyGraph';
 import Sidebar from '../components/Sidebar';
 import UserIntro from '../components/UserIntro';
 import dynamic from 'next/dynamic';

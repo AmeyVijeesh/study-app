@@ -93,35 +93,50 @@ const WeeklyStudyGraph = () => {
       <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
         {/* Pie Chart 1 */}
         <div style={{ textAlign: 'center' }}>
-          <ResponsiveContainer width={350} height={300}>
-            <PieChart>
-              <Pie
-                data={subjectData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                outerRadius={100}
-                fill="#8884d8"
-                dataKey="value"
-                label={({ name, percent }) =>
-                  `${name} ${(percent * 100).toFixed(0)}%`
-                }
-              >
-                {subjectData.map((_, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          {subjectData && subjectData.length > 0 ? (
+            <ResponsiveContainer width={350} height={300}>
+              <PieChart>
+                <Pie
+                  data={subjectData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  outerRadius={100}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({ name, percent }) =>
+                    `${name} ${(percent * 100).toFixed(0)}%`
+                  }
+                >
+                  {subjectData.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <div
+              style={{
+                width: 350,
+                height: 300,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#888',
+              }}
+            >
+              Awww. Didn't study yet? Get started now.
+            </div>
+          )}
+
           <div className="chartText">Time Distribution for Today</div>
         </div>
 
-        {/* Pie Chart 2 */}
         <div style={{ textAlign: 'center' }}>
           <ResponsiveContainer width={400} height={300}>
             <PieChart>

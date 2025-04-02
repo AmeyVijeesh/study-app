@@ -15,13 +15,13 @@ const NavbarSignedIn = () => {
     <div className="mdb-navbar-wrapper">
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container">
-          <a
+          <Link
             className="navbar-brand me-2"
-            href="https://mdbgo.com/"
+            href="/dashboard"
             style={{ color: '#fff' }}
           >
-            <strong>Study.</strong>
-          </a>
+            <strong>PLStudy.</strong>
+          </Link>
 
           {/* Remove data-mdb-toggle, use React state */}
           <button
