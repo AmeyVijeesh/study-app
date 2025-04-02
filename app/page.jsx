@@ -11,6 +11,7 @@ import {
   faJournalWhills,
   faSmile,
 } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -41,13 +42,17 @@ export default function Home() {
               deadlines.
             </p>
             <div className="landing-btns">
-              <button className="landing-btn primary">Get Started</button>
-              <button className="landing-btn secondary">View Features</button>
+              <Link href="/auth/signup" className="landing-btn primary">
+                Get Started
+              </Link>
+              <a href="#features" className="landing-btn secondary">
+                View Features
+              </a>
             </div>
           </div>
         </div>
       </div>
-      <div className="features-bg">
+      <div className="features-bg" id="features">
         <div className="features-wrapper">
           <h2 className="features-title">Features</h2>
           <div className="features-container">
