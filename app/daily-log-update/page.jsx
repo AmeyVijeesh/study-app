@@ -289,7 +289,8 @@ const UpdateLogPage = () => {
                   <div className="focus-time-display">
                     <h4 className="focus-time-title">Today's Focus Time</h4>
                     <p className="focus-time-value">
-                      {log.totalTimeFocussed} minutes
+                      {log.totalTimeFocussed} mins or{' '}
+                      {(log.totalTimeFocussed / 60).toFixed(2)} hrs
                     </p>
                   </div>
                 )}

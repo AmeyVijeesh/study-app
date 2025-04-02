@@ -149,7 +149,16 @@ const Dashboard = () => {
                   </div>
                 ) : null;
               }}
-              onClickDay={handleDateClick}
+              onClickDay={(date) => {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0); // Normalize today's date
+
+                if (date <= today) {
+                  handleDateClick(date);
+                } else {
+                  alert("You can't log future dates!");
+                }
+              }}
               className="calendar"
             />
           </div>
