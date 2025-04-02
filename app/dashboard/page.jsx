@@ -127,9 +127,17 @@ const Dashboard = () => {
             <Calendar
               onChange={setSelectedDate}
               value={selectedDate}
+              formatDay={(locale, date) => date.getDate().toString()}
               tileClassName={({ date }) => {
                 const formattedDate = date.toLocaleDateString('en-CA');
-                return logDates.has(formattedDate) ? 'log-available' : null;
+                const log = logs.find((log) => log.date === formattedDate);
+
+                if (log) {
+                  if (log.victory === true) return 'victory-day';
+                  if (log.victory === false) return 'setback-day';
+                  else return 'null-day';
+                }
+                return null;
               }}
               tileContent={({ date }) => {
                 const formattedDate = date.toLocaleDateString('en-CA');
@@ -138,7 +146,6 @@ const Dashboard = () => {
                 return log ? (
                   <div className="calendar-tile">
                     <span className="day-rating">{log.dayRating}</span>
-                    <span className="date-label">{date.getDate()}</span>
                   </div>
                 ) : null;
               }}
@@ -146,33 +153,6 @@ const Dashboard = () => {
               className="calendar"
             />
           </div>
-
-          <style jsx global>{``}</style>
-          <p>Emails: {userData.email}</p>
-          <p>Total Work Time: {userData.totalWorkTime} mins</p>
-          <p>Time Worked Today: {todayTimeWorked} mins</p>
-          <p>Sessions Today: {sessionsToday}</p>
-          <br />
-          <p>Avg time so far: {avgTimeWorked} mins</p>
-          <p>
-            Highest:{' '}
-            {highestTimeWorked ? highestTimeWorked.totalTimeFocussed : 0} mins,
-            at {highestTimeWorked ? highestTimeWorked.date : 'N/A'}
-          </p>
-          <p>
-            Lowest: {lowestTimeWorked ? lowestTimeWorked.totalTimeFocussed : 0}{' '}
-            min, at {lowestTimeWorked ? lowestTimeWorked.date : 'N/A'}
-          </p>
-          <Subjects />
-
-          <h3>Total Time Spent Per Subject</h3>
-          <ul>
-            {Object.entries(totalStudyTime).map(([subjectName, time]) => (
-              <li key={subjectName}>
-                {subjectName} - {time} minutes
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </>

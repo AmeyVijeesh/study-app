@@ -14,20 +14,32 @@ const FulltimeData = ({ avgTime, highestTime, lowestTime }) => {
         <div className="dailyDataCont">
           <div className="dailyDataDiv">
             <p className="dailyDataP">
-              Average Study Time: <br />
+              Average Study Time (per day): <br />
               <strong>{(avgTime / 60).toFixed(2)}hrs</strong>
             </p>
           </div>
           <div className="dailyDataDiv">
             <p className="dailyDataP">
-              Highest Time Ever: <br /> <strong>0.5hrs</strong> <br />{' '}
-              <i>at 24-03-1991</i>
+              Highest Time Ever: <br />{' '}
+              <strong>
+                {highestTime
+                  ? (highestTime.totalTimeFocussed / 60).toFixed(2)
+                  : 'N/A'}{' '}
+                hrs
+              </strong>{' '}
+              <br /> <i>at {highestTime ? highestTime.date : 'N/A'}</i>
             </p>
           </div>{' '}
           <div className="dailyDataDiv">
             <p className="dailyDataP">
-              Lowest Time Ever: <br /> <strong>34</strong> <br />{' '}
-              <i>at 24-03-1991</i>
+              Lowest Time Ever: <br />{' '}
+              <strong>
+                {lowestTime
+                  ? (lowestTime.totalTimeFocussed / 60).toFixed(2)
+                  : 'N/A'}{' '}
+                hrs
+              </strong>{' '}
+              <br /> <i>at {lowestTime ? lowestTime.date : 'N/A'}</i>
             </p>
           </div>
         </div>

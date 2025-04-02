@@ -1,0 +1,266 @@
+.update-log-container {
+  margin: 0 auto;
+  width: 75%;
+  height: auto;
+  padding: 20px;
+  font-family: 'Urbanist', sans-serif;
+  border: 1px solid rgba(0, 157, 255, 0.5);
+  border-radius: 10px;
+  padding: 5%;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.progress-container {
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.progress-segment {
+  height: 8px;
+  flex-grow: 1;
+  margin: 0 4px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+}
+
+.progress-segment.active {
+  background-color: #4285f4;
+}
+
+.progress-text {
+  text-align: center;
+  font-size: 14px;
+  color: #898989;
+}
+
+.step-container {
+  margin-bottom: 24px;
+}
+
+.step-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.victory-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.victory-button,
+.setback-button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.victory-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.victory-button.selected {
+  background-color: #27692a;
+}
+
+.setback-button {
+  background-color: #ff9800;
+  color: white;
+}
+
+.setback-button.selected {
+  background-color: #885407;
+  color: white;
+}
+
+/* Rating step */
+.rating-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rating-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.rating-slider {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.rating-value {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.rating-descriptions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Journal step */
+.journal-instructions {
+  margin-bottom: 12px;
+  color: #b9b9b9;
+}
+
+.journal-textarea {
+  width: 100%;
+  height: 160px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  margin-bottom: 16px;
+}
+
+.focus-time-display {
+  margin-top: 16px;
+  padding: 12px;
+  background-color: #e8f0fe;
+  border-radius: 8px;
+}
+
+.focus-time-title {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.focus-time-value {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.study-sessions-container {
+  margin-top: 16px;
+}
+
+.study-sessions-title {
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.study-sessions-list {
+  background-color: #f5f5f5;
+  padding: 12px;
+  border-radius: 8px;
+  list-style-type: none;
+}
+
+.study-session-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.study-session-item:last-child {
+  border-bottom: none;
+}
+
+/* Navigation buttons */
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+.back-button,
+.cancel-button,
+.next-button {
+  padding: 10px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-button,
+.cancel-button {
+  background-color: #e0e0e0;
+}
+
+.next-button {
+  background-color: #4285f4;
+  color: white;
+}
+
+.back-button:hover,
+.cancel-button:hover {
+  background-color: #d0d0d0;
+}
+
+.next-button:hover {
+  background-color: #3367d6;
+}
+
+.existing-data-notice {
+  background-color: #fff8e1;
+  border-left: 4px solid #ffc107;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.quick-view-container {
+  margin-top: 30px;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.quick-view-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #555;
+}
+
+.quick-view-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quick-view-content p {
+  margin: 0;
+}
+
+.quick-view-journal {
+  margin-top: 8px;
+}
+
+.journal-preview {
+  margin-top: 4px;
+  padding: 8px;
+  background-color: white;
+  border-radius: 4px;
+  font-style: italic;
+  color: #666;
+}
