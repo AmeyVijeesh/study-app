@@ -24,6 +24,7 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet"
         />
+        <title>PLStudy - Productivity App</title>
       </head>
       <body>
         <SessionProvider>

@@ -48,9 +48,9 @@ const NavbarSignedIn = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link nav-linka" href="#">
+                <Link href="/pomodoro" className="nav-link">
                   Pomodoro
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="#">

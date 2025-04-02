@@ -13,6 +13,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'PLStudy - All-in-One Productivity App',
+  description:
+    'Track your productivity with this all-in-one productivity website, tailored to help students and workers alike.',
+};
+
 export default function Home() {
   return (
     <>
