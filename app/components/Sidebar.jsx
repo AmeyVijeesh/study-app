@@ -28,7 +28,7 @@ const Sidebar = () => {
           <label className="focusLabel">Start Focusing</label>
         </div>
         <ul>
-          <li onClick={() => router.push('pomodoro')}>
+          <li onClick={() => router.push('/pomodoro')}>
             <FontAwesomeIcon icon={faClock} className="menu-icon" />
             <span>Pomodoro</span>
           </li>

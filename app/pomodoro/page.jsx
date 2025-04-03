@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import '@/styles/pomodoro.css';
+import Loader from '../components/Loader';
 
 const Pomodoro = () => {
   const timerRef = useRef(null);
@@ -163,7 +164,7 @@ const Pomodoro = () => {
     document.title = `(${formatTime(remainingTime)}) ${sessionType}`;
   }, [remainingTime, isWorkSession, workSessionCount]);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loader />;
 
   const startTimer = () => {
     if (isRunning) return;

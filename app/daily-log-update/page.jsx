@@ -5,6 +5,8 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import useDailyLog from '../hooks/useDailyLog';
 import '@/styles/log.css';
 import { Suspense } from 'react';
+import Loader from '../components/Loader';
+
 const UpdateLogPage = () => {
   const searchParams = useSearchParams();
   const userId = searchParams.get('userId');
@@ -13,7 +15,6 @@ const UpdateLogPage = () => {
 
   const { log, loading, error, updateLog } = useDailyLog(userId, date);
 
-  // Form data states
   const [journal, setJournal] = useState('');
   const [victory, setVictory] = useState(null);
   const [dayRating, setDayRating] = useState(50);
@@ -22,9 +23,8 @@ const UpdateLogPage = () => {
   const [timeTable, setTimeTable] = useState('');
   const [hasExistingData, setHasExistingData] = useState(false);
 
-  // Step tracking
   const [currentStep, setCurrentStep] = useState(0);
-  const totalSteps = 4; // Updated to include journal step
+  const totalSteps = 4;
 
   useEffect(() => {
     if (log) {
@@ -37,7 +37,6 @@ const UpdateLogPage = () => {
       setTotalTimeFocussed(log.totalTimeFocussed || '');
       setTimeTable(JSON.stringify(log.timeTable || {}, null, 2));
 
-      // Check if log has meaningful data already
       const hasData =
         log.victory !== undefined ||
         log.journal ||
@@ -55,11 +54,11 @@ const UpdateLogPage = () => {
       dayRating,
       academicRating,
       journal,
-      totalTimeFocussed, // keeping this value unchanged
+      totalTimeFocussed,
       timeTable: JSON.parse(timeTable),
     });
 
-    router.push('/dashboard'); // Redirect back after update
+    router.push('/dashboard');
   };
 
   const nextStep = () => {
@@ -76,7 +75,7 @@ const UpdateLogPage = () => {
     }
   };
 
-  if (loading) return <h1>Loading...</h1>;
+  if (loading) return <Loader />;
   if (error) return <p>{error}</p>;
 
   return (

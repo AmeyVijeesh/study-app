@@ -15,6 +15,7 @@ import DailyGraph from '../components/DailyGraph';
 import Streak from '../components/Streak';
 import Quotes from '../components/Quotes';
 import FulltimeData from '../components/FulltimeData';
+import Loader from '../components/Loader';
 
 const LazyWeeklyStudyGraph = dynamic(
   () => import('@/app/components/WeeklyGraph'),
@@ -69,7 +70,7 @@ const Dashboard = () => {
   }, [session]);
 
   if (!session) return <p>Please log in to view your dashboard.</p>;
-  if (loading) return <h1>Loading...</h1>;
+  if (loading) return <Loader />;
 
   const handleDateClick = (date) => {
     const formattedDate = date.toLocaleDateString('en-CA');
