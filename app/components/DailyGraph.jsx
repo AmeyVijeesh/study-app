@@ -44,13 +44,11 @@ const DailyGraph = () => {
         data={studyData}
         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
       >
-        {/* ✅ Subtle Grid Lines */}
         <CartesianGrid
           strokeDasharray="4 4"
           stroke="rgba(255, 255, 255, 0.2)"
         />
 
-        {/* ✅ Improve X & Y Axis Fonts */}
         <XAxis
           dataKey="date"
           tick={{ fontSize: 12, fill: '#ddd' }}
@@ -69,7 +67,6 @@ const DailyGraph = () => {
           tick={{ fontSize: 12, fill: '#ddd' }}
         />
 
-        {/* ✅ Custom Tooltip for Better Readability */}
         <Tooltip
           contentStyle={{
             backgroundColor: '#1e293b',
@@ -80,7 +77,6 @@ const DailyGraph = () => {
           cursor={{ stroke: '#2a76a4', strokeWidth: 1 }}
         />
 
-        {/* ✅ Line with Gradient Fill & Shadow Effect */}
         <defs>
           <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#2a76a4" stopOpacity={0.8} />

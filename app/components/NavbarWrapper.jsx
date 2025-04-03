@@ -1,4 +1,4 @@
-'use client'; // Ensures this is a Client Component
+'use client';
 
 import { useSession } from 'next-auth/react';
 import NavbarSignedIn from './NavbarSignedIn';

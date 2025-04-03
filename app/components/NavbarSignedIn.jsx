@@ -23,7 +23,6 @@ const NavbarSignedIn = () => {
             <strong>PLStudy.</strong>
           </Link>
 
-          {/* Remove data-mdb-toggle, use React state */}
           <button
             className="navbar-toggler ms-auto"
             type="button"

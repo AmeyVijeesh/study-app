@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import User from '@/models/User';
-import DailyLog from '@/models/DailyLog'; // Import the DailyLog model
+import DailyLog from '@/models/DailyLog';
 import { connectToDatabase } from '@/lib/mongodb';
 import Subjects from '@/models/Subjects';
 
@@ -15,7 +15,6 @@ export async function GET(req) {
 
   await connectToDatabase();
 
-  // Fetch user details
   const user = await User.findOne({ email: session.user.email }).select(
     'name email totalWorkTime'
   );
@@ -26,11 +25,9 @@ export async function GET(req) {
     });
   }
 
-  // Fetch user's logs
   const logs = await DailyLog.find({ userId: user._id })
     .sort({ date: -1 })
     .populate('studySessions.subjectId', 'name');
-  // Filter out logs with null/undefined totalTimeFocussed and count valid entries
   const validLogs = logs.filter(
     (log) =>
       log.totalTimeFocussed !== undefined && log.totalTimeFocussed !== null
@@ -68,7 +65,7 @@ export async function GET(req) {
   const totalStudyTime = {};
   logs.forEach((log) => {
     log.studySessions.forEach((session) => {
-      if (!session.subjectId) return; // Handle cases where subject might be missing
+      if (!session.subjectId) return;
       const subjectName = session.subjectId.name;
 
       if (!totalStudyTime[subjectName]) {

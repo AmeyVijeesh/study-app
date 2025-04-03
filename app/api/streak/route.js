@@ -29,12 +29,12 @@ export async function POST(req) {
     const yesterdayStr = yesterday.toISOString().split('T')[0];
 
     let newStreak = user.streak;
-    let highestStreak = user.highestStreak || 0; // Assuming highest streak tracking exists
+    let highestStreak = user.highestStreak || 0;
 
     if (user.lastActivityDate === yesterdayStr) {
-      newStreak += 1; // Continue streak
+      newStreak += 1;
     } else {
-      newStreak = 1; // Reset streak
+      newStreak = 1;
     }
 
     if (newStreak > highestStreak) highestStreak = newStreak;

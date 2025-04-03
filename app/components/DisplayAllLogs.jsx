@@ -17,7 +17,7 @@ const DisplayAllLogs = ({ userId }) => {
   const logDates = new Set(logs.map((log) => log.date));
 
   const handleDateClick = (date) => {
-    const formattedDate = date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    const formattedDate = date.toISOString().split('T')[0];
     if (logDates.has(formattedDate)) {
       router.push(`/daily-log-update?userId=${userId}&date=${formattedDate}`);
     } else {

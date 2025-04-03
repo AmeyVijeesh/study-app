@@ -45,7 +45,7 @@ export async function POST(req) {
       );
 
     const newSubject = await Subjects.create({
-      userId: session.user.id, // Ensure subject is linked to the logged-in user
+      userId: session.user.id,
       name,
     });
 

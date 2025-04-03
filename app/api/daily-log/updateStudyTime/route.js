@@ -17,7 +17,6 @@ export async function POST(req) {
       );
     }
 
-    // Ensure "Other" subject exists for the user
     let actualSubjectId = subjectId;
 
     if (!subjectId) {
@@ -30,14 +29,12 @@ export async function POST(req) {
       actualSubjectId = otherSubject._id;
     }
 
-    // Find or create the daily log entry
     let dailyLog = await DailyLog.findOne({ userId, date });
 
     if (!dailyLog) {
       dailyLog = new DailyLog({ userId, date, studySessions: [] });
     }
 
-    // Check if the subject already exists in studySessions
     const subjectIndex = dailyLog.studySessions.findIndex(
       (session) => session.subjectId.toString() === actualSubjectId.toString()
     );
@@ -53,13 +50,11 @@ export async function POST(req) {
 
     await dailyLog.save();
 
-    // Update total study time for the user
     const user = await User.findById(userId);
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Update total study time for the specific subject
     const prevTime = user.totalStudyTime.get(actualSubjectId.toString()) || 0;
     user.totalStudyTime.set(actualSubjectId.toString(), prevTime + timeSpent);
 

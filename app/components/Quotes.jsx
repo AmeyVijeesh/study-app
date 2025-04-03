@@ -2,14 +2,14 @@ import React from 'react';
 import quotes from 'success-motivational-quotes';
 
 const Quotes = () => {
-  const successQuotes = quotes.getQuotesByCategory('Success'); // Returns an array of quotes
+  const successQuotes = quotes.getQuotesByCategory('Success');
   const randomQuote =
-    successQuotes[Math.floor(Math.random() * successQuotes.length)]; // Pick a random quote
+    successQuotes[Math.floor(Math.random() * successQuotes.length)];
 
   return (
     <div className="quoteDiv">
-      <p>{randomQuote.body}</p> {/* Show the quote text */}
-      <p>- {randomQuote.by}</p> {/* Show the author name */}
+      <p>{randomQuote.body}</p>
+      <p>- {randomQuote.by}</p>
     </div>
   );
 };

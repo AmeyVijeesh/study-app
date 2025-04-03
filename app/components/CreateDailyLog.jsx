@@ -12,7 +12,7 @@ const DailyLogForm = ({ userId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log('Submitting log for user:', userId); // Debugging
+    console.log('Submitting log for user:', userId);
 
     try {
       const log = await createDailyLog(
@@ -40,7 +40,6 @@ const DailyLogForm = ({ userId }) => {
         onChange={(e) => settotalTimeFocussed(Number(e.target.value))}
         placeholder="Total focused time (minutes)"
       />
-      {/* Add a UI for timetable input */}
       <button type="submit">Save Log</button>
       {message && <p>{message}</p>}
     </form>

@@ -17,11 +17,10 @@ export async function POST(req) {
     const userId = session.user.id;
     const todayDate = new Date().toISOString().split('T')[0];
 
-    // Update daily log
     let dailyLog = await DailyLog.findOne({ userId, date: todayDate });
     if (dailyLog) {
       dailyLog.totalTimeFocussed += totalWorkTime;
-      dailyLog.sessionsToday += 1; // Increment session count
+      dailyLog.sessionsToday += 1;
     } else {
       dailyLog = new DailyLog({
         userId,
@@ -32,7 +31,6 @@ export async function POST(req) {
     }
     await dailyLog.save();
 
-    // ✅ Update totalWorkTime in User model
     await User.findByIdAndUpdate(userId, { $inc: { totalWorkTime } });
 
     return NextResponse.json(

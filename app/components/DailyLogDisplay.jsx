@@ -2,7 +2,7 @@
 
 import useDailyLog from '../hooks/useDailyLog';
 const DailyLogDisplay = ({ userId }) => {
-  const date = new Date().toISOString().split('T')[0]; // Get today's date
+  const date = new Date().toISOString().split('T')[0];
   const { log, loading, error } = useDailyLog(userId, date);
 
   if (loading) return <p>Loading...</p>;

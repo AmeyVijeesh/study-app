@@ -1,7 +1,7 @@
-'use client'; // Ensure it's a Client Component
+'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation'; // Correct import for App Router
+import { useRouter } from 'next/navigation';
 import '@/styles/sidebar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -12,10 +12,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
-  const router = useRouter(); // Correct usage in a Client Component
-
+  const router = useRouter();
   const handleFocusClick = () => {
-    router.push('/pomodoro'); // Redirect to /pomodoro
+    router.push('/pomodoro');
   };
 
   return (
@@ -28,7 +27,7 @@ const Sidebar = () => {
           <label className="focusLabel">Start Focusing</label>
         </div>
         <ul>
-          <li onClick={() => router.push('/pomodoro')}>
+          <li onClick={() => router.push('pomodoro')}>
             <FontAwesomeIcon icon={faClock} className="menu-icon" />
             <span>Pomodoro</span>
           </li>

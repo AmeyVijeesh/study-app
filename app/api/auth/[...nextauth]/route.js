@@ -50,27 +50,26 @@ export const authOptions = {
         let existingUser = await User.findOne({ email: user.email });
 
         if (!existingUser) {
-          // ✅ Create new user with MongoDB ObjectId
           existingUser = new User({
             name: user.name,
             email: user.email,
-            password: null, // No password for Google users
+            password: null,
           });
           await existingUser.save();
         }
-        user.id = existingUser._id.toString(); // Ensure ObjectId is converted to string
+        user.id = existingUser._id.toString();
       }
 
       return true;
     },
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id.toString(); // Ensure ObjectId is converted to string
+        token.id = user.id.toString();
       }
       return token;
     },
     async session({ session, token }) {
-      session.user.id = token.id; // Ensure ObjectId is available in session
+      session.user.id = token.id;
       return session;
     },
   },

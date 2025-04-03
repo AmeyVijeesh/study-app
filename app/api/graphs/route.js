@@ -21,7 +21,6 @@ export async function GET(req) {
 
   let userId = session.user.id;
 
-  // ✅ Use `userId` in both queries
   const logs = await DailyLog.find({
     userId: userId,
     date: startDate && endDate ? { $gte: startDate, $lte: endDate } : undefined,
@@ -29,10 +28,11 @@ export async function GET(req) {
     .sort({ date: 1 })
     .populate('studySessions.subjectId', 'name');
 
-  const allLogs = await DailyLog.find({ userId: userId }) // ✅ FIXED HERE
-    .populate('studySessions.subjectId', 'name');
+  const allLogs = await DailyLog.find({ userId: userId }).populate(
+    'studySessions.subjectId',
+    'name'
+  );
 
-  // Daily study time
   const studyData = [];
   let currentDate = new Date(startDate);
   const finalDate = new Date(endDate);
@@ -48,7 +48,7 @@ export async function GET(req) {
 
     currentDate.setDate(currentDate.getDate() + 1);
   }
-  const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split('T')[0];
 
   const todayLog = await DailyLog.findOne({ userId, date: today }).populate(
     'studySessions.subjectId',
@@ -66,7 +66,6 @@ export async function GET(req) {
     }, {});
   }
 
-  // Function to compute total study time per subject
   const calculateTotalStudyTime = (logs) => {
     const totalStudyTime = {};
     logs.forEach((log) => {
