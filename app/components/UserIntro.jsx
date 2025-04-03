@@ -25,10 +25,10 @@ const UserIntro = ({ username }) => {
       setCurrentTime(`${formattedDate} | ${formattedTime}`);
     };
 
-    updateTime(); // Run immediately
-    const interval = setInterval(updateTime, 1000); // Update every second
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
 
-    return () => clearInterval(interval); // Cleanup
+    return () => clearInterval(interval);
   }, []);
   const getTimeOfDay = () => {
     const hr = new Date().getHours();

@@ -151,7 +151,7 @@ const Dashboard = () => {
               }}
               onClickDay={(date) => {
                 const today = new Date();
-                today.setHours(0, 0, 0, 0); // Normalize today's date
+                today.setHours(0, 0, 0, 0);
 
                 if (date <= today) {
                   handleDateClick(date);

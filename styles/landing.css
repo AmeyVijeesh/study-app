@@ -233,7 +233,7 @@ body {
 }
 
 .feature-icon {
-  height: 40px; /* Fixed height for consistency */
+  height: 40px;
   width: 40px;
   display: flex;
   align-items: center;
@@ -255,7 +255,6 @@ body {
   color: rgba(248, 249, 250, 0.8);
 }
 
-/* Media Queries for Responsiveness */
 @media (max-width: 992px) {
   .features-container {
     grid-template-columns: repeat(2, 1fr);
@@ -277,7 +276,6 @@ body {
   }
 }
 
-/* Animation for Feature Cards */
 @keyframes fadeInUp {
   from {
     opacity: 0;

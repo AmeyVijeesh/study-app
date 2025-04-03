@@ -10,7 +10,7 @@ const Pomodoro = () => {
   const [timer, setTimer] = useState(25);
   const [workTime, setWorkTime] = useState(25);
   const [shortBreakTime, setShortBreakTime] = useState(5);
-  const [longBreakTime, setLongBreakTime] = useState(10); // Define long break time
+  const [longBreakTime, setLongBreakTime] = useState(10);
   const [isRunning, setIsRunning] = useState(false);
   const [isWorkSession, setIsWorkSession] = useState(true);
   const [remainingTime, setRemainingTime] = useState(workTime * 60);
@@ -19,7 +19,7 @@ const Pomodoro = () => {
   const [tempWorkTime, setTempWorkTime] = useState(0);
   const [tempShortBreakTime, setTempShortBreakTime] = useState(0);
   const [tempLongBreakTime, setTempLongBreakTime] = useState(0);
-  const [lastTotalWorkTime, setLastTotalWorkTime] = useState(0); // Track last recorded total
+  const [lastTotalWorkTime, setLastTotalWorkTime] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   const [userStreak, setUserStreak] = useState(0);
@@ -30,7 +30,7 @@ const Pomodoro = () => {
   const [showSettings, setShowSettings] = useState(false);
 
   const { data: session } = useSession();
-  const userId = session?.user?.id; // Get user ID from session
+  const userId = session?.user?.id;
 
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
@@ -57,13 +57,13 @@ const Pomodoro = () => {
           timestamp: Date.now(),
         })
       );
-    }, 1000); // Debounce delay
+    }, 1000);
 
-    return () => clearTimeout(timeout); // Cleanup on unmount or update
+    return () => clearTimeout(timeout);
   }, [remainingTime, isRunning, isWorkSession, workSessionCount]);
 
   useEffect(() => {
-    if (isLoading) return; // Ensure we wait until preferences are loaded
+    if (isLoading) return;
 
     const savedState = localStorage.getItem('pomodoroState');
 
@@ -82,12 +82,12 @@ const Pomodoro = () => {
         setIsWorkSession(savedSession);
         setWorkSessionCount(savedCount);
       } else {
-        setRemainingTime(workTime * 60); // Reset if too much time has passed
+        setRemainingTime(workTime * 60);
       }
     } else {
-      setRemainingTime(workTime * 60); // If no saved state, use default
+      setRemainingTime(workTime * 60);
     }
-  }, [isLoading, workTime]); // Add dependencies
+  }, [isLoading, workTime]);
 
   useEffect(() => {
     const fetchPreferences = async () => {
@@ -119,7 +119,7 @@ const Pomodoro = () => {
       if (!userId) return;
 
       try {
-        const date = new Date().toISOString().split('T')[0]; // Get today's date
+        const date = new Date().toISOString().split('T')[0];
 
         const response = await fetch(
           `/api/daily-log?userId=${userId}&date=${date}`
@@ -181,7 +181,6 @@ const Pomodoro = () => {
 
         const newTime = prevTime - 1;
 
-        // Update localStorage directly
         localStorage.setItem(
           'pomodoroState',
           JSON.stringify({
@@ -208,10 +207,9 @@ const Pomodoro = () => {
     setIsWorkSession(true);
     setRemainingTime(workTime * 60);
     updateTimerDisplay();
-    localStorage.removeItem('pomodoroState'); // Clear stored state
+    localStorage.removeItem('pomodoroState');
   };
 
-  // Enhanced handleSessionSwitch function with streak updates
   const handleSessionSwitch = async () => {
     let updatedTotalTime = totalTime;
 
@@ -227,7 +225,6 @@ const Pomodoro = () => {
         await recordStudyTime(selectedSubject, workTime);
       }
 
-      // Update streak when a work session is completed
       await updateUserStreak();
 
       const breakTime =
@@ -240,7 +237,6 @@ const Pomodoro = () => {
     }
   };
 
-  // New function to update user streak
   const updateUserStreak = async () => {
     console.log('called steak beef');
     try {
@@ -258,23 +254,18 @@ const Pomodoro = () => {
 
       const data = await response.json();
 
-      // Update UI with new streak information
       setUserStreak(data.streak);
       setHighestStreak(data.highestStreak);
 
-      // If you want to show a notification when streak increases
       if (data.streak > 1) {
         showStreakNotification(data.streak);
       }
     } catch (error) {
       console.error('Error updating streak:', error);
-      // Optionally handle error in UI
     }
   };
 
-  // Optional: Show a notification when streak increases
   const showStreakNotification = (streakCount) => {
-    // Create and show a toast or notification
     const notification = document.createElement('div');
     notification.className = 'streak-notification';
     notification.innerHTML = `
@@ -287,7 +278,6 @@ const Pomodoro = () => {
 
     document.body.appendChild(notification);
 
-    // Remove after a few seconds
     setTimeout(() => {
       notification.classList.add('fade-out');
       setTimeout(() => notification.remove(), 500);
@@ -298,7 +288,7 @@ const Pomodoro = () => {
     if (!session?.user?.id) return;
 
     try {
-      const date = new Date().toISOString().split('T')[0]; // Get today's date
+      const date = new Date().toISOString().split('T')[0];
 
       const response = await fetch('/api/daily-log/updateStudyTime', {
         method: 'POST',
@@ -327,7 +317,7 @@ const Pomodoro = () => {
       const timeWorkedNow =
         Math.floor(newTotalWorkTime / 60) - lastTotalWorkTime;
 
-      if (timeWorkedNow <= 0) return; // Prevent unnecessary updates
+      if (timeWorkedNow <= 0) return;
 
       console.log('Sending new work time:', timeWorkedNow);
 
@@ -348,7 +338,7 @@ const Pomodoro = () => {
       }
 
       console.log('Todays work time updated:', responseData.totalTimeWorked);
-      setLastTotalWorkTime(Math.floor(newTotalWorkTime / 60)); // Update last known total
+      setLastTotalWorkTime(Math.floor(newTotalWorkTime / 60));
     } catch (error) {
       console.error('Error updating work time:', error);
     }
@@ -397,9 +387,8 @@ const Pomodoro = () => {
       const newSession = !prev;
 
       setWorkSessionCount((prevCount) => {
-        const newCount = newSession ? prevCount + 1 : prevCount; // Increment only when switching to work
+        const newCount = newSession ? prevCount + 1 : prevCount;
         if (!newSession) {
-          // If switching to a break
           if (newCount % 3 === 0) {
             setRemainingTime(longBreakTime * 60);
           } else {

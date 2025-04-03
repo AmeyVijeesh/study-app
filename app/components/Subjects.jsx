@@ -21,7 +21,6 @@ export default function Subjects() {
     fetchSubjects();
   }, []);
 
-  // Add subject
   const addSubject = async () => {
     if (!subjectName.trim()) return alert('Enter a subject name');
     setLoading(true);
@@ -35,8 +34,8 @@ export default function Subjects() {
 
       const data = await res.json();
       if (res.ok) {
-        setSubjects([...subjects, data]); // Update UI
-        setSubjectName(''); // Clear input
+        setSubjects([...subjects, data]);
+        setSubjectName('');
       } else {
         alert(data.message);
       }
@@ -96,7 +95,6 @@ export default function Subjects() {
           </button>
         </div>
 
-        {/* Display Subjects */}
         {subjects.length > 0 ? (
           <ul className="subjects-list">
             {subjects.map((subject) => (
