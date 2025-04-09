@@ -45,7 +45,7 @@ const WeeklyStudyGraph = () => {
       );
       if (!res.ok) throw new Error('Failed to fetch study data');
       const data = await res.json();
-      setStudyData(data.studyData);
+      setStudyData(JSON.parse(JSON.stringify(data.studyData)));
       setSubjectData(data.todaySubjectData);
       setTotalTimeData(data.fullSubjectData);
     } catch (err) {

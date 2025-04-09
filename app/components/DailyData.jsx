@@ -24,7 +24,6 @@ const DailyData = ({ totalTime, timeToday, sessionsToday }) => {
             </p>
           </div>
         </div>
-        <DailyGraph />
       </div>
     </>
   );

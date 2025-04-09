@@ -10,7 +10,7 @@ export default function Loader() {
         height: '100vh',
       }}
     >
-      <ClockLoader color="#36d7b7" size={50} />
+      <ClockLoader color="#fff" size={50} />
     </div>
   );
 }

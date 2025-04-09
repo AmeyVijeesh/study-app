@@ -18,7 +18,6 @@ export async function POST(req) {
     );
   }
 
-  // Hash the new password
   const hashedPassword = await bcrypt.hash(password, 10);
   user.password = hashedPassword;
   user.resetPasswordToken = undefined;

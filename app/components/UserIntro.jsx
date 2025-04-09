@@ -38,13 +38,15 @@ const UserIntro = ({ username }) => {
     return 'evening';
   };
   return (
-    <div className="dash-intro">
-      <h1 className="dash-title">
-        Good {getTimeOfDay()},{' '}
-        {username.charAt(0).toUpperCase() + username.slice(1)}!
-      </h1>
-      <p>{currentTime}</p>
-    </div>
+    <>
+      <div className="dash-intro">
+        <h1 className="dash-title">
+          Good {getTimeOfDay()},{' '}
+          {username.charAt(0).toUpperCase() + username.slice(1)}!
+        </h1>
+        <p>{currentTime}</p>
+      </div>
+    </>
   );
 };
 
