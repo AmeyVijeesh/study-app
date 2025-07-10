@@ -1,0 +1,17 @@
+.motivational-text {
+  margin: 5%;
+  font-size: 4rem;
+  font-weight: bold;
+  font-family: 'Urbanist', sans-serif;
+  color: #ffffff;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.motivation-cont {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

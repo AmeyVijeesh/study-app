@@ -105,6 +105,7 @@ const Dashboard = () => {
   const [avgTimeWorked, setAvgTimeWorked] = useState(0);
   const [highestTimeWorked, setHighestTimeWorked] = useState(null);
   const [lowestTimeWorked, setLowestTimeWorked] = useState(null);
+  const [focusedSelected, setFocusedSelected] = useState(false);
 
   const [sidebarLoaded, setSidebarLoaded] = useState(false);
   const [userIntroLoaded, setUserIntroLoaded] = useState(false);
@@ -177,7 +178,6 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    // Only fetch if we have a session and we're on the client
     if (status === 'loading' || !isClient) return;
 
     if (!session) {
@@ -187,13 +187,11 @@ const Dashboard = () => {
 
     fetchDashboardData();
 
-    // Add performance monitoring for debugging
     if (isClient && window.performance) {
       window.performance.mark('dashboard-start');
     }
 
     return () => {
-      // Clean up performance monitoring
       if (isClient && window.performance) {
         window.performance.mark('dashboard-end');
         window.performance.measure(
@@ -209,13 +207,10 @@ const Dashboard = () => {
     };
   }, [session, status, isClient]);
 
-  // Handle auth loading state
   if (status === 'loading') return <Loader />;
 
-  // Handle unauthenticated state
   if (!session) return <p>Please log in to view your dashboard.</p>;
 
-  // Handle data loading state
   if (loading) return <Loader />;
 
   const handleDateClick = (date) => {
@@ -328,7 +323,26 @@ const Dashboard = () => {
               </ErrorBoundary>
 
               <h2 className="calendar-title">Your Logs</h2>
+
               <div className="calendar-cont">
+                <div className="check-cont">
+                  <label className="custom-checkbox-label">
+                    <div className="custom-checkbox-container">
+                      <input
+                        type="checkbox"
+                        className="custom-checkbox"
+                        checked={focusedSelected}
+                        onChange={() => setFocusedSelected((prev) => !prev)}
+                      />
+                      <div className="custom-checkbox-checkmark" />
+                    </div>
+                    <span className="custom-checkbox-text">
+                      {focusedSelected
+                        ? 'Show Day Ratings'
+                        : 'Show Time Studied for Days'}
+                    </span>
+                  </label>
+                </div>
                 <Calendar
                   onChange={setSelectedDate}
                   value={selectedDate}
@@ -350,13 +364,13 @@ const Dashboard = () => {
 
                     return log ? (
                       <div className="calendar-tile">
-                        <span className="day-rating">{log.dayRating}</span>
-                        <span
-                          onClick={() => {
-                            console.log(JSON.stringify(log));
-                          }}
-                        >
-                          {log.totalTimeFocussed}
+                        <span className="day-rating">
+                          {focusedSelected
+                            ? (
+                                Math.floor((log.totalTimeFocussed / 60) * 100) /
+                                100
+                              ).toFixed(2) + 'hrs'
+                            : log.dayRating}
                         </span>
                       </div>
                     ) : null;

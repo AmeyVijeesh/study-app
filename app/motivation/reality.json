@@ -1,0 +1,135 @@
+{
+  "dreamVision": {
+    "empire": {
+      "title": "Your Empire Awaits",
+      "description": "The business empire you'll build, the decisions you'll make, the lives you'll change.",
+      "visualElements": {
+        "images": [
+          "Corporate boardroom with you at the head",
+          "Your name on a building",
+          "Signing million-dollar deals"
+        ],
+        "quotes": [
+          "Every empire starts with a single decision to never give up",
+          "Your competition is studying while you're dreaming. Make the dream reality.",
+          "The CEO you want to become is built on the student you are today"
+        ]
+      }
+    },
+    "porsche": {
+      "title": "Your Dream Porsche",
+      "model": "911 Turbo S",
+      "price": "₹3.08 Crores",
+      "description": "The reward for years of sacrifice. The symbol of your success.",
+      "reality": "Average engineering graduate salary: ₹3.5 LPA. Your Porsche costs 88 years of that salary.",
+      "iitReality": "Average IIT graduate starting salary: ₹15+ LPA. Your Porsche becomes achievable in 5-7 years with the right career."
+    },
+    "daughter": {
+      "title": "Your Daughter's Future",
+      "dreams": [
+        "The best schools money can buy",
+        "Never hearing 'we can't afford it'",
+        "Pride in her father's achievements",
+        "A life of opportunities, not limitations"
+      ],
+      "fears": [
+        "Settling for less because of financial constraints",
+        "Watching her friends get opportunities she can't",
+        "Her asking why daddy didn't work harder when he had the chance",
+        "Generational mediocrity instead of generational wealth"
+      ]
+    }
+  },
+  "realityCheck": {
+    "currentPath": {
+      "title": "Your Current Trajectory",
+      "outcomes": [
+        "Average engineering college → ₹3.5 LPA starting salary",
+        "Struggle to afford basic lifestyle in 10 years",
+        "Your daughter asking why you didn't aim higher",
+        "Watching others live the life you dreamed of"
+      ]
+    },
+    "iitPath": {
+      "title": "The IIT Path",
+      "outcomes": [
+        "Top companies → ₹15+ LPA starting, ₹50+ LPA in 5 years",
+        "Global opportunities → Silicon Valley, own startup",
+        "Your daughter proud to say 'My dad went to IIT'",
+        "The financial foundation for your empire"
+      ]
+    },
+    "timeLeft": {
+      "title": "Time Reality",
+      "facts": [
+        "JEE 2025: Your one shot at changing everything",
+        "Every day lost is a day your competition gets ahead",
+        "Your daughter is watching. What example are you setting?",
+        "Success isn't about talent. It's about who works harder when nobody's watching."
+      ]
+    }
+  },
+  "motivationalContent": {
+    "parenthood": [
+      "Your daughter will either be proud of your sacrifice or disappointed by your excuses",
+      "The man your daughter needs you to be is built in these study hours",
+      "Every problem you solve today is an opportunity you create for her tomorrow",
+      "She's counting on you to be the father who never gave up on his dreams"
+    ],
+    "empire": [
+      "Empires aren't built by people who gave up when it got hard",
+      "Your future company depends on the discipline you build today",
+      "Every successful entrepreneur has a story of sacrifice. This is yours.",
+      "The CEO you want to become is watching what you do right now"
+    ],
+    "porsche": [
+      "That Porsche isn't just a car. It's proof that you kept your promises to yourself",
+      "Your dream car is waiting. But only if you earn it.",
+      "The keys to your Porsche are in these textbooks",
+      "Every hour you study is a kilometer closer to your dream car"
+    ]
+  },
+  "harshTruths": [
+    {
+      "title": "Your Daughter's Future",
+      "truth": "If you don't make it to IIT, your daughter's opportunities shrink by 90%. She'll face the same financial struggles you did.",
+      "impact": "high"
+    },
+    {
+      "title": "Your Empire Dreams",
+      "truth": "Without IIT's network and opportunities, your empire becomes a small business. Your Porsche becomes a second-hand sedan.",
+      "impact": "high"
+    },
+    {
+      "title": "The Porsche Reality",
+      "truth": "At ₹3.5 LPA, your Porsche 911 Turbo S will remain a wallpaper on your phone. Forever.",
+      "impact": "medium"
+    },
+    {
+      "title": "Your Current Study Hours",
+      "truth": "322 hours total. IIT toppers have 3000+ hours. You're not even in the same league.",
+      "impact": "high"
+    },
+    {
+      "title": "The Competition",
+      "truth": "While you're reading this, 10,000 students are solving problems. They want your IIT seat.",
+      "impact": "medium"
+    }
+  ],
+  "visualReminders": {
+    "successImages": [
+      "Porsche 911 Turbo S in your driveway",
+      "Your daughter graduating from Harvard",
+      "Your name on a corporate building",
+      "Family vacation to Europe",
+      "Your daughter's wedding - no expense spared"
+    ],
+    "failureImages": [
+      "Taking the bus while your Porsche remains a dream",
+      "Your daughter asking for things you can't afford",
+      "Watching others live your dream life",
+      "Your daughter settling for less because of your choices",
+      "Retirement with no financial security"
+    ]
+  }
+}
