@@ -29,6 +29,10 @@ const Pomodoro = () => {
 
   const [showSettings, setShowSettings] = useState(false);
 
+  // For accurate timer
+  const startTimeRef = useRef(0);
+  const expectedEndTimeRef = useRef(0);
+
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
@@ -44,6 +48,35 @@ const Pomodoro = () => {
     setTimer(formatTime(remainingTime));
   };
 
+  // Handle visibility change
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && isRunning) {
+        // When tab becomes visible, recalculate remaining time
+        const now = Date.now();
+        const elapsedSeconds = Math.floor((now - startTimeRef.current) / 1000);
+        const newRemainingTime = Math.max(
+          0,
+          Math.floor((expectedEndTimeRef.current - now) / 1000)
+        );
+
+        // Update remaining time based on what it should be
+        setRemainingTime(newRemainingTime);
+
+        if (newRemainingTime <= 0) {
+          clearInterval(timerRef.current);
+          setIsRunning(false);
+          handleSessionSwitch();
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [isRunning]);
+
   useEffect(() => {
     if (!isRunning) return;
 
@@ -55,6 +88,7 @@ const Pomodoro = () => {
           isWorkSession,
           workSessionCount,
           timestamp: Date.now(),
+          expectedEndTime: expectedEndTimeRef.current,
         })
       );
     }, 1000);
@@ -71,18 +105,35 @@ const Pomodoro = () => {
       const {
         remainingTime: savedTime,
         timestamp,
+        expectedEndTime,
         isWorkSession: savedSession,
         workSessionCount: savedCount,
       } = JSON.parse(savedState);
-      const elapsed = Math.floor((Date.now() - timestamp) / 1000);
-      const newTime = savedTime - elapsed;
 
-      if (newTime > 0) {
-        setRemainingTime(newTime);
-        setIsWorkSession(savedSession);
-        setWorkSessionCount(savedCount);
+      if (expectedEndTime) {
+        const now = Date.now();
+        const newTime = Math.max(0, Math.floor((expectedEndTime - now) / 1000));
+
+        if (newTime > 0) {
+          setRemainingTime(newTime);
+          setIsWorkSession(savedSession);
+          setWorkSessionCount(savedCount);
+          expectedEndTimeRef.current = expectedEndTime;
+        } else {
+          setRemainingTime(workTime * 60);
+        }
       } else {
-        setRemainingTime(workTime * 60);
+        // Fallback for old format
+        const elapsed = Math.floor((Date.now() - timestamp) / 1000);
+        const newTime = Math.max(0, savedTime - elapsed);
+
+        if (newTime > 0) {
+          setRemainingTime(newTime);
+          setIsWorkSession(savedSession);
+          setWorkSessionCount(savedCount);
+        } else {
+          setRemainingTime(workTime * 60);
+        }
       }
     } else {
       setRemainingTime(workTime * 60);
@@ -169,36 +220,35 @@ const Pomodoro = () => {
   const startTimer = () => {
     if (isRunning) return;
 
+    const now = Date.now();
+    startTimeRef.current = now;
+    // Calculate when this timer should end
+    expectedEndTimeRef.current = now + remainingTime * 1000;
+
     setIsRunning(true);
+
     timerRef.current = setInterval(() => {
-      setRemainingTime((prevTime) => {
-        if (prevTime <= 1) {
-          clearInterval(timerRef.current);
-          setIsRunning(false);
-          handleSessionSwitch();
-          return 0;
-        }
+      const currentTime = Date.now();
+      const newRemainingTime = Math.max(
+        0,
+        Math.floor((expectedEndTimeRef.current - currentTime) / 1000)
+      );
 
-        const newTime = prevTime - 1;
+      setRemainingTime(newRemainingTime);
 
-        localStorage.setItem(
-          'pomodoroState',
-          JSON.stringify({
-            remainingTime: newTime,
-            isWorkSession,
-            workSessionCount,
-            timestamp: Date.now(),
-          })
-        );
-
-        return newTime;
-      });
+      if (newRemainingTime <= 0) {
+        clearInterval(timerRef.current);
+        setIsRunning(false);
+        handleSessionSwitch();
+      }
     }, 1000);
   };
 
   const pauseTimer = () => {
     clearInterval(timerRef.current);
     setIsRunning(false);
+    // Update expected end time for when we resume
+    expectedEndTimeRef.current = Date.now() + remainingTime * 1000;
   };
 
   const resetTimer = () => {

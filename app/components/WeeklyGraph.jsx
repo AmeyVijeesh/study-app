@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   BarChart,
   Bar,
@@ -27,8 +27,11 @@ const WeeklyStudyGraph = () => {
   const [studyData, setStudyData] = useState([]);
   const [subjectData, setSubjectData] = useState([]);
   const [totalTimeData, setTotalTimeData] = useState([]);
-  const today = new Date().toLocaleDateString('en-CA');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Use useMemo or compute dates only once
+  const today = new Date().toLocaleDateString('en-CA');
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
   const defaultStartDate = oneWeekAgo.toLocaleDateString('en-CA');
@@ -36,26 +39,80 @@ const WeeklyStudyGraph = () => {
   const [startDate, setStartDate] = useState(defaultStartDate);
   const [endDate, setEndDate] = useState(today);
 
-  const fetchStudyData = async () => {
+  const fetchStudyData = useCallback(async () => {
     if (!startDate || !endDate) return;
+
+    setLoading(true);
+    setError(null);
 
     try {
       const res = await fetch(
-        `/api/graphs?startDate=${startDate}&endDate=${endDate}`
+        `/api/graphs?startDate=${startDate}&endDate=${endDate}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          // Add cache control for production
+          cache: 'no-store',
+        }
       );
-      if (!res.ok) throw new Error('Failed to fetch study data');
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
       const data = await res.json();
-      setStudyData(JSON.parse(JSON.stringify(data.studyData)));
-      setSubjectData(data.todaySubjectData);
-      setTotalTimeData(data.fullSubjectData);
+
+      // Add validation for data structure
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid data format received');
+      }
+
+      // Ensure arrays exist and are valid
+      setStudyData(Array.isArray(data.studyData) ? data.studyData : []);
+      setSubjectData(
+        Array.isArray(data.todaySubjectData) ? data.todaySubjectData : []
+      );
+      setTotalTimeData(
+        Array.isArray(data.fullSubjectData) ? data.fullSubjectData : []
+      );
     } catch (err) {
-      console.error(err);
+      console.error('Error fetching study data:', err);
+      setError(err.message);
+      // Set empty arrays on error to prevent crashes
+      setStudyData([]);
+      setSubjectData([]);
+      setTotalTimeData([]);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [startDate, endDate]);
 
   useEffect(() => {
     fetchStudyData();
-  }, [startDate, endDate]);
+  }, [fetchStudyData]);
+
+  // Add loading state
+  if (loading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '20px' }}>
+        <p>Loading study data...</p>
+      </div>
+    );
+  }
+
+  // Add error state
+  if (error) {
+    return (
+      <div style={{ textAlign: 'center', padding: '20px', color: 'red' }}>
+        <p>Error loading data: {error}</p>
+        <button onClick={fetchStudyData} style={{ marginTop: '10px' }}>
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -138,48 +195,77 @@ const WeeklyStudyGraph = () => {
         </div>
 
         <div style={{ textAlign: 'center' }}>
-          <ResponsiveContainer width={400} height={300}>
-            <PieChart>
-              <Pie
-                data={totalTimeData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                outerRadius={100}
-                fill="#8884d8"
-                dataKey="value"
-                label={({ name, percent }) =>
-                  `${name} ${(percent * 100).toFixed(0)}%`
-                }
-              >
-                {totalTimeData.map((_, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          {totalTimeData && totalTimeData.length > 0 ? (
+            <ResponsiveContainer width={400} height={300}>
+              <PieChart>
+                <Pie
+                  data={totalTimeData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  outerRadius={100}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({ name, percent }) =>
+                    `${name} ${(percent * 100).toFixed(0)}%`
+                  }
+                >
+                  {totalTimeData.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <div
+              style={{
+                width: 400,
+                height: 300,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#888',
+              }}
+            >
+              No study data available
+            </div>
+          )}
           <div className="chartText">Time Distribution (All time)</div>
         </div>
       </div>
       <h1 className="chartText">Stats this Week</h1>
       <div>
-        <ResponsiveContainer
-          width="100%"
-          height={350}
-          style={{ marginTop: '10%' }}
-        >
-          <BarChart data={studyData}>
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="timeStudied" fill="#0053b6" />
-          </BarChart>
-        </ResponsiveContainer>
+        {studyData && studyData.length > 0 ? (
+          <ResponsiveContainer
+            width="100%"
+            height={350}
+            style={{ marginTop: '10%' }}
+          >
+            <BarChart data={studyData}>
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="timeStudied" fill="#0053b6" />
+            </BarChart>
+          </ResponsiveContainer>
+        ) : (
+          <div
+            style={{
+              height: 350,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#888',
+            }}
+          >
+            No study data for this week
+          </div>
+        )}
         <div className="chartText">Time Distribution for this Week</div>
       </div>
     </div>
