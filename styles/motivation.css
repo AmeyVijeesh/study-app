@@ -15,3 +15,9 @@
   justify-content: center;
   flex-direction: column;
 }
+
+.letter {
+  width: 50%;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 1.2rem;
+}

@@ -35,7 +35,7 @@ const Sidebar = () => {
             <FontAwesomeIcon icon={faPlusCircle} className="menu-icon" />
             <span>Add Subjects</span>
           </li>
-          <li>
+          <li onClick={() => router.push('motivation')}>
             <FontAwesomeIcon icon={faFaceFrown} className="menu-icon" />
             <span>Feeling stuck?</span>
           </li>
