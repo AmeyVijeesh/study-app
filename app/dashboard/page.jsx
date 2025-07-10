@@ -9,12 +9,10 @@ import dynamic from 'next/dynamic';
 import '@/styles/dashboard.css';
 import Loader from '../components/Loader';
 
-// Create an error boundary component
 const ErrorBoundary = ({ children, fallback, componentName }) => {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    // Reset error state if children change
     setHasError(false);
   }, [children]);
 
@@ -39,7 +37,6 @@ const ErrorBoundary = ({ children, fallback, componentName }) => {
   );
 };
 
-// Dynamically import components with error boundaries and controlled loading
 const LazyUserIntro = dynamic(() => import('../components/UserIntro'), {
   ssr: false,
   loading: () => (
@@ -109,7 +106,6 @@ const Dashboard = () => {
   const [highestTimeWorked, setHighestTimeWorked] = useState(null);
   const [lowestTimeWorked, setLowestTimeWorked] = useState(null);
 
-  // Component loading states
   const [sidebarLoaded, setSidebarLoaded] = useState(false);
   const [userIntroLoaded, setUserIntroLoaded] = useState(false);
   const [dailyDataLoaded, setDailyDataLoaded] = useState(false);
@@ -119,16 +115,13 @@ const Dashboard = () => {
   const [quotesLoaded, setQuotesLoaded] = useState(false);
   const [fulltimeDataLoaded, setFulltimeDataLoaded] = useState(false);
 
-  // Check if we're on the client
   const isClient = typeof window !== 'undefined';
   const today = new Date().toLocaleDateString('en-CA');
 
-  // Derived states with proper null checking
   const todayLog = logs.find((log) => log.date === today) || null;
   const todayTimeWorked = todayLog ? todayLog.totalTimeFocussed : 0;
   const sessionsToday = todayLog ? todayLog.sessionsToday : 0;
 
-  // Function to load data with retry capability
   const fetchDashboardData = async (retryCount = 0) => {
     try {
       setLoading(true);
@@ -358,6 +351,13 @@ const Dashboard = () => {
                     return log ? (
                       <div className="calendar-tile">
                         <span className="day-rating">{log.dayRating}</span>
+                        <span
+                          onClick={() => {
+                            console.log(JSON.stringify(log));
+                          }}
+                        >
+                          {log.totalTimeFocussed}
+                        </span>
                       </div>
                     ) : null;
                   }}
